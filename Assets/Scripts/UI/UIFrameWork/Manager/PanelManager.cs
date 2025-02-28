@@ -9,8 +9,6 @@ namespace UIFrameWork
     public class PanelManager : SingletonBase<PanelManager>
     {
         private Stack<BasePanel> panelStack = new Stack<BasePanel>();
-        //private BasePanel topPanel;
-        //private BasePanel lastPanel;
         //键是UIInfo
         private Dictionary<string, BasePanel> panelDic = new Dictionary<string, BasePanel>();
         

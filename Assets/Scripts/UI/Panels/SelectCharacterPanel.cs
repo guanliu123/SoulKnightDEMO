@@ -42,4 +42,22 @@ public class SelectCharacterPanel : BasePanel
             }
         }
     }
+
+    public override void OnPause()
+    {
+        base.OnPause();
+        MonoManager.Instance.RemoveUpdateAction(OnCheckSelect);
+    }
+
+    public override void OnResume()
+    {
+        base.OnResume();
+        MonoManager.Instance.AddUpdateAction(OnCheckSelect);
+    }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+        MonoManager.Instance.RemoveUpdateAction(OnCheckSelect);
+    }
 }

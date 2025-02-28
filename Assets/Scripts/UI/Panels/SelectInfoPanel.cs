@@ -17,6 +17,5 @@ public class SelectInfoPanel : BasePanel
     public override void OnEnter()
     {
         base.OnEnter();
-        
     }
 }
