@@ -13,4 +13,9 @@ public class InitScene : SceneBase
         sceneName = "InitScene";
         basePanel = new InitialPanel();
     }
+
+    protected override void SceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        base.SceneLoaded(scene, mode);
+    }
 }

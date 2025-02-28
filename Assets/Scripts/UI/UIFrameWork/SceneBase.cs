@@ -38,6 +38,6 @@ public class SceneBase
 
     protected virtual void SceneLoaded(Scene scene,LoadSceneMode mode)
     {
-        if(basePanel!=null) PanelManager.Instance.OpenPanel(basePanel);
+        //if(basePanel!=null) PanelManager.Instance.OpenPanel(basePanel);
     }
 }

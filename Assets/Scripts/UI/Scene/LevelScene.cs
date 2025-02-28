@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UIFrameWork;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,7 @@ public class LevelScene : SceneBase
     protected override void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
         base.SceneLoaded(scene, mode);
+        PanelManager.Instance.OpenPanel(basePanel);
         LevelManager.Instance.Init();
     }
 }

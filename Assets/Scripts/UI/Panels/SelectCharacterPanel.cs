@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
 using UIFrameWork;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class SelectCharacterPanel : BasePanel
 {
@@ -24,15 +26,18 @@ public class SelectCharacterPanel : BasePanel
     private void OnCheckSelect()
     {
         //todo:改成手机检测屏幕点击事件的方法
-        if (Input.GetMouseButtonDown(0))
+        if (!EventSystem.current.IsPointerOverGameObject()&& Input.GetMouseButtonDown(0))
         {
-            collider = Physics2D.OverlapCircle(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.1f,
-                LayerMask.GetMask("Player"));
+            Vector3 screenPos = Input.mousePosition;
+            screenPos.z = 10;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+            collider = Physics2D.OverlapCircle(worldPos, 0.1f, LayerMask.GetMask("Player"));
             if (collider)
             {
+                LogTool.Log(collider);
                 system.SetSelectTarget(collider.transform);
                 system.ChangeCamera(CustomCameraType.SelectCamera);
-                PanelManager.Instance.OpenPanel
+                PanelManager.Instance.OpenPanel 
                     (new SelectInfoPanel(collider.transform.parent.gameObject.GetComponent<CharacterRoot>().characterType));
             }
         }
