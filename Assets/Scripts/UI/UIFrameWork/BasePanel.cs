@@ -12,7 +12,10 @@ namespace UIFrameWork
 
         protected GameObject panel;
         protected UIContainer container;
-        
+
+        //如果面板已经被关闭了，在panelmanager里就不要调用onexit啥的了，因为栈结构不好动不可以直接移除
+        public bool IsClose { get; private set; }
+
         public BasePanel(UIType uIType)
         {
             UIType = uIType;
@@ -31,7 +34,7 @@ namespace UIFrameWork
         //被其他面板覆盖时
         public virtual void OnPause()
         {
-            Init();
+            //Init();
 
             UITool.GetOrAddComponent<CanvasGroup>(panel).blocksRaycasts = false;
             //panel.gameObject.SetActive(false);
@@ -39,7 +42,7 @@ namespace UIFrameWork
         //恢复时
         public virtual void OnResume()
         {
-            Init();
+            //Init();
 
             UITool.GetOrAddComponent<CanvasGroup>(panel).blocksRaycasts = true;
             UITool.RemoveComponent<CanvasGroup>(panel);
@@ -48,6 +51,7 @@ namespace UIFrameWork
         public virtual void OnExit()
         {
             UIManager.Instance.DestroyUI(UIType);
+            IsClose = true;
         }
 
         protected T FindComponent<T>(string name) where T : Component
