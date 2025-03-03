@@ -66,14 +66,14 @@ public class NetManager : SingletonBase<NetManager>
     
     public void Init()
     {
-        EventManager.Instance.On(EventId.ON_APPLICATION_PAUSE, OnApplicationPause);
-        EventManager.Instance.On<long>(EventId.ON_APPLICATION_RESUME, OnApplicationResume);
+        EventManager.Instance.SingOn(EventId.ON_APPLICATION_PAUSE, OnApplicationPause);
+        EventManager.Instance.SingOn<long>(EventId.ON_APPLICATION_RESUME, OnApplicationResume);
     }
     
     public void Perge()
     {
-        EventManager.Instance.Off(EventId.ON_APPLICATION_PAUSE, OnApplicationPause);
-        EventManager.Instance.Off<long>(EventId.ON_APPLICATION_RESUME, OnApplicationResume);
+        EventManager.Instance.SingOff(EventId.ON_APPLICATION_PAUSE, OnApplicationPause);
+        EventManager.Instance.SingOff<long>(EventId.ON_APPLICATION_RESUME, OnApplicationResume);
     }
     
     public void Connect(string host)

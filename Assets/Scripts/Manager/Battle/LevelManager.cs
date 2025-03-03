@@ -41,14 +41,14 @@ public class LevelManager : SingletonBase<LevelManager>
     }
     protected override void RegisterEvent()
     {
-        EventManager.Instance.On(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
-        EventManager.Instance.On(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
+        EventManager.Instance.SingOn(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
+        EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
     }
 
     protected override void UnregisterEvent()
     {
-        EventManager.Instance.Off(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
-        EventManager.Instance.Off(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
+        EventManager.Instance.SingOff(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
+        EventManager.Instance.SingOff(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
     }
 
     #region 事件函数
