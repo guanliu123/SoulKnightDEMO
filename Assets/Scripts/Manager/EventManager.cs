@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,8 @@ public class EventInfo : IEventInfo
 public class EventManager : SingletonBase<EventManager>
 {
     // key对应事件的名字，value对应的是监听这个事件对应的委托函数
+    //sing表示单例模式中注册的事件，转换场景时只清空event不清空单例的
+    private Dictionary<string, IEventInfo> singEventDic = new Dictionary<string, IEventInfo>();
     private Dictionary<string, IEventInfo> eventDic = new Dictionary<string, IEventInfo>();
 
     // 添加事件监听，一个参数的
@@ -52,6 +55,10 @@ public class EventManager : SingletonBase<EventManager>
         {
             (eventDic[name] as EventInfo).actions?.Invoke();
         }
+        else if (singEventDic.ContainsKey(name))
+        {
+            (singEventDic[name] as EventInfo).actions?.Invoke();
+        }
         else
         {
             Debug.LogWarning("Event named ["+name+"] not found!");
@@ -63,6 +70,12 @@ public class EventManager : SingletonBase<EventManager>
     {
         if (eventDic.ContainsKey(name))
             (eventDic[name] as EventInfo<T>).actions?.Invoke(info);
+        else if(singEventDic.ContainsKey(name))
+            (eventDic[name] as EventInfo<T>).actions?.Invoke(info);
+        else
+        {
+            Debug.LogWarning("Event named ["+name+"] not found!");
+        }
     }
 
     //移除监听，无参的
@@ -78,6 +91,38 @@ public class EventManager : SingletonBase<EventManager>
         if (eventDic.ContainsKey(name))
             (eventDic[name] as EventInfo<T>).actions -= action;
     }
+    
+    // 添加事件监听，一个参数的
+    public void SingOn<T>(string name, UnityAction<T> action)
+    {
+        if (singEventDic.ContainsKey(name))
+            (singEventDic[name] as EventInfo<T>).actions += action;
+        else
+            singEventDic.Add(name, new EventInfo<T>(action));
+    }
+
+    // 添加事件监听，无参数的
+    public void SingOn(string name, UnityAction action)
+    {
+        if (singEventDic.ContainsKey(name))
+            (singEventDic[name] as EventInfo).actions += action;
+        else
+            singEventDic.Add(name, new EventInfo(action));
+    }
+
+    //移除监听，无参的
+    public void SingOff(string name, UnityAction action)
+    {
+        if (singEventDic.ContainsKey(name))
+            (singEventDic[name] as EventInfo).actions -= action;
+    }
+
+    //移除监听，一个参数的
+    public void SingOff<T>(string name, UnityAction<T> action)
+    {
+        if (singEventDic.ContainsKey(name))
+            (singEventDic[name] as EventInfo<T>).actions -= action;
+    }
 
     //清空某一类型的所有事件
     public void Clear(string eventName)
@@ -92,5 +137,11 @@ public class EventManager : SingletonBase<EventManager>
     public void Clear()
     {
         eventDic.Clear();
+    }
+
+    public void ClearAll()
+    {
+        eventDic.Clear();
+        singEventDic.Clear();
     }
 }
