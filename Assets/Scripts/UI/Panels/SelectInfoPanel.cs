@@ -18,22 +18,20 @@ public class SelectInfoPanel : BasePanel
     public override void OnEnter()
     {
         base.OnEnter();
-        FindComponent<Button>("Btn_Back").onClick.AddListener(Close);
+        FindComponent<Button>("Btn_Back").onClick.AddListener(() =>
+        {
+            AbstractManager.Instance.GetSystem<CameraSystem>().ChangeCamera(CustomCameraType.StaticCamera);
+            PanelManager.Instance.ClosePanel(UIInfo.SelectInfoPanel);
+        });
         FindComponent<Button>("Btn_Select").onClick.AddListener(() =>
         {
             var t = AbstractManager.Instance.GetController<PlayerController>();
             t.SetMainPlayer(playerType);
             t.TurnOnController();
-            Close();
+            PanelManager.Instance.ClosePanel(UIInfo.SelectInfoPanel);
             PanelManager.Instance.ClosePanel(UIInfo.SelectCharacterPanel);
             PanelManager.Instance.OpenPanel(new BattleInfoPanel());
         });
         FindComponent<TMP_Text>("CharacterName").text = this.playerType.ToString();
-    }
-
-    private void Close()
-    {
-        AbstractManager.Instance.GetSystem<CameraSystem>().ChangeCamera(CustomCameraType.StaticCamera);
-        PanelManager.Instance.ClosePanel(UIInfo.SelectInfoPanel);
     }
 }
