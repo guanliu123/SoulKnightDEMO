@@ -32,6 +32,11 @@ public class SelectInfoPanel : BasePanel
             PanelManager.Instance.ClosePanel(UIInfo.SelectCharacterPanel);
             PanelManager.Instance.OpenPanel(new BattleInfoPanel());
         });
-        FindComponent<TMP_Text>("CharacterName").text = this.playerType.ToString();
+
+        var characterCfg = TableManager.Instance.Tables.TBCharacter[(int)playerType];
+        FindComponent<TMP_Text>("CharacterName").text = characterCfg.Name;
+        FindComponent<TMP_Text>("TextHp").text = characterCfg.Hp.ToString();
+        FindComponent<TMP_Text>("TextArmor").text = characterCfg.Shield.ToString();
+        FindComponent<TMP_Text>("TextMp").text = characterCfg.Mp.ToString();
     }
 }

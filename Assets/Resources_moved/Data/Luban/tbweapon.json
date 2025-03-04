@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1001,
+    "damage": 2,
+    "mc": 0,
+    "probability": 2,
+    "price": "15"
+  },
+  {
+    "id": 1002,
+    "damage": 3,
+    "mc": 1,
+    "probability": 2,
+    "price": "15"
+  }
+]

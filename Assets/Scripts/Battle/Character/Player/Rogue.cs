@@ -4,7 +4,7 @@
 
     public class Rogue: PlayerBase
     {
-        public Rogue(GameObject obj) : base(obj)
+        public Rogue(GameObject obj,PlayerType type) : base(obj,type)
         {
         }
 

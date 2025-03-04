@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1001,
+    "name": "骑士",
+    "skill": "101",
+    "hp": 4,
+    "shield": 5,
+    "mp": 200,
+    "Initialweapon": ""
+  },
+  {
+    "id": 1002,
+    "name": "游侠",
+    "skill": "102",
+    "hp": 5,
+    "shield": 5,
+    "mp": 220,
+    "Initialweapon": ""
+  }
+]

@@ -12,9 +12,9 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
         GameObject obj = GameObject.Find(type.ToString());
         switch (type)
         {
-            case PlayerType.Knight: player = new Knight(obj);
+            case PlayerType.Knight: player = new Knight(obj,type);
                 break;
-            case PlayerType.Rogue: player = new Rogue(obj);
+            case PlayerType.Rogue: player = new Rogue(obj,type);
                 break;
             default: break;
         }

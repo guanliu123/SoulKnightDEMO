@@ -18,6 +18,8 @@ public partial class Tables
     public TbRoom TbRoom {get; }
     public TBConfigData TBConfigData {get; }
     public TBLevel TBLevel {get; }
+    public TBCharacter TBCharacter {get; }
+    public TBWeapon TBWeapon {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -25,6 +27,8 @@ public partial class Tables
         TbRoom = new TbRoom(loader("tbroom"));
         TBConfigData = new TBConfigData(loader("tbconfigdata"));
         TBLevel = new TBLevel(loader("tblevel"));
+        TBCharacter = new TBCharacter(loader("tbcharacter"));
+        TBWeapon = new TBWeapon(loader("tbweapon"));
         ResolveRef();
     }
     
@@ -34,6 +38,8 @@ public partial class Tables
         TbRoom.ResolveRef(this);
         TBConfigData.ResolveRef(this);
         TBLevel.ResolveRef(this);
+        TBCharacter.ResolveRef(this);
+        TBWeapon.ResolveRef(this);
     }
 }
 
