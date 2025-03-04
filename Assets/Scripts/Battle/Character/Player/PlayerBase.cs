@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EnumCenter;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -26,6 +27,8 @@ public class PlayerBase : CharacterBase
     protected override void OnInit()
     {
         base.OnInit();
+        EventManager.Instance.On<object[]>(EventId.ON_INTERACTING_OBJECT,InteractingObject);
+
         nowWeaponIdx = 0;
         stateMachine = new PlayerStateMachine(this);
         animator = characterRoot.GetAnimator();
@@ -83,5 +86,16 @@ public class PlayerBase : CharacterBase
     public void SetInput(PlayerControlInput _input)
     {
         input = _input;
+    }
+    
+    private void InteractingObject(object[] info)
+    {
+        InteractiveObjectType objType = (InteractiveObjectType)info[0];
+        if (objType == InteractiveObjectType.Weapon)
+        {
+            InteractiveObjectRoot root = (InteractiveObjectRoot)info[1];
+            PickUpWeapon(root.gameObject);
+            root.IsInteractable=false;
+        }
     }
 }

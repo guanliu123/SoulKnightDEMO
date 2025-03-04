@@ -22,6 +22,7 @@ namespace EnumCenter
     public enum PlayerType
     {
         Knight=1,
+        Rogue=2,
     }
 
     public enum PlayerWeaponType
