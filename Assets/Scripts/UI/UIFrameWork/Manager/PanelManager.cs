@@ -88,8 +88,12 @@ namespace UIFrameWork
             
             if (!panelDic.TryAdd(nextPanel.UIType.Path, nextPanel))
             {
-                LogTool.Log("面板"+nextPanel.UIType.Name+"已打开，请勿重复打开！");
-                return;
+                var panel = panelDic[nextPanel.UIType.Path];
+                if (panel != null && !panel.IsClose)
+                {
+                    LogTool.Log("面板"+nextPanel.UIType.Name+"已打开，请勿重复打开！");
+                    return;
+                }
             }
             // 暂停当前顶层面板
             while (panelStack.Count > 0)
@@ -139,6 +143,7 @@ namespace UIFrameWork
                         break;
                     }
                     panelStack.Pop();
+                    panelDic.Remove(t.UIType.Path);
                 }
             }
         }

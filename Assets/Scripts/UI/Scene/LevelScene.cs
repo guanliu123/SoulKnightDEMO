@@ -17,6 +17,7 @@ public class LevelScene : SceneBase
     protected override void SceneLoaded(Scene scene, LoadSceneMode mode)
     {
         base.SceneLoaded(scene, mode);
+        EventManager.Instance.Clear();
         PanelManager.Instance.OpenPanel(basePanel);
         LevelManager.Instance.Init();
     }

@@ -47,10 +47,11 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
             return null;
         }
         
+        weaponObj.transform.localRotation = character.transform.rotation;
+
         Transform origin = character.characterRoot.GetWeaponOriginPoint();
         weaponObj.transform.SetParent(origin);
         weaponObj.transform.localPosition=Vector3.zero;
-        weaponObj.transform.localRotation = origin.rotation;
         
         PlayerWeaponBase weapon=null;
         switch (root.weaponType)
@@ -62,6 +63,9 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
                 weapon = new AK47(weaponObj, character);
                 break;
             case PlayerWeaponType.DoubleBladeSword:
+                weapon = new DoubleBladeSword(weaponObj, character);
+                break;
+            case PlayerWeaponType.BlueFireGatling:
                 weapon = new DoubleBladeSword(weaponObj, character);
                 break;
         }

@@ -19,6 +19,7 @@ public class HomeScene : SceneBase
         base.SceneLoaded(scene, mode);
         //GameManager.Instance.TestPlayer();
         AbstractManager.Instance.RegisterCameraAbstract();
+        AbstractManager.Instance.RegisterPlayerAbstract();
         PanelManager.Instance.OpenPanel(basePanel);
     }
 }

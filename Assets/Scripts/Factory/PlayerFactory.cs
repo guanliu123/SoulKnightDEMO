@@ -14,6 +14,7 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
         {
             case PlayerType.Knight: player = new Knight(obj);
                 break;
+            default: break;
         }
 
         return player;

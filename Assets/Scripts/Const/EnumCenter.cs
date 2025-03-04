@@ -29,6 +29,7 @@ namespace EnumCenter
         BadPistol=1,
         AK47=2,
         DoubleBladeSword=3,
+        BlueFireGatling=4,
     }
     
     public enum InteractiveObjectType

@@ -9,17 +9,17 @@ public class PlayerController : AbstractController
 {
     public PlayerBase MainPlayer { get; private set; }
     public PlayerController(){}
+    
 
-    protected override void Init()
+    protected override void OnAfterRunUpdate()
     {
-        base.Init();
-        MainPlayer = PlayerFactory.Instance.GetPlayer(PlayerType.Knight);
-        MainPlayer.SetInput(AbstractManager.Instance.GetController<InputController>().input);
+        base.OnAfterRunUpdate();
+        MainPlayer?.OnUpdate();
     }
 
-    protected override void AlwaysUpdate()
+    public void SetMainPlayer(PlayerType type)
     {
-        base.AlwaysUpdate();
-        if(MainPlayer!=null) MainPlayer.OnUpdate();
+        MainPlayer = PlayerFactory.Instance.GetPlayer(type);
+        MainPlayer.SetInput(AbstractManager.Instance.GetController<InputController>().input);
     }
 }

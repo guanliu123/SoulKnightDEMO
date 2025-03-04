@@ -15,13 +15,6 @@ public class GameManager : MonoSingletonBase<GameManager>
     public override void AwakeInit()
     {
         base.AwakeInit();
-        MonoManager.Instance.AddUpdateAction(() =>
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                AbstractManager.Instance.RegisterPlayerAbstract();
-            }
-        });
         
         MonoManager.Instance.AddUpdateAction(AbstractManager.Instance.OnUpdate);
     }

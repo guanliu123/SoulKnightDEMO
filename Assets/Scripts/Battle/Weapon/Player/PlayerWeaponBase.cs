@@ -64,7 +64,7 @@ public class PlayerWeaponBase:WeaponBase
             ir = gameObject.AddComponent<InteractiveObjectRoot>();
             ir.type = InteractiveObjectType.Weapon;
             ir.itemIndicator = GameTool.GetGameObjectFromChildren(gameObject, "ItemIndicator");
-            ir.IsInteractable = true;
         }
+        ir.IsInteractable = true;
     }
 }

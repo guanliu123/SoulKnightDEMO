@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ public class UIContainer:MonoBehaviour
         Text,
         TextMeshProUGUI,
         TMP_InputField,
+        TMP_Text,
         Button,
         Toggle,
         Image
@@ -84,6 +86,10 @@ public class UIContainer:MonoBehaviour
                 case COMPONENT_TYPE.Image:
                 {
                     components.Add(t.name,t.tf.GetComponent<Image>());
+                }break;
+                case COMPONENT_TYPE.TMP_Text:
+                {
+                    components.Add(t.name,t.tf.GetComponent<TMP_Text>());
                 }break;
                 default:
                 {
