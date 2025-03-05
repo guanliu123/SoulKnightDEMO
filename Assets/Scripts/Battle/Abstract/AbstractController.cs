@@ -23,7 +23,7 @@
             OnAfterRunInit();
         }
     }
-    public virtual void OnUpdate()
+    public virtual void GameUpdate()
     {
         if (isControllerRun)
         {

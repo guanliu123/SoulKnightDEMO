@@ -40,7 +40,7 @@ public class TowerAttackState : BaseState
     {
         BaseSoldier soldier = (BaseSoldier)m_unit.lockedAttackUnit;
 
-        GameData.g_bulletManager.createBullet(m_unit, soldier, m_unit.m_fixv3LogicPosition, soldier.m_fixv3LogicPosition);
+        //GameData.g_bulletManager.createBullet(m_unit, soldier, m_unit.m_fixv3LogicPosition, soldier.m_fixv3LogicPosition);
         m_unit.changeState("cooling", m_unit.attackSpeed);
     }
 

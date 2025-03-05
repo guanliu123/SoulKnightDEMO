@@ -18,6 +18,7 @@ public class AbstractManager : SingletonBase<AbstractManager>
     public void RegisterInitAbstract()
     {
         //提前注册所有必要的Abstract类
+        RegisterController(new ItemController());
     }
 
     public void RegisterCameraAbstract()
@@ -36,11 +37,11 @@ public class AbstractManager : SingletonBase<AbstractManager>
     {
         foreach (var item in controllers)
         {
-            item.OnUpdate();
+            item.GameUpdate();
         }
         foreach (var item in systems)
         {
-            item.OnUpdate();
+            item.GameUpdate();
         }
     }
 

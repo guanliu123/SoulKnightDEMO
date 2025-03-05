@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EnumCenter;
+using UnityEngine;
 
 public class BadPistol:PlayerWeaponBase
 {
@@ -14,6 +15,8 @@ public class BadPistol:PlayerWeaponBase
     protected override void OnFire()
     {
         base.OnFire();
+        //Bullet_1 bullet=new Bullet_1(LoadManager.Instance.)
+        BulletFactory.Instance.GetPlayerBullet(BulletType.Bullet_1, this);
     }
     public override void OnEnter()
     {

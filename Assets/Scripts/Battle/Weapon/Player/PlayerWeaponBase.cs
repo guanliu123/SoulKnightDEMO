@@ -7,30 +7,31 @@ public class PlayerWeaponBase:WeaponBase
     public new PlayerBase player{get=>base.character as PlayerBase;
         set => base.character = value;
     }
+    public WeaponRoot Root { get; private set; }
 
-    protected Transform rotOrigin;
+    public Transform RotOrigin { get; protected set; }
 
     private bool isAttackKeyDown;
     
     public PlayerWeaponBase(GameObject obj, CharacterBase character) : base(obj, character)
     {
-        WeaponRoot root = gameObject.GetComponent<WeaponRoot>();
-        if (!root)
+        Root = gameObject.GetComponent<WeaponRoot>();
+        if (!Root)
         {
             LogTool.LogError("武器上未挂载WeaponRoot！");
         }
 
-        rotOrigin = root.GetRotOrigin();
+        RotOrigin = Root.GetRotOrigin();
     }
 
     //射击按钮按下松开发射一次
     public void ControlWeapon(bool isAttack)
     {
-        if (isAttackKeyDown!=isAttack)
+        if (isAttackKeyDown!=isAttack&&isAttack)
         {
             OnFire();
-            isAttackKeyDown = isAttack;
         }
+        isAttackKeyDown = isAttack;
     }
 
     public void RotateWeapon(FixVector2 dir)
@@ -47,7 +48,7 @@ public class PlayerWeaponBase:WeaponBase
             {
                 angle = Vector2.SignedAngle(Vector2.right, dir.ToVector2());
             }
-            rotOrigin.localRotation=Quaternion.Euler(0,0,angle);
+            RotOrigin.localRotation=Quaternion.Euler(0,0,angle);
         }
     }
     

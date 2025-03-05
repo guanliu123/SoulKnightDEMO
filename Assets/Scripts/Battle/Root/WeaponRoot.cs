@@ -11,7 +11,7 @@ public class WeaponRoot : MonoBehaviour
     public Transform rotOrigin;
     public Transform firePoint;
     
-    public Transform GetAnimator()
+    public Transform GetFirePoint()
     {
         if (firePoint == null)
         {

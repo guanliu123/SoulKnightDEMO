@@ -7,7 +7,7 @@
     
     protected virtual void OnInit(){}
     
-    public virtual void OnUpdate()
+    public virtual void GameUpdate()
     {
         
     }

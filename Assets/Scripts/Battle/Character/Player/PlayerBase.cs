@@ -33,8 +33,8 @@ public class PlayerBase : CharacterBase
 
         nowWeaponIdx = 0;
         stateMachine = new PlayerStateMachine(this);
-        animator = characterRoot.GetAnimator();
-        rigidBody = characterRoot.GetRigidBody();
+        animator = Root.GetAnimator();
+        rigidBody = Root.GetRigidBody();
     }
 
     protected override void OnCharacterUpdate()

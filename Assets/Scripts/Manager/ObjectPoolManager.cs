@@ -9,102 +9,102 @@ using Object = UnityEngine.Object;
 
 #endregion
 
-public class ObjectPoolItem : MonoBehaviour
-{
-    private List<ObjectPoolItem> m_childPoolItem;
-    
-    private FixVector3 m_org_scale = FixVector3.Zero;
-    
-    public string poolName { get; set; }
-    
-    private void Awake()
-    {
-        m_org_scale = new FixVector3(transform.lossyScale);;
-    }
-    
-    public void Disable(float delay)
-    {
-        base.StartCoroutine(this._disable(delay));
-    }
-    
-    private IEnumerator _disable(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        try
-        {
-            Disable();
-        }
-        catch (Exception e)
-        {
-            LogTool.LogException(e);
-        }
-    }
-    
-    public virtual void Reset()
-    {
-    }
-    
-    public bool IsActive()
-    {
-        return base.gameObject.activeInHierarchy;
-    }
-    
-    public virtual void Disable()
-    {
-        ObjectPoolManager.Instance.GetPool(this.poolName).DeSpawn(base.gameObject, this.poolName);
-    }
-    
-    public virtual void OnObjectSpawn()
-    {
-        SendMessage("OnSpawn", SendMessageOptions.DontRequireReceiver);
-    }
-    
-    public virtual void OnObjectDespawn()
-    {
-        PreDespawnChild();
-        //transform.localScale = this.m_org_scale;
-        SendMessage("OnDespawn", SendMessageOptions.DontRequireReceiver);
-    }
-    
-    public void SearchParent()
-    {
-        Transform parent = base.transform.parent;
-        if (parent != null)
-        {
-            ObjectPoolItem componentInParent = parent.GetComponentInParent<ObjectPoolItem>();
-            if (componentInParent != null)
-            {
-                componentInParent.RegisterChild(this);
-            }
-        }
-    }
-    
-    public void RegisterChild(ObjectPoolItem obj)
-    {
-        if (this.m_childPoolItem == null)
-        {
-            this.m_childPoolItem = new List<ObjectPoolItem>();
-        }
-        
-        this.m_childPoolItem.Add(obj);
-    }
-    
-    private void PreDespawnChild()
-    {
-        if (this.m_childPoolItem != null)
-        {
-            for (int i = 0; i < this.m_childPoolItem.Count; i++)
-            {
-                if (this.m_childPoolItem[i] != null)
-                {
-                    this.m_childPoolItem[i].Disable();
-                }
-            }
-            
-            this.m_childPoolItem.Clear();
-        }
-    }
-}
+// public class ObjectPoolItem : MonoBehaviour
+// {
+//     private List<ObjectPoolItem> m_childPoolItem;
+//     
+//     private FixVector3 m_org_scale = FixVector3.Zero;
+//     
+//     public string poolName { get; set; }
+//     
+//     private void Awake()
+//     {
+//         m_org_scale = new FixVector3(transform.lossyScale);;
+//     }
+//     
+//     public void Disable(float delay)
+//     {
+//         base.StartCoroutine(this._disable(delay));
+//     }
+//     
+//     private IEnumerator _disable(float delay)
+//     {
+//         yield return new WaitForSeconds(delay);
+//         try
+//         {
+//             Disable();
+//         }
+//         catch (Exception e)
+//         {
+//             LogTool.LogException(e);
+//         }
+//     }
+//     
+//     public virtual void Reset()
+//     {
+//     }
+//     
+//     public bool IsActive()
+//     {
+//         return base.gameObject.activeInHierarchy;
+//     }
+//     
+//     public virtual void Disable()
+//     {
+//         ObjectPoolManager.Instance.GetPool(this.poolName).DeSpawn(base.gameObject, this.poolName);
+//     }
+//     
+//     public virtual void OnObjectSpawn()
+//     {
+//         SendMessage("OnSpawn", SendMessageOptions.DontRequireReceiver);
+//     }
+//     
+//     public virtual void OnObjectDespawn()
+//     {
+//         PreDespawnChild();
+//         //transform.localScale = this.m_org_scale;
+//         SendMessage("OnDespawn", SendMessageOptions.DontRequireReceiver);
+//     }
+//     
+//     public void SearchParent()
+//     {
+//         Transform parent = base.transform.parent;
+//         if (parent != null)
+//         {
+//             ObjectPoolItem componentInParent = parent.GetComponentInParent<ObjectPoolItem>();
+//             if (componentInParent != null)
+//             {
+//                 componentInParent.RegisterChild(this);
+//             }
+//         }
+//     }
+//     
+//     public void RegisterChild(ObjectPoolItem obj)
+//     {
+//         if (this.m_childPoolItem == null)
+//         {
+//             this.m_childPoolItem = new List<ObjectPoolItem>();
+//         }
+//         
+//         this.m_childPoolItem.Add(obj);
+//     }
+//     
+//     private void PreDespawnChild()
+//     {
+//         if (this.m_childPoolItem != null)
+//         {
+//             for (int i = 0; i < this.m_childPoolItem.Count; i++)
+//             {
+//                 if (this.m_childPoolItem[i] != null)
+//                 {
+//                     this.m_childPoolItem[i].Disable();
+//                 }
+//             }
+//             
+//             this.m_childPoolItem.Clear();
+//         }
+//     }
+// }
 
 public class ObjectPool
 {
@@ -131,6 +131,33 @@ public class ObjectPool
         
         Spawn(action);
     }
+
+    //同步加载生成
+    public GameObject SynSpawn(string ResourceName)
+    {
+        if (this.m_PoolObjName == string.Empty)
+        {
+            this.m_PoolObjName = ResourceName;
+        }
+
+        return SynSpawn();
+    }
+
+    private GameObject SynSpawn()
+    {
+        this.lastDespawnTime = 3.40282347E+38f;
+        if (this.m_pool.Count > 0)
+        {
+            GameObject gameObject = this.m_pool.Pop();
+            gameObject.transform.SetParent(null);
+            gameObject.SetActive(true);
+            //gameObject.GetComponent<ObjectPoolItem>().OnObjectSpawn();
+            return gameObject;
+        }
+        
+        return GameObject.Instantiate(LoadManager.Instance.Load<GameObject>(m_PoolObjName));
+    }
+    
     
     private void Spawn(Action<GameObject> action)
     {
@@ -140,7 +167,7 @@ public class ObjectPool
             GameObject gameObject = this.m_pool.Pop();
             gameObject.transform.SetParent(null);
             gameObject.SetActive(true);
-            gameObject.GetComponent<ObjectPoolItem>().OnObjectSpawn();
+            //gameObject.GetComponent<ObjectPoolItem>().OnObjectSpawn();
             action?.Invoke(gameObject);
             return;
         }
@@ -149,17 +176,17 @@ public class ObjectPool
         {
             GameObject gameObject2 = GameObject.Instantiate(asset.asset() as GameObject);
             asset.Retain(gameObject2);
-            ObjectPoolItem component = gameObject2.GetComponent<ObjectPoolItem>();
-            if (component != null)
-            {
-                component.poolName = this.m_PoolObjName;
-                component.OnObjectSpawn();
-                this.m_spawn_number++;
-            }
-            else
-            {
-                LogTool.LogError($"{m_PoolObjName} not ObjectPoolItem");
-            }
+            //ObjectPoolItem component = gameObject2.GetComponent<ObjectPoolItem>();
+            // if (component != null)
+            // {
+            //     component.poolName = this.m_PoolObjName;
+            //     component.OnObjectSpawn();
+            //     this.m_spawn_number++;
+            // }
+            // else
+            // {
+            //     LogTool.LogError($"{m_PoolObjName} not ObjectPoolItem");
+            // }
             
             action?.Invoke(gameObject2);
         }, true);
@@ -180,7 +207,7 @@ public class ObjectPool
         }
         
         obj.transform.SetParent(ObjectPoolManager.Instance.m_handler.transform);
-        obj.GetComponent<ObjectPoolItem>().OnObjectDespawn();
+        //obj.GetComponent<ObjectPoolItem>().OnObjectDespawn();
         obj.SetActive(false);
         this.m_pool.Push(obj);
     }
@@ -217,8 +244,9 @@ public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
     public bool IsAnyInPool(UnityEngine.Object obj)
     {
         GameObject gameObject = (GameObject)obj;
-        ObjectPoolItem component = gameObject.GetComponent<ObjectPoolItem>();
-        return component && this.GetPool(component.poolName).avaliableCount != 0;
+        return false;
+        // ObjectPoolItem component = gameObject.GetComponent<ObjectPoolItem>();
+        // return component && this.GetPool(component.poolName).avaliableCount != 0;
     }
     
     public ObjectPool GetPool(string name)

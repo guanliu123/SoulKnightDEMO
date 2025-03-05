@@ -238,43 +238,48 @@ public class LoadManager : SingletonBase<LoadManager>
                 objAsset = asset.asset();
             }
             
-            ObjectPoolItem component = null;
-            if (objAsset is GameObject)
+            Object _object;
+            _object = Object.Instantiate(objAsset);
+            asset.Retain(_object);
+            try
             {
-                component = (objAsset as GameObject).GetComponent<ObjectPoolItem>();
+                completed?.Invoke(_object);
+            }
+            catch (Exception ex)
+            {
+                LogTool.LogError($"{assetName} Callback Error: {ex.ToString()}");
             }
             
-            if (component != null)
-            {
-                if (component.poolName == null || component.poolName.Equals(string.Empty))
-                {
-                    component.poolName = assetName;
-                }
-                
-                ObjectPoolManager.Instance.GetPool(component.poolName).Spawn(component.poolName, completed);
-            }
-            else
-            {
-                Object _object;
-                // if (ownerView != null)
-                // {
-                //     _object = ownerView.Instantiate(objAsset);
-                // }
-                // else
-                // {
-                //     _object = Object.Instantiate(objAsset);
-                // }
-                _object = Object.Instantiate(objAsset);
-                asset.Retain(_object);
-                try
-                {
-                    completed?.Invoke(_object);
-                }
-                catch (Exception ex)
-                {
-                    LogTool.LogError($"{assetName} Callback Error: {ex.ToString()}");
-                }
-            }
+            //todo：对象池物体相关逻辑，先注释了
+            // ObjectPoolItem component = null;
+            // if (objAsset is GameObject)
+            // {
+            //     component = (objAsset as GameObject).GetComponent<ObjectPoolItem>();
+            // }
+            //
+            // if (component != null)
+            // {
+            //     if (component.poolName == null || component.poolName.Equals(string.Empty))
+            //     {
+            //         component.poolName = assetName;
+            //     }
+            //     
+            //     ObjectPoolManager.Instance.GetPool(component.poolName).Spawn(component.poolName, completed);
+            // }
+            // else
+            // {
+            //     Object _object;
+            //     _object = Object.Instantiate(objAsset);
+            //     asset.Retain(_object);
+            //     try
+            //     {
+            //         completed?.Invoke(_object);
+            //     }
+            //     catch (Exception ex)
+            //     {
+            //         LogTool.LogError($"{assetName} Callback Error: {ex.ToString()}");
+            //     }
+            // }
         });
     }
     
@@ -316,19 +321,21 @@ public class LoadManager : SingletonBase<LoadManager>
             return;
         }
         
-        ObjectPoolItem component = gameObject.GetComponent<ObjectPoolItem>();
-        if (component != null && component.poolName != null)
-        {
-            ObjectPoolManager.Instance.GetPool(component.poolName).DeSpawn(gameObject, component.poolName);
-            if (!mObjectHasPool.ContainsKey(component.poolName))
-            {
-                mObjectHasPool.Add(component.poolName, true);
-            }
-        }
-        else
-        {
-            UnityEngine.Object.Destroy(gameObject);
-        }
+        // ObjectPoolItem component = gameObject.GetComponent<ObjectPoolItem>();
+        // ObjectPoolItem component=null;
+        // if (component != null && component.poolName != null)
+        // {
+        //     ObjectPoolManager.Instance.GetPool(component.poolName).DeSpawn(gameObject, component.poolName);
+        //     if (!mObjectHasPool.ContainsKey(component.poolName))
+        //     {
+        //         mObjectHasPool.Add(component.poolName, true);
+        //     }
+        // }
+        // else
+        // {
+        //     UnityEngine.Object.Destroy(gameObject);
+        // }
+        UnityEngine.Object.Destroy(gameObject);
     }
     
     public void UnloadUnusedAssets()

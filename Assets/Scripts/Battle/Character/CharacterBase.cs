@@ -6,7 +6,7 @@ public class CharacterBase
 {
     public GameObject gameObject { get; protected set; }
     public Transform transform => gameObject.transform;
-    public CharacterRoot characterRoot { get; private set; }
+    public CharacterRoot Root { get; private set; }
 
     private bool isLeft;
     public bool IsLeft
@@ -34,8 +34,8 @@ public class CharacterBase
     public CharacterBase(GameObject obj)
     {
         gameObject = obj;
-        characterRoot = gameObject.GetComponent<CharacterRoot>();
-        if (characterRoot == null)
+        Root = gameObject.GetComponent<CharacterRoot>();
+        if (Root == null)
         {
             LogTool.LogError($"角色身上未挂载CharacterRoot！");
         }

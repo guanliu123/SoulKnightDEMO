@@ -43,4 +43,9 @@ namespace EnumCenter
         SingleMode=1<<0,
         MultipleMode=1<<1,
     }
+
+    public enum BulletType
+    {
+        Bullet_1=1,
+    }
 }

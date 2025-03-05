@@ -11,7 +11,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     /// <returns></returns>
     public PlayerWeaponBase GetPlayerWeapon(PlayerWeaponType type, CharacterBase character)
     {
-        Transform origin = character.characterRoot.GetWeaponOriginPoint();
+        Transform origin = character.Root.GetWeaponOriginPoint();
         GameObject weaponObj = GameObject.Instantiate(GetWeaponObj(type.ToString()),origin);
         weaponObj.name = type.ToString();
         weaponObj.transform.localPosition=Vector3.zero;
@@ -49,7 +49,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
         
         weaponObj.transform.localRotation = character.transform.rotation;
 
-        Transform origin = character.characterRoot.GetWeaponOriginPoint();
+        Transform origin = character.Root.GetWeaponOriginPoint();
         weaponObj.transform.SetParent(origin);
         weaponObj.transform.localPosition=Vector3.zero;
         
