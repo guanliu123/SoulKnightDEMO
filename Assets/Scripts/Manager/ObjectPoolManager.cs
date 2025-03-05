@@ -232,11 +232,11 @@ public class ObjectPool
     }
 }
 
-public class ObjectPoolManager : SingletonBase<ObjectPoolManager>
+public class ObjectPoolManager : MonoSingletonBase<ObjectPoolManager>
 {
     private static readonly Dictionary<string, ObjectPool> m_poolList = new();
     
-    public GameObject m_handler;
+    public GameObject m_handler=>this.gameObject;
     
     public float m_clean_pool_time = 30.0f;
     

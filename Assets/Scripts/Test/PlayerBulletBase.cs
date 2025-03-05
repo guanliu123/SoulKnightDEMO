@@ -8,4 +8,10 @@ public class PlayerBulletBase : BulletBase
     {
         
     }
+
+    protected override void OnExit()
+    {
+        base.OnExit();
+        ObjectPoolManager.Instance.GetPool(PoolName).DeSpawn(gameObject,PoolName);
+    }
 }

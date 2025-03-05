@@ -12,10 +12,7 @@ public class BulletFactory:SingletonBase<BulletFactory>
     public PlayerBulletBase GetPlayerBullet(BulletType type, PlayerWeaponBase weapon)
     {
         Transform origin = weapon.Root.GetFirePoint();
-        GameObject bulletObj = GetBulletObj(type.ToString());
-
-        bulletObj.transform.localPosition = origin.position;
-        bulletObj.transform.localRotation = weapon.RotOrigin.rotation;
+        GameObject bulletObj = GetPlayerBulletObj(type.ToString());
 
         PlayerBulletBase bullet=null;
         switch (type)
@@ -24,15 +21,22 @@ public class BulletFactory:SingletonBase<BulletFactory>
                 bullet=new Bullet_1(bulletObj,weapon);break;
         }
 
+        bullet?.SetPoolName(GetPoolName(type.ToString()));
+        bullet?.SetPosition(origin.position);
+        bullet?.SetRotation(weapon.RotOrigin.rotation);
         bullet?.AddToController();
         return bullet;
     }
     
-    public GameObject GetBulletObj(string name)
+    public GameObject GetPlayerBulletObj(string name)
     {
-        var completeName = "Prefabs/Bullets/" + name + ".prefab";
+        var completeName = GetPoolName(name);
         var objPool = ObjectPoolManager.Instance.GetPool(completeName);
         return objPool.SynSpawn(completeName);
-        //return LoadManager.Instance.Load<GameObject>("Prefabs/Weapon/" + name + ".prefab");
+    }
+
+    public string GetPoolName(string name)
+    {
+        return "Prefabs/Bullets/" + name + ".prefab";
     }
 }

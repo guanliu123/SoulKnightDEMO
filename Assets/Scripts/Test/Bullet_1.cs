@@ -1,4 +1,5 @@
 using cfg;
+using EnumCenter;
 using UnityEngine;
 
 public class Bullet_1 : PlayerBulletBase
@@ -12,9 +13,11 @@ public class Bullet_1 : PlayerBulletBase
     {
         base.OnUpdate();
         transform.position += transform.right * 30 * Time.deltaTime;
-        if (Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("Obstacle")))
-        {
-            Remove();
-        }
+    }
+
+    protected override void OnHitObstacle()
+    {
+        base.OnHitObstacle();
+        Item effect = ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
     }
 }

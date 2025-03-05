@@ -8,4 +8,19 @@ public class BulletBase : Item
     {
         
     }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+        if (Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("Obstacle")))
+        {
+            Remove();
+            OnHitObstacle();
+        }
+    }
+
+    protected virtual void OnHitObstacle()
+    {
+        
+    }
 }

@@ -44,6 +44,11 @@ namespace EnumCenter
         MultipleMode=1<<1,
     }
 
+    public enum EffectType
+    {
+        EffectBoom=1,
+    }
+
     public enum BulletType
     {
         Bullet_1=1,

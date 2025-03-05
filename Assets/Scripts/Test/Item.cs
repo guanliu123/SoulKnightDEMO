@@ -1,6 +1,8 @@
 using UnityEngine;
 public abstract class Item
 {
+    //Item基本都是可放入对象池的东西，这里设置poolname
+    public string PoolName { get; protected set; }
     protected Vector2 position;
     protected Quaternion rotation;
     public GameObject gameObject { get; protected set; }
@@ -62,5 +64,10 @@ public abstract class Item
     {
         rotation = rot;
         transform.rotation = rotation;
+    }
+
+    public void SetPoolName(string name)
+    {
+        this.PoolName = name;
     }
 }
