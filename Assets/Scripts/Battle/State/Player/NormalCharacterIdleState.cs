@@ -20,7 +20,7 @@ public class NormalCharacterIdleState : PlayerStateBase
     public override void OnUpdate()
     {
         base.OnUpdate();
-        CheckIsMove();
+        //CheckIsMove();
     }
 
     private void CheckIsMove()

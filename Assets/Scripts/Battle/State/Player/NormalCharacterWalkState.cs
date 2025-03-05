@@ -18,7 +18,7 @@ public class NormalCharacterWalkState : PlayerStateBase
     public override void OnUpdate()
     {
         base.OnUpdate();
-        GetPlayerInputToMove();
+        //GetPlayerInputToMove();
     }
 
     private void GetPlayerInputToMove()

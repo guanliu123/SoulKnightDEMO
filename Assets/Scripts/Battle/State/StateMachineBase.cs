@@ -7,7 +7,7 @@ public abstract class StateMachineBase
 {
     //todo:gameobject换成状态类
     private Dictionary<Type, StateBase> stateDic;
-    private StateBase currentState;
+    protected StateBase currentState;
 
     public StateMachineBase()
     {
@@ -42,8 +42,14 @@ public abstract class StateMachineBase
         
     }
 
-    public void OnUpdate()
+    public void GameUpdate()
     {
-        currentState?.OnUpdate();
+        currentState?.GameUpdate();
+        OnUpdate();
+    }
+
+    protected virtual void OnUpdate()
+    {
+        
     }
 }

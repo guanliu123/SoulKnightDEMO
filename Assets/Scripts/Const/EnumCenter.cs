@@ -47,10 +47,15 @@ namespace EnumCenter
     public enum EffectType
     {
         EffectBoom=1,
-    }
+    } 
 
     public enum BulletType
     {
         Bullet_1=1,
+    }
+    
+    public enum BuffType
+    {
+        DebuffType=1,
     }
 }

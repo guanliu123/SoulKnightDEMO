@@ -13,6 +13,12 @@ public abstract class StateBase
     }
     
     public virtual void OnInit(){}
+
+    public void GameUpdate()
+    {
+        OnUpdate();
+    }
+    
     public virtual void OnUpdate(){}
 
     public virtual void OnEnter()

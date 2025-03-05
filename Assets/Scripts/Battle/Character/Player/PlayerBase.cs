@@ -40,7 +40,7 @@ public class PlayerBase : CharacterBase
     protected override void OnCharacterUpdate()
     {
         base.OnCharacterUpdate();
-        stateMachine.OnUpdate();
+        stateMachine.GameUpdate();
         if (NowPlayerWeapon != null)
         {
             var weapon = playerWeapons[nowWeaponIdx];
