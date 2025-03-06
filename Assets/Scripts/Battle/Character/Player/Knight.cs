@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Knight : PlayerBase
 {
-    public Knight(GameObject obj,PlayerType type) : base(obj,type)
+    public Knight(GameObject obj) : base(obj)
     {
     }
 

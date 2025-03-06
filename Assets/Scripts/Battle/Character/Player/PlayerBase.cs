@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 public class PlayerBase : CharacterBase
 {    
-    public PlayerType playerType { get; private set; }
     private FixVector2 moveDir;
     public Animator animator { get; protected set; }
     
@@ -19,9 +18,8 @@ public class PlayerBase : CharacterBase
     protected int nowWeaponIdx;
     private int maxWeaponCnt;
 
-    public PlayerBase(GameObject obj,PlayerType type) : base(obj)
+    public PlayerBase(GameObject obj) : base(obj)
     {
-        playerType = type;
         playerWeapons = new List<PlayerWeaponBase>();
         maxWeaponCnt = 2;
     }

@@ -25,6 +25,11 @@ namespace EnumCenter
         Rogue=1002,
     }
 
+    public enum PetType
+    {
+        LittleCool=1,
+    }
+
     public enum PlayerWeaponType
     {
         BadPistol=1,
