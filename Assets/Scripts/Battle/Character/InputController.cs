@@ -6,6 +6,7 @@ public class PlayerControlInput
 {
     public Fix64 hor;
     public Fix64 ver;
+    public FixVector2 moveDir;
     public FixVector2 WeaponAnimPos;
     public bool isAttack;
     public bool isSwitchWeapon;
@@ -31,6 +32,7 @@ public class InputController : AbstractController
         input.isSwitchWeapon = Input.GetKeyDown(KeyCode.R);
         
         var moveDir = new FixVector2(input.hor, input.ver);
+        input.moveDir = moveDir;
         moveDir.Normalize();
         dir = moveDir;
 

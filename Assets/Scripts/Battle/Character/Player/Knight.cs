@@ -9,9 +9,9 @@ public class Knight : PlayerBase
     {
     }
 
-    protected override void OnInit()
+    protected override void OnCharacterStart()
     {
-        base.OnInit();
-        stateMachine.ChangeState<NormalCharacterIdleState>();
+        base.OnCharacterStart();
+        stateMachine = new NormalCharacterStateMachine(this );
     }
 }

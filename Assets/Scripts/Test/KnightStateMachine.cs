@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KnightStateMachine : PlayerStateMachine
+public class NormalCharacterStateMachine : PlayerStateMachine
 {
-    public KnightStateMachine(PlayerBase player) : base(player)
+    public NormalCharacterStateMachine(PlayerBase player) : base(player)
     {
-        
+        ChangeState<NormalCharacterIdleState>();
     }
 
     protected override void OnUpdate()
@@ -21,7 +21,7 @@ public class KnightStateMachine : PlayerStateMachine
         }
         else if (currentState is NormalCharacterWalkState)
         {
-            if (hor == (Fix64)0 || ver == (Fix64)0)
+            if (hor == (Fix64)0 && ver == (Fix64)0)
             {
                 ChangeState<NormalCharacterIdleState>();
             }

@@ -15,7 +15,7 @@ public class PlayerStateMachine : StateMachineBase
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        hor = (Fix64)ETCInput.GetAxis("Horizontal");
-        ver = (Fix64)ETCInput.GetAxis("Vertical");
+        hor = Player.input.hor;
+        ver = Player.input.ver;
     }
 }
