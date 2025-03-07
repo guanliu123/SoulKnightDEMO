@@ -5,6 +5,7 @@
     public class PetFollowPlayerState:PetStateBase
     {
         private int currentPathIndex;
+        private Vector3 moveDir;
         public PetFollowPlayerState(PetStateMachine machine) : base(machine)
         {
             
@@ -27,12 +28,14 @@
         {
             base.OnUpdate();
             MoveToTarget();
+            pet.IsLeft = !(moveDir.x > 0);
         }
 
         public void MoveToTarget()
         {
             if (path == null||currentPathIndex>=path.vectorPath.Count) return;
-            transform.position += (path.vectorPath[currentPathIndex] - transform.position).normalized * pet.data.Speed *
+            moveDir = (path.vectorPath[currentPathIndex] - transform.position).normalized;
+            transform.position +=  moveDir* pet.data.Speed *
                                   Time.deltaTime;
             if (Vector2.Distance(transform.position, path.vectorPath[currentPathIndex]) < 1)
             {
