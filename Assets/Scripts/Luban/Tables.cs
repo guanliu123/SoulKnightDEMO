@@ -18,8 +18,9 @@ public partial class Tables
     public TbRoom TbRoom {get; }
     public TBConfigData TBConfigData {get; }
     public TBLevel TBLevel {get; }
-    public TBCharacter TBCharacter {get; }
+    public TBPlayer TBPlayer {get; }
     public TBWeapon TBWeapon {get; }
+    public TBPet TBPet {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -27,8 +28,9 @@ public partial class Tables
         TbRoom = new TbRoom(loader("tbroom"));
         TBConfigData = new TBConfigData(loader("tbconfigdata"));
         TBLevel = new TBLevel(loader("tblevel"));
-        TBCharacter = new TBCharacter(loader("tbcharacter"));
+        TBPlayer = new TBPlayer(loader("tbplayer"));
         TBWeapon = new TBWeapon(loader("tbweapon"));
+        TBPet = new TBPet(loader("tbpet"));
         ResolveRef();
     }
     
@@ -38,8 +40,9 @@ public partial class Tables
         TbRoom.ResolveRef(this);
         TBConfigData.ResolveRef(this);
         TBLevel.ResolveRef(this);
-        TBCharacter.ResolveRef(this);
+        TBPlayer.ResolveRef(this);
         TBWeapon.ResolveRef(this);
+        TBPet.ResolveRef(this);
     }
 }
 

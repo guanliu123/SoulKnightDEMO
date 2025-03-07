@@ -221,7 +221,8 @@ namespace Pathfinding {
 
 #if UNITY_2018_1_OR_NEWER
 			updateCheckDownload = UnityWebRequest.Get(query);
-			updateCheckDownload.SendWebRequest();
+			//todo:插件这里好像是自动更新，先注释了每次都报错很烦
+			//updateCheckDownload.SendWebRequest();
 #else
 			updateCheckDownload = new WWW(query);
 #endif

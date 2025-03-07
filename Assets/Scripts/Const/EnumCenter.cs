@@ -21,12 +21,14 @@ namespace EnumCenter
 
     public enum PlayerType
     {
+        None=0,
         Knight=1001,
         Rogue=1002,
     }
 
     public enum PetType
     {
+        None=0,
         LittleCool=1,
     }
 

@@ -5,6 +5,7 @@
     "skill": "101",
     "hp": 4,
     "shield": 5,
+    "speed": 6,
     "mp": 200,
     "Initialweapon": ""
   },
@@ -14,6 +15,7 @@
     "skill": "102",
     "hp": 5,
     "shield": 5,
+    "speed": 6,
     "mp": 220,
     "Initialweapon": ""
   }

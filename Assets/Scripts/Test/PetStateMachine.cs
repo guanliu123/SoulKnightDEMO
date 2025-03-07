@@ -8,4 +8,9 @@ public class PetStateMachine : StateMachineBase
     {
         Pet = pet;
     }
+
+    protected float GetDistanceToPlayer()
+    {
+        return Vector2.Distance(Pet.transform.position, Pet.Player.transform.position);
+    }
 }

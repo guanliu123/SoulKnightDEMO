@@ -33,10 +33,10 @@ public class SelectInfoPanel : BasePanel
             PanelManager.Instance.OpenPanel(new BattleInfoPanel());
         });
 
-        var characterCfg = TableManager.Instance.Tables.TBCharacter[(int)playerType];
+        var characterCfg = CharacterDataCenter.Instance.GetPlayerData(playerType);
         FindComponent<TMP_Text>("CharacterName").text = characterCfg.Name;
-        FindComponent<TMP_Text>("TextHp").text = characterCfg.Hp.ToString();
+        FindComponent<TMP_Text>("TextHp").text = characterCfg.HP.ToString();
         FindComponent<TMP_Text>("TextArmor").text = characterCfg.Shield.ToString();
-        FindComponent<TMP_Text>("TextMp").text = characterCfg.Mp.ToString();
+        FindComponent<TMP_Text>("TextMp").text = characterCfg.MP.ToString();
     }
 }

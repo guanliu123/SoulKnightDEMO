@@ -13,22 +13,20 @@ using SimpleJSON;
 
 namespace cfg
 {
-public sealed partial class Character : Luban.BeanBase
+public sealed partial class Pet : Luban.BeanBase
 {
-    public Character(JSONNode _buf) 
+    public Pet(JSONNode _buf) 
     {
         { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
         { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
-        { if(!_buf["skill"].IsString) { throw new SerializationException(); }  Skill = _buf["skill"]; }
         { if(!_buf["hp"].IsNumber) { throw new SerializationException(); }  Hp = _buf["hp"]; }
-        { if(!_buf["shield"].IsNumber) { throw new SerializationException(); }  Shield = _buf["shield"]; }
-        { if(!_buf["mp"].IsNumber) { throw new SerializationException(); }  Mp = _buf["mp"]; }
-        { if(!_buf["Initialweapon"].IsString) { throw new SerializationException(); }  Initialweapon = _buf["Initialweapon"]; }
+        { if(!_buf["speed"].IsNumber) { throw new SerializationException(); }  Speed = _buf["speed"]; }
+        { if(!_buf["atk"].IsNumber) { throw new SerializationException(); }  Atk = _buf["atk"]; }
     }
 
-    public static Character DeserializeCharacter(JSONNode _buf)
+    public static Pet DeserializePet(JSONNode _buf)
     {
-        return new Character(_buf);
+        return new Pet(_buf);
     }
 
     /// <summary>
@@ -40,27 +38,19 @@ public sealed partial class Character : Luban.BeanBase
     /// </summary>
     public readonly string Name;
     /// <summary>
-    /// 角色可用的技能id
-    /// </summary>
-    public readonly string Skill;
-    /// <summary>
     /// 初始生命值
     /// </summary>
     public readonly int Hp;
     /// <summary>
-    /// 初始护盾值
+    /// 初始移动速度
     /// </summary>
-    public readonly int Shield;
+    public readonly int Speed;
     /// <summary>
-    /// 初始魔法值
+    /// 初始攻击力
     /// </summary>
-    public readonly int Mp;
-    /// <summary>
-    /// 初始武器对应id
-    /// </summary>
-    public readonly string Initialweapon;
+    public readonly int Atk;
    
-    public const int __ID__ = -726803703;
+    public const int __ID__ = 80127;
     public override int GetTypeId() => __ID__;
 
     public  void ResolveRef(Tables tables)
@@ -72,11 +62,9 @@ public sealed partial class Character : Luban.BeanBase
         return "{ "
         + "id:" + Id + ","
         + "name:" + Name + ","
-        + "skill:" + Skill + ","
         + "hp:" + Hp + ","
-        + "shield:" + Shield + ","
-        + "mp:" + Mp + ","
-        + "Initialweapon:" + Initialweapon + ","
+        + "speed:" + Speed + ","
+        + "atk:" + Atk + ","
         + "}";
     }
 }

@@ -39,7 +39,6 @@ public class WeaponBase
 
     protected virtual void OnFire()//发射时执行一次
     {
-        LogTool.Log("武器发射一次");
     }
 
     public virtual void OnExit()

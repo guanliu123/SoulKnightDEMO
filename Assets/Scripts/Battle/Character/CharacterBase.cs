@@ -41,7 +41,7 @@ public class CharacterBase
         }
     }
 
-    public void OnUpdate()
+    public void GameUpdate()
     {
         if (!isInit)
         {

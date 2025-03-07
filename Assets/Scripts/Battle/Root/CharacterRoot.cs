@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 //挂载在角色身上的根，用来标识角色Tag和放置一些通用的组件，在别的脚本中方便获取到
+//可能是角色、宠物、敌人、随从的任意一种，使用的时候只选对应的
 public class CharacterRoot : MonoBehaviour
 {
-    public PlayerType characterType;
+    [FormerlySerializedAs("characterType")] public PlayerType playerType;
+    public PetType petType;
 
     public Animator animator;
     public Rigidbody2D rigidBody;
@@ -16,7 +19,7 @@ public class CharacterRoot : MonoBehaviour
     {
         if (animator == null)
         {
-            LogTool.LogError($"角色{characterType.ToString()}上的Animator组件未赋值！");
+            LogTool.LogError($"角色{playerType.ToString()}上的Animator组件未赋值！");
         }
 
         return animator;
@@ -26,7 +29,7 @@ public class CharacterRoot : MonoBehaviour
     {
         if (rigidBody == null)
         {
-            LogTool.LogError($"角色{characterType.ToString()}上的Rigidbody2D组件未赋值！");
+            LogTool.LogError($"角色{playerType.ToString()}上的Rigidbody2D组件未赋值！");
         }
 
         return rigidBody;
@@ -36,7 +39,7 @@ public class CharacterRoot : MonoBehaviour
     {
         if (weaponOriginPoint == null)
         {
-            LogTool.LogError($"角色{characterType.ToString()}上的WeaponOriginPoint组件未赋值！");
+            LogTool.LogError($"角色{playerType.ToString()}上的WeaponOriginPoint组件未赋值！");
         }
 
         return weaponOriginPoint;

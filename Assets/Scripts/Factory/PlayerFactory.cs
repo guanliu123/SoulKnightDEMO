@@ -22,7 +22,7 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
         return player;
     }
 
-    public PetBase GetPet(PetType type)
+    public PetBase GetPet(PetType type,PlayerBase player)
     {
         // GameObject obj =
         //     GameObject.Instantiate(
@@ -32,7 +32,7 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
         PetBase pet = null;
         switch (type)
         {
-            case PetType.LittleCool: pet = new LittleCool(obj);
+            case PetType.LittleCool: pet = new LittleCool(obj,player);
                 break;
         }
 

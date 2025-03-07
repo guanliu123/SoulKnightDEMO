@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ using UnityEngine;
 public class MonoManager : SingletonBase<MonoManager>
 {
     private readonly MonoController controller;
+    private Dictionary<object, List<Coroutine>> coroutineDic;
     
     public MonoManager()
     {
@@ -20,6 +22,8 @@ public class MonoManager : SingletonBase<MonoManager>
             GameObject obj = new("MonoController");
             controller = obj.AddComponent<MonoController>();
         }
+
+        coroutineDic = new();
     }
     
     public void Init()
@@ -156,6 +160,28 @@ public class MonoManager : SingletonBase<MonoManager>
     public void StopCoroutine(string methodName)
     {
         controller.StopCoroutine(methodName);
+    }
+
+    //为一个物体开启协程
+    public void StartCoroutine(object obj,IEnumerator coroutine)
+    {
+        coroutineDic.TryAdd(obj, new List<Coroutine>());
+        coroutineDic[obj].Add(controller.StartCoroutine(coroutine));
+    }
+
+    //停止一个物体上的协程
+    public void StopAllCoroutineInObj(object obj)
+    {
+        if (coroutineDic.TryGetValue(obj, out var value))
+        {
+            foreach (var item in value)
+            {
+                controller.StopCoroutine(item);
+            }
+
+            coroutineDic[obj].Clear();
+            coroutineDic.Remove(obj);
+        }
     }
     
     #endregion

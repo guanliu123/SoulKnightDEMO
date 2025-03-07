@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PlayerBase : CharacterBase
-{    
+{
+    public PlayerData data { get; private set; }
     private FixVector2 moveDir;
     public Animator animator { get; protected set; }
     
@@ -30,9 +31,12 @@ public class PlayerBase : CharacterBase
         EventManager.Instance.On<object[]>(EventId.ON_INTERACTING_OBJECT,InteractingObject);
 
         nowWeaponIdx = 0;
-        stateMachine = new PlayerStateMachine(this);
+        data = CharacterDataCenter.Instance.GetPlayerData(Root.playerType);
         animator = Root.GetAnimator();
         rigidBody = Root.GetRigidBody();
+        AbstractManager.Instance.GetController<PlayerController>().AddPlayerPet(PetType.LittleCool,this);
+        
+        stateMachine = new NormalCharacterStateMachine(this);
     }
 
     protected override void OnCharacterUpdate()

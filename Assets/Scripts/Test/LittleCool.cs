@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LittleCool : PetBase
 {
-    public LittleCool(GameObject obj) : base(obj)
+    public LittleCool(GameObject obj,PlayerBase player) : base(obj,player)
     {
         
     }

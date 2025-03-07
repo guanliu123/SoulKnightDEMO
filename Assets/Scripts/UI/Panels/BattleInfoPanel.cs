@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class BattleInfoPanel : BasePanel
 {
-    private Character characterCfg;
+    //private Character characterCfg;
     public BattleInfoPanel() : base(new UIType(UIInfo.BattleInfoPanel))
     {
     }
