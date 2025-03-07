@@ -32,7 +32,7 @@
         public void MoveToTarget()
         {
             if (path == null||currentPathIndex>=path.vectorPath.Count) return;
-            transform.position += (path.vectorPath[currentPathIndex] - transform.position).normalized * 20 *
+            transform.position += (path.vectorPath[currentPathIndex] - transform.position).normalized * pet.data.Speed *
                                   Time.deltaTime;
             if (Vector2.Distance(transform.position, path.vectorPath[currentPathIndex]) < 1)
             {

@@ -31,7 +31,7 @@ public class NormalCharacterWalkState : PlayerStateBase
         {
             var dir = player.input.moveDir;
             dir.Normalize();
-            rigidBody.transform.position += (Vector3)(dir * (Fix64)Machine.Player.data.Speed * (Fix64)Time.deltaTime).ToVector2();
+            rigidBody.transform.position += (Vector3)(dir * (Fix64)player.data.Speed * (Fix64)Time.deltaTime).ToVector2();
             player.IsLeft = player.input.hor < 0;
         }
     }
