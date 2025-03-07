@@ -14,6 +14,10 @@ public abstract class StateMachineBase
         stateDic = new Dictionary<Type, StateBase>();
     }
 
+    /// <summary>
+    /// 切换状态
+    /// </summary>
+    /// <typeparam name="T">具体的状态机类型</typeparam>
     public void ChangeState<T>()
     {
         if (!stateDic.ContainsKey(typeof(T)))

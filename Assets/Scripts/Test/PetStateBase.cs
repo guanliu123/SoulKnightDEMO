@@ -7,7 +7,7 @@ using UnityEngine;
 public class PetStateBase :StateBase
 {
     protected PetBase pet;
-    protected PlayerBase onwer;
+    protected PlayerBase owner;
     protected Transform transform => pet.transform;
     protected Animator anim;
     //获取行走路径
@@ -15,15 +15,17 @@ public class PetStateBase :StateBase
     //当前路径
     protected Path path;
     
-    public PetStateBase(PetStateMachine machine,PlayerBase o) : base(machine)
+    public PetStateBase(PetStateMachine machine) : base(machine)
     {
-        onwer = o;
-        anim = pet.Root.GetAnimator();
+        
     }
 
     public override void OnInit()
     {
         base.OnInit();
         pet = (Machine as PetStateMachine).Pet;
+        anim = pet.Root.GetAnimator();
+        owner = pet.Player;
+        seeker = pet.Root.GetSeekeer();
     }
 }

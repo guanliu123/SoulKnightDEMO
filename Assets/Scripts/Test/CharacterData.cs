@@ -33,6 +33,13 @@ public class PlayerData : CharacterDataBase
 public class PetData : CharacterDataBase
 {
     public int Atk;
+    public void UpdateData(Pet config)
+    {
+        ID = config.Id;
+        Name = config.Name;
+        HP = config.Hp;
+        Speed = config.Speed;
+    }
 }
 
 public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
@@ -45,7 +52,9 @@ public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
         base.Init();
         playerDatas = new();
         petDatas = new();
+        
         InitPlayerData();
+        InitPetData();
     }
 
     public void InitPlayerData()
@@ -56,6 +65,17 @@ public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
             PlayerData t = new();
             t.UpdateData(item);
             playerDatas.TryAdd(item.Id, t);
+        }
+    }
+    
+    public void InitPetData()
+    {
+        var config = TableManager.Instance.Tables.TBPet.DataList;
+        foreach (var item in config)
+        {
+            PetData t = new();
+            t.UpdateData(item);
+            petDatas.TryAdd(item.Id, t);
         }
     }
 

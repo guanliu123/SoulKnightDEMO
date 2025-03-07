@@ -5,7 +5,7 @@
     public class PetFollowPlayerState:PetStateBase
     {
         private int currentPathIndex;
-        public PetFollowPlayerState(PetStateMachine machine,PlayerBase onwer) : base(machine,onwer)
+        public PetFollowPlayerState(PetStateMachine machine) : base(machine)
         {
             
         }
@@ -46,7 +46,7 @@
             {
                 if (seeker.IsDone())
                 {
-                    seeker.StartPath(transform.position, onwer.transform.position, (p) =>
+                    seeker.StartPath(transform.position, owner.transform.position, (p) =>
                     {
                         path = p;
                         currentPathIndex = 0;

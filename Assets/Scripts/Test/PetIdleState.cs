@@ -1,6 +1,6 @@
 ﻿public class PetIdleState:PetStateBase
 {
-    public PetIdleState(PetStateMachine machine,PlayerBase onwer) : base(machine,onwer)
+    public PetIdleState(PetStateMachine machine) : base(machine)
     {
             
     }

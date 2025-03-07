@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
+using Pathfinding;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,18 +9,19 @@ using UnityEngine.Serialization;
 //可能是角色、宠物、敌人、随从的任意一种，使用的时候只选对应的
 public class CharacterRoot : MonoBehaviour
 {
-    [FormerlySerializedAs("characterType")] public PlayerType playerType;
+    public PlayerType playerType;
     public PetType petType;
 
     public Animator animator;
     public Rigidbody2D rigidBody;
     public Transform weaponOriginPoint;
+    public Seeker seeker;
 
     public Animator GetAnimator()
     {
         if (animator == null)
         {
-            LogTool.LogError($"角色{playerType.ToString()}上的Animator组件未赋值！");
+            LogTool.LogError($"角色上的Animator组件未赋值！");
         }
 
         return animator;
@@ -29,17 +31,27 @@ public class CharacterRoot : MonoBehaviour
     {
         if (rigidBody == null)
         {
-            LogTool.LogError($"角色{playerType.ToString()}上的Rigidbody2D组件未赋值！");
+            LogTool.LogError($"角色上的Rigidbody2D组件未赋值！");
         }
 
         return rigidBody;
+    }
+
+    public Seeker GetSeekeer()
+    {
+        if (seeker == null)
+        {
+            LogTool.LogError($"角色上的Rigidbody2D组件未赋值！");
+        }
+
+        return seeker;
     }
     
     public Transform GetWeaponOriginPoint()
     {
         if (weaponOriginPoint == null)
         {
-            LogTool.LogError($"角色{playerType.ToString()}上的WeaponOriginPoint组件未赋值！");
+            LogTool.LogError($"角色上的WeaponOriginPoint组件未赋值！");
         }
 
         return weaponOriginPoint;
