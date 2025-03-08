@@ -18,10 +18,12 @@ public sealed partial class Weapon : Luban.BeanBase
     public Weapon(JSONNode _buf) 
     {
         { if(!_buf["id"].IsNumber) { throw new SerializationException(); }  Id = _buf["id"]; }
+        { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
         { if(!_buf["damage"].IsNumber) { throw new SerializationException(); }  Damage = _buf["damage"]; }
         { if(!_buf["mc"].IsNumber) { throw new SerializationException(); }  Mc = _buf["mc"]; }
+        { if(!_buf["firerate"].IsNumber) { throw new SerializationException(); }  Firerate = _buf["firerate"]; }
         { if(!_buf["probability"].IsNumber) { throw new SerializationException(); }  Probability = _buf["probability"]; }
-        { if(!_buf["price"].IsString) { throw new SerializationException(); }  Price = _buf["price"]; }
+        { if(!_buf["price"].IsNumber) { throw new SerializationException(); }  Price = _buf["price"]; }
     }
 
     public static Weapon DeserializeWeapon(JSONNode _buf)
@@ -34,6 +36,10 @@ public sealed partial class Weapon : Luban.BeanBase
     /// </summary>
     public readonly int Id;
     /// <summary>
+    /// 武器名称
+    /// </summary>
+    public readonly string Name;
+    /// <summary>
     /// 初始伤害值
     /// </summary>
     public readonly int Damage;
@@ -42,13 +48,17 @@ public sealed partial class Weapon : Luban.BeanBase
     /// </summary>
     public readonly int Mc;
     /// <summary>
+    /// 初始射速
+    /// </summary>
+    public readonly float Firerate;
+    /// <summary>
     /// 随机时出现的概率
     /// </summary>
     public readonly int Probability;
     /// <summary>
     /// 出现在商店时的底价（还要经过计算）
     /// </summary>
-    public readonly string Price;
+    public readonly int Price;
    
     public const int __ID__ = -1707954628;
     public override int GetTypeId() => __ID__;
@@ -61,8 +71,10 @@ public sealed partial class Weapon : Luban.BeanBase
     {
         return "{ "
         + "id:" + Id + ","
+        + "name:" + Name + ","
         + "damage:" + Damage + ","
         + "mc:" + Mc + ","
+        + "firerate:" + Firerate + ","
         + "probability:" + Probability + ","
         + "price:" + Price + ","
         + "}";

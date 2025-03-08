@@ -19,6 +19,15 @@ namespace EnumCenter
         FollowCamera=2,
     }
 
+    //在CharacterRoot用于标识其子类继承物的具体Type
+    public enum CharacterType
+    {
+        None=0,
+        Player=1,
+        Pet=2,
+        Enemy=3,
+    }
+
     public enum PlayerType
     {
         None=0,
@@ -32,12 +41,19 @@ namespace EnumCenter
         LittleCool=1,
     }
 
-    public enum PlayerWeaponType
+    //场景上可互动物体的root的type
+    public enum ItemRootType
     {
-        BadPistol=1,
-        AK47=2,
-        DoubleBladeSword=3,
-        BlueFireGatling=4,
+        None=0,
+        Weapon=1,
+    }
+
+    public enum WeaponType
+    {
+        BadPistol=1001,
+        AK47=1002,
+        DoubleBladeSword=1003,
+        BlueFireGatling=1004,
     }
     
     public enum InteractiveObjectType

@@ -24,8 +24,8 @@ public class PetStateBase :StateBase
     {
         base.OnInit();
         pet = (Machine as PetStateMachine).Pet;
-        anim = pet.Root.GetAnimator();
+        anim = pet.root.GetAnimator();
         owner = pet.Player;
-        seeker = pet.Root.GetSeekeer();
+        seeker = pet.root.GetSeekeer();
     }
 }

@@ -6,7 +6,7 @@ public class CharacterBase
 {
     public GameObject gameObject { get; protected set; }
     public Transform transform => gameObject.transform;
-    public CharacterRoot Root { get; private set; }
+    public CharacterRoot Root { get; protected set; }
 
     private bool isLeft;
     public bool IsLeft

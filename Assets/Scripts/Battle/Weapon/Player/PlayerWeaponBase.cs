@@ -1,5 +1,6 @@
 ﻿using cfg;
 using EnumCenter;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerWeaponBase:WeaponBase
@@ -12,9 +13,16 @@ public class PlayerWeaponBase:WeaponBase
     public Transform RotOrigin { get; protected set; }
 
     private bool isAttackKeyDown;
+    private float fireCoolTime;
+    private float fireTimer;
     
     public PlayerWeaponBase(GameObject obj, CharacterBase character) : base(obj, character)
     {
+    }
+
+    protected override void OnInit()
+    {
+        base.OnInit();
         Root = gameObject.GetComponent<WeaponRoot>();
         if (!Root)
         {
@@ -22,16 +30,30 @@ public class PlayerWeaponBase:WeaponBase
         }
 
         RotOrigin = Root.GetRotOrigin();
+        fireCoolTime = 1f / data.FireRate;
+    }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
+        //保证第一发子弹可以发射
+        fireTimer = fireCoolTime;
+    }
+
+    public override void OnUpdate()
+    {
+        base.OnUpdate();
+        fireTimer+=Time.deltaTime;
     }
 
     //射击按钮按下松开发射一次
     public void ControlWeapon(bool isAttack)
     {
-        if (isAttackKeyDown!=isAttack&&isAttack)
+        if (isAttack && fireTimer > fireCoolTime)
         {
+            fireTimer = 0;
             OnFire();
         }
-        isAttackKeyDown = isAttack;
     }
 
     public void RotateWeapon(FixVector2 dir)

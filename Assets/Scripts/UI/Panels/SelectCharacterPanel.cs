@@ -37,8 +37,9 @@ public class SelectCharacterPanel : BasePanel
                 LogTool.Log(collider);
                 system.SetSelectTarget(collider.transform);
                 system.ChangeCamera(CustomCameraType.SelectCamera);
+                var playerRoot = (PlayerRoot)collider.transform.parent.gameObject.GetComponent<CharacterRoot>();
                 PanelManager.Instance.OpenPanel 
-                    (new SelectInfoPanel(collider.transform.parent.gameObject.GetComponent<CharacterRoot>().playerType));
+                    (new SelectInfoPanel(playerRoot.playerType));
             }
         }
     }

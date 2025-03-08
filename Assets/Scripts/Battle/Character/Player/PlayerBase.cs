@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 public class PlayerBase : CharacterBase
 {
     public PlayerData data { get; private set; }
+    //与父类的root区分开，为了存放转换后的playerroot
+    public PlayerRoot root { get; protected set; }
     private FixVector2 moveDir;
     public Animator animator { get; protected set; }
     
@@ -30,10 +32,11 @@ public class PlayerBase : CharacterBase
         base.OnInit();
         EventManager.Instance.On<object[]>(EventId.ON_INTERACTING_OBJECT,InteractingObject);
 
+        root=(PlayerRoot)Root;
         nowWeaponIdx = 0;
-        data = CharacterDataCenter.Instance.GetPlayerData(Root.playerType);
-        animator = Root.GetAnimator();
-        rigidBody = Root.GetRigidBody();
+        data = CharacterDataCenter.Instance.GetPlayerData(root.playerType);
+        animator = root.GetAnimator();
+        rigidBody = root.GetRigidBody();
         AbstractManager.Instance.GetController<PlayerController>().AddPlayerPet(PetType.LittleCool,this);
         
         stateMachine = new NormalCharacterStateMachine(this);
@@ -43,11 +46,12 @@ public class PlayerBase : CharacterBase
     {
         base.OnCharacterUpdate();
         stateMachine.GameUpdate();
+        
         if (NowPlayerWeapon != null)
         {
-            var weapon = playerWeapons[nowWeaponIdx];
-            weapon.ControlWeapon(input.isAttack);
-            weapon.RotateWeapon(input.WeaponAnimPos);
+            NowPlayerWeapon.OnUpdate();
+            NowPlayerWeapon.ControlWeapon(input.isAttack);
+            NowPlayerWeapon.RotateWeapon(input.WeaponAnimPos);
             if (input.isSwitchWeapon)
             {
                 SwitchWeapon();

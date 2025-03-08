@@ -9,9 +9,9 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     /// <param name="type">枪支类型</param>
     /// <param name="character">持有角色</param>
     /// <returns></returns>
-    public PlayerWeaponBase GetPlayerWeapon(PlayerWeaponType type, CharacterBase character)
+    public PlayerWeaponBase GetPlayerWeapon(WeaponType type, PlayerBase character)
     {
-        Transform origin = character.Root.GetWeaponOriginPoint();
+        Transform origin = character.root.GetWeaponOriginPoint();
         GameObject weaponObj = GameObject.Instantiate(GetWeaponObj(type.ToString()),origin);
         weaponObj.name = type.ToString();
         weaponObj.transform.localPosition=Vector3.zero;
@@ -19,12 +19,12 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
         PlayerWeaponBase weapon=null;
         switch (type)
         {
-            case PlayerWeaponType.BadPistol:
+            case WeaponType.BadPistol:
                 weapon=new BadPistol(weaponObj,character);break;
-            case PlayerWeaponType.AK47:
+            case WeaponType.AK47:
                 weapon = new AK47(weaponObj, character);
                 break;
-            case PlayerWeaponType.DoubleBladeSword:
+            case WeaponType.DoubleBladeSword:
                 weapon = new DoubleBladeSword(weaponObj, character);
                 break;
         }
@@ -38,7 +38,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     /// <param name="weapon">枪支物体</param>
     /// <param name="character">持有角色</param>
     /// <returns></returns>
-    public PlayerWeaponBase GetPlayerWeapon(GameObject weaponObj,CharacterBase character)
+    public PlayerWeaponBase GetPlayerWeapon(GameObject weaponObj,PlayerBase character)
     {
         WeaponRoot root = weaponObj.GetComponent<WeaponRoot>();
         if (!root)
@@ -49,23 +49,23 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
         
         weaponObj.transform.localRotation = character.transform.rotation;
 
-        Transform origin = character.Root.GetWeaponOriginPoint();
+        Transform origin = character.root.GetWeaponOriginPoint();
         weaponObj.transform.SetParent(origin);
         weaponObj.transform.localPosition=Vector3.zero;
         
         PlayerWeaponBase weapon=null;
         switch (root.weaponType)
         {
-            case PlayerWeaponType.BadPistol:
+            case WeaponType.BadPistol:
                 weapon=new BadPistol(weaponObj,character);
                 break;
-            case PlayerWeaponType.AK47:
+            case WeaponType.AK47:
                 weapon = new AK47(weaponObj, character);
                 break;
-            case PlayerWeaponType.DoubleBladeSword:
+            case WeaponType.DoubleBladeSword:
                 weapon = new DoubleBladeSword(weaponObj, character);
                 break;
-            case PlayerWeaponType.BlueFireGatling:
+            case WeaponType.BlueFireGatling:
                 weapon = new DoubleBladeSword(weaponObj, character);
                 break;
         }

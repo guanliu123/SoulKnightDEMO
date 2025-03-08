@@ -9,6 +9,7 @@ public class BadPistol:PlayerWeaponBase
 
     protected override void OnInit()
     {
+        data = ItemDataCenter.Instance.GetWeaponData(WeaponType.BadPistol);
         base.OnInit();
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WeaponBase
 {
+    public WeaponData data { get; protected set; }
     public GameObject gameObject { get; private set; }
     public Transform transform => gameObject.transform;
     protected CharacterBase character;
@@ -25,7 +26,6 @@ public class WeaponBase
 
     protected virtual void OnInit()
     {
-        
     }
     
     public virtual void OnEnter()
@@ -51,7 +51,7 @@ public class WeaponBase
         
     }
 
-    public void OnUpdate()
+    public virtual void OnUpdate()
     {
         if (!isEnter)
         {

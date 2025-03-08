@@ -1,16 +1,20 @@
 [
   {
     "id": 1001,
+    "name": "破旧手枪",
     "damage": 2,
     "mc": 0,
+    "firerate": 2,
     "probability": 2,
-    "price": "15"
+    "price": 15
   },
   {
     "id": 1002,
+    "name": "AK47",
     "damage": 3,
     "mc": 1,
+    "firerate": 3,
     "probability": 2,
-    "price": "15"
+    "price": 15
   }
 ]
