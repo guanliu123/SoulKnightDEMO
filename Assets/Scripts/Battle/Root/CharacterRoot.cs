@@ -8,13 +8,25 @@ public class CharacterRoot : MonoBehaviour
 
     public Animator animator;
     
+    public GameObject triggerBox;
+    
     public Animator GetAnimator()
     {
         if (animator == null)
         {
-            LogTool.LogError($"角色上的Animator组件未赋值！");
+            LogTool.LogError("角色上的Animator组件未赋值！");
         }
 
         return animator;
+    }
+
+    public GameObject GetTriggerBox()
+    {
+        if (triggerBox == null)
+        {
+            LogTool.LogError("角色上的TriggerBox组件未赋值！");
+        }
+        
+        return triggerBox;
     }
 }

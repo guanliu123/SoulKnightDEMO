@@ -34,6 +34,12 @@ namespace EnumCenter
         Knight=1001,
         Rogue=1002,
     }
+    
+    public enum EnemyType
+    {
+        None=0,
+        Stake=1001,
+    }
 
     public enum PetType
     {

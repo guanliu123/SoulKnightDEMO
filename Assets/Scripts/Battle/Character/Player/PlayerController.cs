@@ -31,12 +31,12 @@ public class PlayerController : AbstractController
 
     public void SetMainPlayer(PlayerType type)
     {
-        MainPlayer = PlayerFactory.Instance.GetPlayer(type);
+        MainPlayer = PlayerFactory.Instance.GetPlayerInScene(type);
         MainPlayer.SetInput(AbstractManager.Instance.GetController<InputController>().input);
     }
 
     public void AddPlayerPet(PetType type,PlayerBase player)
     {
-        pets.Add(PlayerFactory.Instance.GetPet(type,player));
+        pets.Add(PlayerFactory.Instance.GetPetInScene(type,player));
     }
 }

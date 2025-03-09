@@ -7,6 +7,9 @@ public class CharacterBase
     public GameObject gameObject { get; protected set; }
     public Transform transform => gameObject.transform;
     public CharacterRoot Root { get; protected set; }
+    
+    //检测子弹的物体
+    public GameObject TriggerBox { get;protected set; }
 
     private bool isLeft;
     public bool IsLeft
@@ -39,6 +42,8 @@ public class CharacterBase
         {
             LogTool.LogError($"角色身上未挂载CharacterRoot！");
         }
+
+        TriggerBox = Root.GetTriggerBox();
     }
 
     public void GameUpdate()

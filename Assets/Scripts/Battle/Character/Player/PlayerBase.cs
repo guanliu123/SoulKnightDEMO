@@ -61,7 +61,7 @@ public class PlayerBase : CharacterBase
     
     protected virtual void PickUpWeapon(GameObject weaponObj)
     {
-        var weapon = WeaponFactory.Instance.GetPlayerWeapon(weaponObj, this);
+        var weapon = WeaponFactory.Instance.GetPlayerWeaponInScene(weaponObj, this);
         if (playerWeapons.Count >= maxWeaponCnt)
         {
             ReplaceWeapon(weapon);

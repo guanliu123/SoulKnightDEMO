@@ -31,6 +31,6 @@ public class ItemFactory : SingletonBase<ItemFactory>
 
     private string GetEffectPoolName(string name)
     {
-        return "Prefabs/Effects/" + name + ".prefab";
+        return ResourcePath.Effect + name + ".prefab";
     }
 }

@@ -37,6 +37,6 @@ public class BulletFactory:SingletonBase<BulletFactory>
 
     public string GetPoolName(string name)
     {
-        return "Prefabs/Bullets/" + name + ".prefab";
+        return ResourcePath.Bullet + name + ".prefab";
     }
 }

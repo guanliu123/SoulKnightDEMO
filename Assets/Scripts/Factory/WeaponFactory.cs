@@ -16,20 +16,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
         weaponObj.name = type.ToString();
         weaponObj.transform.localPosition=Vector3.zero;
 
-        PlayerWeaponBase weapon=null;
-        switch (type)
-        {
-            case WeaponType.BadPistol:
-                weapon=new BadPistol(weaponObj,character);break;
-            case WeaponType.AK47:
-                weapon = new AK47(weaponObj, character);
-                break;
-            case WeaponType.DoubleBladeSword:
-                weapon = new DoubleBladeSword(weaponObj, character);
-                break;
-        }
-
-        return weapon;
+        return CreateWeapon(type,character,weaponObj);
     }
 
     /// <summary>
@@ -38,7 +25,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     /// <param name="weapon">枪支物体</param>
     /// <param name="character">持有角色</param>
     /// <returns></returns>
-    public PlayerWeaponBase GetPlayerWeapon(GameObject weaponObj,PlayerBase character)
+    public PlayerWeaponBase GetPlayerWeaponInScene(GameObject weaponObj,PlayerBase character)
     {
         WeaponRoot root = weaponObj.GetComponent<WeaponRoot>();
         if (!root)
@@ -53,8 +40,13 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
         weaponObj.transform.SetParent(origin);
         weaponObj.transform.localPosition=Vector3.zero;
         
+        return CreateWeapon(root.weaponType,character,weaponObj);
+    }
+
+    private PlayerWeaponBase CreateWeapon(WeaponType type, PlayerBase character,GameObject weaponObj)
+    {
         PlayerWeaponBase weapon=null;
-        switch (root.weaponType)
+        switch (type)
         {
             case WeaponType.BadPistol:
                 weapon=new BadPistol(weaponObj,character);
@@ -75,6 +67,6 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     
     public GameObject GetWeaponObj(string name)
     {
-        return LoadManager.Instance.Load<GameObject>("Prefabs/Weapon/" + name + ".prefab");
+        return LoadManager.Instance.Load<GameObject>(ResourcePath.Weapon + name + ".prefab");
     }
 }
