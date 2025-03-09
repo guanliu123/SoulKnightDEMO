@@ -9,12 +9,6 @@ public class Bullet_1 : PlayerBulletBase
         
     }
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-        transform.position += transform.right * 30 * Time.deltaTime;
-    }
-
     protected override void OnHitObstacle()
     {
         base.OnHitObstacle();

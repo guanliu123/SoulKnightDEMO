@@ -61,6 +61,12 @@ namespace EnumCenter
         DoubleBladeSword=1003,
         BlueFireGatling=1004,
     }
+
+    public enum TriggerType
+    {
+        TriggerEnter=0,
+        TriggerExit=1,
+    }
     
     public enum InteractiveObjectType
     {
