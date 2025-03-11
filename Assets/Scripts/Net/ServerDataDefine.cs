@@ -43,9 +43,9 @@ public class TServerDataLogin
     public object signIn { get; set; }
     
     /**
-     * 日常周常
+     * 拥有角色列表
      */
-    public object residentQuest { get; set; }
+    public object[] characterList { get; set; }
     
     /**
      * 成就
@@ -53,6 +53,18 @@ public class TServerDataLogin
     public object[] achieves { get; set; }
     
     public object[] items { get; set; }
+}
+
+//服务器的角色数据列表
+public class TCharacterDatas
+{
+    
+}
+
+//服务器的角色数据字段
+public class TCharacterData
+{
+    
 }
 
 public class TMapData

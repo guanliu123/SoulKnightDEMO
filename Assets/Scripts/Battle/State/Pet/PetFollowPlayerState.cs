@@ -35,7 +35,7 @@
         {
             if (path == null||currentPathIndex>=path.vectorPath.Count) return;
             moveDir = (path.vectorPath[currentPathIndex] - transform.position).normalized;
-            transform.position +=  moveDir* pet.data.Speed *
+            transform.position +=  moveDir* pet.Attribute.Speed *
                                   Time.deltaTime;
             if (Vector2.Distance(transform.position, path.vectorPath[currentPathIndex]) < 1)
             {

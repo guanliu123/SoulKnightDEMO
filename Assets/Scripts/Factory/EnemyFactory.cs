@@ -18,7 +18,7 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
         return CreateEnemy(type,enemyObj);
     }
 
-    public EnemyBase CreateEnemy(EnemyType type,GameObject obj)
+    private EnemyBase CreateEnemy(EnemyType type,GameObject obj)
     {
         EnemyBase enemy = null;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PetBase : CharacterBase
 {
-    public PetData data { get; protected set; }
+    //public PetData data { get; protected set; }
     public PetRoot root { get;protected set; }
     protected PetStateMachine stateMachine;
     public PlayerBase Player { get; protected set; }
@@ -17,6 +17,7 @@ public class PetBase : CharacterBase
     {
         base.OnInit();
         root = (PetRoot)Root;
+        Attribute = new PetAttribute(root.petType);
     }
 
     protected override void OnCharacterUpdate()

@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class LoginPanel : BasePanel
 {
-    //private static string uiInfo = "Prefabs/Panels/StartPanel";
-    
     public LoginPanel() : base(new UIType(UIInfo.LoginPanel))
     {
     }
@@ -18,10 +16,11 @@ public class LoginPanel : BasePanel
         base.OnEnter();
         
         FindComponent<Button>("Btn_Login").onClick.AddListener(OnLogin);
+        FindComponent<Button>("Btn_Close").onClick.AddListener(Close);
     }
 
     public void OnLogin()
     {
-        LogTool.Log("登陆成功");
+        //todo:使用netmanager发送协议登录，接收返回的数据,使用UserData.UpdateData更新
     }
 }

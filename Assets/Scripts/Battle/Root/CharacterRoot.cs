@@ -6,9 +6,16 @@ public class CharacterRoot : MonoBehaviour
 {
     public CharacterType Type { get; protected set; }
 
+    public CharacterBase Character{ get; protected set; }
+
     public Animator animator;
-    
+
     public GameObject triggerBox;
+
+    public void SetCharacter(CharacterBase character)
+    {
+        Character = character;
+    }
     
     public Animator GetAnimator()
     {

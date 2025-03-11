@@ -60,6 +60,11 @@ namespace UIFrameWork
             
             return container.GetXXX(name) as T;
         }
+
+        protected void Close()
+        {
+            PanelManager.Instance.ClosePanel(this.UIType.Path);
+        }
     }
 }
 

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 //游戏的根管理器
 public class GameRoot : MonoBehaviour
 {
+    public string host="localhost";
     public static GameRoot Instance { get; private set; }
 
     private void Awake()
@@ -51,9 +52,18 @@ public class GameRoot : MonoBehaviour
 
     private void InitNecessaryComponents()
     {
+        //NetInit();
         LoadManager.Instance.Init();
         TimerManager.Instance.Init();
         TableManager.Instance.Init();
         ConfigData.Init();
+    }
+    
+    public void NetInit()
+    {
+        //这里后面要把host配置一下
+        NetManager.Instance.Init();
+        NetManager.Instance.Connect(host);
+        NetReciver.Instance.Init(new ResponseRegister());
     }
 }

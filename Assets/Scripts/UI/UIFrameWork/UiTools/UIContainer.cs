@@ -26,7 +26,8 @@ public class UIContainer:MonoBehaviour
         TMP_Text,
         Button,
         Toggle,
-        Image
+        Image,
+        InputField,
     }
     
     [HideInInspector]
@@ -91,6 +92,11 @@ public class UIContainer:MonoBehaviour
                 {
                     components.Add(t.name,t.tf.GetComponent<TMP_Text>());
                 }break;
+                case COMPONENT_TYPE.InputField:
+                {
+                    components.Add(t.name,t.tf.GetComponent<TMP_InputField>());
+                }
+                    break;
                 default:
                 {
                     components.Add(t.name,t.tf);

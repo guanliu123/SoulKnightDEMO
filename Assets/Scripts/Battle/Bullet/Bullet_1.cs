@@ -14,4 +14,10 @@ public class Bullet_1 : PlayerBulletBase
         base.OnHitObstacle();
         Item effect = ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
     }
+
+    protected override void OnHitEnemy(EnemyBase enemy)
+    {
+        base.OnHitEnemy(enemy);
+        enemy.UnderAttack(5);
+    }
 }

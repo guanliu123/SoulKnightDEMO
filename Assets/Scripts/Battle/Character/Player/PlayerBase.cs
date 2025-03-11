@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class PlayerBase : CharacterBase
 {
-    public PlayerData data { get; private set; }
+    //public PlayerData data { get; private set; }
     //与父类的root区分开，为了存放转换后的playerroot
     public PlayerRoot root { get; protected set; }
     private FixVector2 moveDir;
@@ -34,7 +34,7 @@ public class PlayerBase : CharacterBase
 
         root=(PlayerRoot)Root;
         nowWeaponIdx = 0;
-        data = CharacterDataCenter.Instance.GetPlayerData(root.playerType);
+        Attribute = new PlayerAttribute(root.playerType);
         animator = root.GetAnimator();
         rigidBody = root.GetRigidBody();
         AbstractManager.Instance.GetController<PlayerController>().AddPlayerPet(PetType.LittleCool,this);

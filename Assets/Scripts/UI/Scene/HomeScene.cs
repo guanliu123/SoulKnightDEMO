@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EnumCenter;
 using UIFrameWork;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,5 +24,8 @@ public class HomeScene : SceneBase
         AbstractManager.Instance.RegisterCameraAbstract();
         AbstractManager.Instance.RegisterPlayerAbstract();
         PanelManager.Instance.OpenPanel(basePanel);
+        
+        //todo:测试敌人
+        EnemyFactory.Instance.GetEnemyInScene(EnemyType.Stake);
     }
 }

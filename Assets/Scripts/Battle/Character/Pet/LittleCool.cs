@@ -12,7 +12,6 @@ public class LittleCool : PetBase
     protected override void OnInit()
     {
         base.OnInit();
-        data = CharacterDataCenter.Instance.GetPetData(PetType.LittleCool);
         stateMachine = new NormalPetStateMachine(this);
     }
 }

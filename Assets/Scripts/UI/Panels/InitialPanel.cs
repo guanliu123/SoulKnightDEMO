@@ -17,8 +17,6 @@ public class InitialPanel : BasePanel
     
     public InitialPanel() : base(new UIType(UIInfo.InitialPanel))
     {
-        //todo:后面删掉
-        UserData.UpdateUserData();
     }
     public override void OnEnter()
     {
@@ -30,15 +28,22 @@ public class InitialPanel : BasePanel
 
         btnMain.onClick.AddListener(() =>
         {
-            btnMain.interactable = false;
-            Transform btnGroup=FindComponent<Transform>("BottomBtnGroup");
-            isShow = !isShow;
-            ChangeImg();
-            btnGroup.DOMove(dir*distrance+btnGroup.position, durationTime).OnComplete(() =>
+            if (!UserData.HasLogin)
             {
-                dir = -dir;
-                btnMain.interactable = true;
-            });
+                PanelManager.Instance.OpenPanel(new LoginPanel());
+            }
+            else
+            {
+                btnMain.interactable = false;
+                Transform btnGroup=FindComponent<Transform>("BottomBtnGroup");
+                isShow = !isShow;
+                ChangeImg();
+                btnGroup.DOMove(dir*distrance+btnGroup.position, durationTime).OnComplete(() =>
+                {
+                    dir = -dir;
+                    btnMain.interactable = true;
+                });
+            }
         });
         GameInit();
         FindComponent<Button>("Btn_SinglePerson").onClick.AddListener(() =>
@@ -67,11 +72,5 @@ public class InitialPanel : BasePanel
         MonoManager.Instance.Init();
     }
 
-    public void NetInit()
-    {
-        //这里后面要把host配置一下
-        NetManager.Instance.Init();
-        NetManager.Instance.Connect("");
-        NetReciver.Instance.Init(new ResponseRegister());
-    }
+    
 }

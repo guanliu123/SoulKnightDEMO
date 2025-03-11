@@ -21,6 +21,7 @@ public partial class Tables
     public TBPlayer TBPlayer {get; }
     public TBWeapon TBWeapon {get; }
     public TBPet TBPet {get; }
+    public TBEnemy TBEnemy {get; }
 
     public Tables(System.Func<string, JSONNode> loader)
     {
@@ -31,6 +32,7 @@ public partial class Tables
         TBPlayer = new TBPlayer(loader("tbplayer"));
         TBWeapon = new TBWeapon(loader("tbweapon"));
         TBPet = new TBPet(loader("tbpet"));
+        TBEnemy = new TBEnemy(loader("tbenemy"));
         ResolveRef();
     }
     
@@ -43,6 +45,7 @@ public partial class Tables
         TBPlayer.ResolveRef(this);
         TBWeapon.ResolveRef(this);
         TBPet.ResolveRef(this);
+        TBEnemy.ResolveRef(this);
     }
 }
 

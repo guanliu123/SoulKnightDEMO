@@ -27,6 +27,22 @@ public class PlayerData : CharacterDataBase
         Shield = config.Shield;
         Speed = config.Speed;
     }
+
+    public void UpdateData(TCharacterData config)
+    {
+        //todo:等服务器设计好字段发过来
+    }
+}
+
+public class EnemyData : CharacterDataBase
+{
+    public void UpdateData(Enemy config)
+    {
+        ID = config.Id;
+        Name = config.Name;
+        HP = config.Hp;
+        Speed = config.Speed;
+    }
 }
 
 //宠物的攻击力是自身决定的，角色等都是由持有的武器决定
@@ -46,15 +62,19 @@ public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
 {
     private Dictionary<int,PlayerData> playerDatas;
     private Dictionary<int, PetData> petDatas;
+    private Dictionary<int, EnemyData> enemyDatas;
+
 
     public override void Init()
     {
         base.Init();
         playerDatas = new();
         petDatas = new();
+        enemyDatas = new();
         
         InitPlayerData();
         InitPetData();
+        InitEnemyData();
     }
 
     public void InitPlayerData()
@@ -63,8 +83,29 @@ public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
         foreach (var item in config)
         {
             PlayerData t = new();
-            t.UpdateData(item);
+
+            //如果玩家有这个角色并且有升级后数据就用服务器的，否则用本地的初始配置
+            if (UserData.PlayerCharacters.ContainsKey(item.Id))
+            {
+                t.UpdateData(UserData.PlayerCharacters[item.Id]);
+            }
+            else
+            {
+                t.UpdateData(item);
+            }
+            
             playerDatas.TryAdd(item.Id, t);
+        }
+    }
+    
+    public void InitEnemyData()
+    {
+        var config = TableManager.Instance.Tables.TBEnemy.DataList;
+        foreach (var item in config)
+        {
+            EnemyData t = new();
+            t.UpdateData(item);
+            enemyDatas.TryAdd(item.Id, t);
         }
     }
     
@@ -92,6 +133,16 @@ public class CharacterDataCenter:SingletonBase<CharacterDataCenter>
     public PetData GetPetData(PetType type)
     {
         if(!petDatas.TryGetValue((int)type,out var value))
+        {
+            LogTool.LogError(type.ToString()+"数据不存在！");
+        }
+        
+        return value;
+    }
+    
+    public EnemyData GetEnemyData(EnemyType type)
+    {
+        if(!enemyDatas.TryGetValue((int)type,out var value))
         {
             LogTool.LogError(type.ToString()+"数据不存在！");
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EnumCenter;
 using UnityEngine;
 
 public class PlayerBulletBase : BulletBase
@@ -9,9 +10,21 @@ public class PlayerBulletBase : BulletBase
         
     }
 
-    protected override void OnExit()
+    protected override void OnInit()
     {
-        base.OnExit();
-        ObjectPoolManager.Instance.GetPool(PoolName).DeSpawn(gameObject,PoolName);
+        base.OnInit();
+        if (detection)
+        {
+            detection.AddTriggerListener(TriggerType.TriggerEnter,"Enemy", (obj) =>
+            {
+                Remove();
+                OnHitEnemy(obj.transform.parent.GetComponent<EnemyRoot>()?.Character as EnemyBase);
+            });
+        }
+    }
+
+    protected virtual void OnHitEnemy(EnemyBase enemy)
+    {
+        
     }
 }

@@ -31,6 +31,12 @@ public class BulletBase : Item
         transform.position += transform.right * 30 * Time.deltaTime;
     }
 
+    protected override void OnExit()
+    {
+        base.OnExit();
+        ObjectPoolManager.Instance.GetPool(PoolName).DeSpawn(gameObject,PoolName);
+    }
+
     protected virtual void OnHitObstacle()
     {
         

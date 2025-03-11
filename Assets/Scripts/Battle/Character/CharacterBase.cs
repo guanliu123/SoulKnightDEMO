@@ -8,6 +8,8 @@ public class CharacterBase
     public Transform transform => gameObject.transform;
     public CharacterRoot Root { get; protected set; }
     
+    public CharacterAttribute Attribute { get; protected set; }
+    
     //检测子弹的物体
     public GameObject TriggerBox { get;protected set; }
 
@@ -42,6 +44,7 @@ public class CharacterBase
         {
             LogTool.LogError($"角色身上未挂载CharacterRoot！");
         }
+        Root.SetCharacter(this);
 
         TriggerBox = Root.GetTriggerBox();
     }
@@ -71,6 +74,12 @@ public class CharacterBase
     }
     protected virtual void OnCharacterDieStart(){}
     protected virtual void OnCharacterDieUpdate(){}
+
+    public virtual void UnderAttack(int damage)
+    {
+        Attribute.CurrentHp-=damage;
+        Debug.Log(Attribute.CurrentHp);
+    }
 
     public void Remove()
     {
