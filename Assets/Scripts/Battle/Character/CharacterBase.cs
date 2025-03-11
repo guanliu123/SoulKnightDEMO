@@ -78,7 +78,6 @@ public class CharacterBase
     public virtual void UnderAttack(int damage)
     {
         Attribute.CurrentHp-=damage;
-        Debug.Log(Attribute.CurrentHp);
     }
 
     public void Remove()

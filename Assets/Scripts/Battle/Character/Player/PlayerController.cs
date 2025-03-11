@@ -24,7 +24,7 @@ public class PlayerController : AbstractController
         base.OnAfterRunUpdate();
         MainPlayer?.GameUpdate();
         foreach (var pet in pets)
-        {
+        { 
             pet.GameUpdate();
         }
     }

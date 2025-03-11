@@ -15,12 +15,11 @@ public static class UserData
    static UserData()
     {
         PlayerCharacters = new Dictionary<int, TCharacterData>();
+        HasLogin = true;
     }
     
     public static void UpdateUserData(TServerDataLogin userData)
     {
         //todo:接收服务器传来的数据更新玩家数据
     }
-    
-    
 }

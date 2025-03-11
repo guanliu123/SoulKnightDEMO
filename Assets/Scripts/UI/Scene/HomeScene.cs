@@ -26,6 +26,8 @@ public class HomeScene : SceneBase
         PanelManager.Instance.OpenPanel(basePanel);
         
         //todo:测试敌人
-        EnemyFactory.Instance.GetEnemyInScene(EnemyType.Stake);
+        var t=AbstractManager.Instance.GetController<EnemyController>();
+        t.AddEnemyInScene(EnemyType.Stake);
+        t.TurnOnController();
     }
 }

@@ -22,10 +22,10 @@ public class ItemController : AbstractController
             }
         }
     }
-    public void AddItem(Item effect)
+    public void AddItem(Item item)
     {
-        effect.OnEnter();
-        items.Add(effect);
+        item.OnEnter();
+        items.Add(item);
     }
 }
 

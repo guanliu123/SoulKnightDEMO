@@ -27,7 +27,7 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
             case EnemyType.Stake:
                 enemy = new Stake(obj); break;
         }
-
+        
         return enemy;
     }
     

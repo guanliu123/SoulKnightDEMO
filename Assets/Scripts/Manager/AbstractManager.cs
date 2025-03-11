@@ -19,6 +19,7 @@ public class AbstractManager : SingletonBase<AbstractManager>
     {
         //提前注册所有必要的Abstract类
         RegisterController(new ItemController());
+        RegisterController(new EnemyController());
     }
 
     public void RegisterCameraAbstract()
