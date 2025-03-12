@@ -33,6 +33,10 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
                 break;
             default: break;
         }
+
+        //玩家不要销毁
+        obj.transform.SetParent(null);
+        GameObject.DontDestroyOnLoad(obj);
         
         return player;
     }
