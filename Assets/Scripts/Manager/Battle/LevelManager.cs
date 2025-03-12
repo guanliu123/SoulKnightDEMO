@@ -56,12 +56,12 @@ public class LevelManager : SingletonBase<LevelManager>
     private void OnMapManagerInitCompleted()
     {
         LogTool.Log("开始生成地图");
-        MapManager.Instance.GenerateMap();
+        MonoManager.Instance.StartCoroutine(MapManager.Instance.GenerateMap());
     }
     private void OnMapGenerateCompleted()
     {
         //todo:生成第一波敌人
-
+ 
         //经过2s再关闭加载界面
         TimerManager.Register(2f, () =>
         {

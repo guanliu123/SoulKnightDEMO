@@ -5,9 +5,21 @@ using UnityEngine;
 
 public class ItemFactory : SingletonBase<ItemFactory>
 {
+    public PopupNum GetPopupNum(Vector2 pos)
+    {
+        string name = GetItemPoolName("PopupNum");
+        GameObject obj = GetItemObj(name);
+        var pop = new PopupNum(obj);
+        
+        pop?.SetPoolName(name);
+        pop?.SetPosition(pos);
+        pop?.AddToController();
+        return pop;
+    }
     public Item GetEffect(EffectType type, Vector2 pos)
     {
-        GameObject obj = GetEffectObj(type.ToString());
+        string name = GetEffectPoolName(type.ToString());
+        GameObject obj = GetItemObj(name);
         Item effect = null;
         switch (type)
         {
@@ -22,15 +34,20 @@ public class ItemFactory : SingletonBase<ItemFactory>
         return effect;
     }
 
-    private GameObject GetEffectObj(string name)
+    private GameObject GetItemObj(string name)
     {
-        var completeName = GetEffectPoolName(name);
-        var objPool = ObjectPoolManager.Instance.GetPool(completeName);
-        return objPool.SynSpawn(completeName);
+        //var completeName = GetEffectPoolName(name);
+        var objPool = ObjectPoolManager.Instance.GetPool(name);
+        return objPool.SynSpawn(name);
     }
 
     private string GetEffectPoolName(string name)
     {
         return ResourcePath.Effect + name + ".prefab";
+    }
+
+    private string GetItemPoolName(string name)
+    {
+        return ResourcePath.Item + name + ".prefab";
     }
 }

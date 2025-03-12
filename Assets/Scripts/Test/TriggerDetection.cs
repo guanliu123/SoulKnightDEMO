@@ -106,4 +106,12 @@ public class TriggerDetection : MonoBehaviour
                 break;
         }
     }
+
+    public void OnExit()
+    {
+        enterDic.Clear();
+        exitDic.Clear();
+        enterTagDic.Clear();
+        exitTagDic.Clear();
+    }
 }

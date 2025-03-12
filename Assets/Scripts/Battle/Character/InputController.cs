@@ -25,8 +25,10 @@ public class InputController : AbstractController
     protected override void AlwaysUpdate()
     {
         base.AlwaysUpdate();
-        input.hor = (Fix64)ETCInput.GetAxis("Horizontal");
-        input.ver = (Fix64)ETCInput.GetAxis("Vertical");
+        /*input.hor = (Fix64)ETCInput.GetAxis("Horizontal");
+        input.ver = (Fix64)ETCInput.GetAxis("Vertical");*/
+        input.hor = (Fix64)Input.GetAxis("Horizontal");
+        input.ver = (Fix64)Input.GetAxis("Vertical");
         //todo:改成虚拟按键输入
         input.isAttack = Input.GetMouseButtonDown(0);
         input.isSwitchWeapon = Input.GetKeyDown(KeyCode.R);

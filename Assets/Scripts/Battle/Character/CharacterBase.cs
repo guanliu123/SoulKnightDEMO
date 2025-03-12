@@ -78,6 +78,7 @@ public class CharacterBase
     public virtual void UnderAttack(int damage)
     {
         Attribute.CurrentHp-=damage;
+        ItemFactory.Instance.GetPopupNum(transform.position).SetText(damage);
     }
 
     public void Remove()

@@ -34,6 +34,7 @@ public class BulletBase : Item
     protected override void OnExit()
     {
         base.OnExit();
+        detection.OnExit();
         ObjectPoolManager.Instance.GetPool(PoolName).DeSpawn(gameObject,PoolName);
     }
 

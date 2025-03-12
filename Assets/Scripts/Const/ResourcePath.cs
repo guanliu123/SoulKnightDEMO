@@ -6,6 +6,8 @@
     public const string Player = "Prefabs/Players/";
     public const string Panel = "Prefabs/Panels/";
     public const string Effect = "Prefabs/Effects/";
+    public const string Item = "Prefabs/Items/";
+
     public const string Scene="Prefabs/Scene/";
     public const string Weapon = "Prefabs/Weapon/";
 }

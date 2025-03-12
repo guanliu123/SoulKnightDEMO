@@ -352,6 +352,7 @@ using Edgar.Unity;
 using EnumCenter;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 
 public class MapManager : MonoSingletonBase<MapManager>
 {
@@ -486,16 +487,38 @@ public class MapManager : MonoSingletonBase<MapManager>
         if(isInit) EventManager.Instance.Emit(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED);
     }
 
-    public void GenerateMap()
+    public IEnumerator GenerateMap()
     {
         if (dungeonGenerator == null)
         {
             LogTool.LogError("地图生成器未初始化！请检查是否使用了Init!");
-            return;
         }
-
-        dungeonGenerator.Generate();
+        else
+        {
+            yield return dungeonGenerator.GenerateCoroutine();
+        }
+        SetTilemaps();
         EventManager.Instance.Emit(EventId.MAP_GENERATION_COMPLETED);
+    }
+    
+    private void SetTilemaps()
+    {
+        GameObject Tilemaps = GameObject.Find("Generated Level").transform.Find("Tilemaps").gameObject;
+        GameObject Wall = Tilemaps.transform.Find("Walls").gameObject;
+        Transform Collideable = Tilemaps.transform.Find("Collideable");
+        Tilemaps.transform.Find("Floor").gameObject.transform.localPosition = new Vector3(0, 0.5f, 0);
+        Wall.layer = LayerMask.NameToLayer("Obstacle");
+        Wall.tag = "Obstacles";
+        Wall.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+        Wall.GetComponent<CompositeCollider2D>().offsetDistance = 0.3f;
+        Wall.GetComponent<CompositeCollider2D>().vertexDistance = 0.01f;
+        Collideable.GetComponent<TilemapRenderer>().sortOrder = TilemapRenderer.SortOrder.TopLeft;
+        Collideable.GetComponent<TilemapRenderer>().mode = TilemapRenderer.Mode.Individual;
+        Collideable.GetComponent<CompositeCollider2D>().geometryType = CompositeCollider2D.GeometryType.Polygons;
+        Collideable.GetComponent<CompositeCollider2D>().offsetDistance = 0.3f;
+        Collideable.GetComponent<CompositeCollider2D>().vertexDistance = 0.01f;
+        Collideable.gameObject.layer = LayerMask.NameToLayer("Obstacle");
+        Collideable.gameObject.tag = "Obstacles";
     }
 
     private LevelGraph LoadGraph(string path)

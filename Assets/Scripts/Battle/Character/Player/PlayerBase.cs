@@ -9,6 +9,7 @@ public class PlayerBase : CharacterBase
     //public PlayerData data { get; private set; }
     //与父类的root区分开，为了存放转换后的playerroot
     public PlayerRoot root { get; protected set; }
+
     private FixVector2 moveDir;
     public Animator animator { get; protected set; }
     

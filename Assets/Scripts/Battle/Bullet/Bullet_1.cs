@@ -12,12 +12,13 @@ public class Bullet_1 : PlayerBulletBase
     protected override void OnHitObstacle()
     {
         base.OnHitObstacle();
-        Item effect = ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
+        ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
     }
 
     protected override void OnHitEnemy(EnemyBase enemy)
     {
         base.OnHitEnemy(enemy);
+        ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
         enemy.UnderAttack(5);
     }
 }

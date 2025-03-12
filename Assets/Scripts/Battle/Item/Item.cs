@@ -24,12 +24,12 @@ public abstract class Item
 
     public void GameUpdate()
     {
-        OnUpdate();
         if (shouldBeRemoved && !IsAlreadyRemove)
         {
             IsAlreadyRemove = true;
             OnExit();
         }
+        else{ OnUpdate();}
     }
     
     protected virtual void OnInit(){}
