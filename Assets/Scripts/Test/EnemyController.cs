@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
+using UnityEngine;
 
 public class EnemyController : AbstractController
 {
@@ -38,5 +40,39 @@ public class EnemyController : AbstractController
     public void AddEnemyInScene(EnemyType type)
     {
         enemys.Add(EnemyFactory.Instance.GetEnemyInScene(type));
+    }
+    
+    /*public void AddBoss(Room room, Vector2 pos)
+    {
+        IBoss boss = EnemyFactory.Instance.GetBoss(BossType.DevilSnare);
+        boss.m_Room = room;
+        boss.m_Room.CurrentEnemyNum += 1;
+        boss.transform.position = pos;
+        bosses.Add(boss);
+    }*/
+    public void SpawnEnemy(Room room, Vector2 pos, bool isWork, bool isElite)
+    {
+        MonoManager.Instance.StartCoroutine(WaitForSpawnEnemy(room, pos, isWork, isElite));
+        room.CurrentEnemyNum += 1;
+    }
+    private IEnumerator WaitForSpawnEnemy(Room room, Vector2 pos, bool isWork, bool isElite)
+    {
+        ItemFactory.Instance.GetEffect(EffectType.Pane, pos).AddToController();
+        yield return new WaitForSeconds(0.8f);
+        EnemyBase enemy = null;
+        /*if (isElite)
+        {
+            enemy = EnemyFactory.Instance.GetEliteEnemy();
+        }
+        else
+        {
+            enemy = EnemyFactory.Instance.GetRandomEnemy();
+        }*/
+
+        enemy = EnemyFactory.Instance.GetEnemy(EnemyType.Stake);
+        enemy.room = room;
+        enemy.gameObject.transform.position = pos;
+        enemy.isWork = isWork;
+        enemys.Add(enemy);
     }
 }

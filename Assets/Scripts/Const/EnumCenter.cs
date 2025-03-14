@@ -82,6 +82,7 @@ namespace EnumCenter
     public enum EffectType
     {
         EffectBoom=1,
+        Pane=2,
     } 
 
     public enum BulletType

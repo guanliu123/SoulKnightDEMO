@@ -211,6 +211,18 @@ public static class GameTool
     }
     
     /// <summary>
+    /// 从给定的物体的子物体上找到脚本
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <param name="name"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetComponentFromChild<T>(GameObject parent, string name)
+    {
+        return GetGameObjectFromChildren(parent, name).GetComponent<T>();
+    }
+    
+    /// <summary>
     /// 从一个物体上找到某个子物体（慎用尤其是在Update里！）
     /// </summary>
     /// <param name="parent">父物体</param>

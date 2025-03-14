@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterBase
 {
+    public bool IsBattle { get;protected set; }
     public GameObject gameObject { get; protected set; }
     public Transform transform => gameObject.transform;
     public CharacterRoot Root { get; protected set; }
@@ -36,6 +37,11 @@ public class CharacterBase
     private bool isShouldRemove;
     private bool isAlreadyRemove;
 
+    public void SetIsBattle(bool isBattle)
+    {
+        IsBattle = isBattle;
+    }
+    
     public CharacterBase(GameObject obj)
     {
         gameObject = obj;
@@ -69,8 +75,6 @@ public class CharacterBase
             isStart = true;
             OnCharacterStart();
         }
-        
-        
     }
     protected virtual void OnCharacterDieStart(){}
     protected virtual void OnCharacterDieUpdate(){}
