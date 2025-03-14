@@ -46,7 +46,7 @@ public class RoomController : AbstractController
         {
             isStart = true;
             player = AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
-            RoomInstances = GameObject.Find("Generator").GetComponent<RoomPostProcessing>().GetRoomInstances();
+            RoomInstances = MapManager.Instance.gameObject.GetComponent<RoomPostProcessing>().GetRoomInstances();
             foreach (RoomInstanceGrid2D roomInstance in RoomInstances)
             {
                 Room room = new Room();
@@ -104,11 +104,11 @@ public class RoomController : AbstractController
 
                     if (roomType != RoomType.BossRoom)
                     {
-                        EventManager.Instance.On(EventId.OnPlayerEnterBattleRoom, enterRoom);
+                        EventManager.Instance.Emit(EventId.OnPlayerEnterBattleRoom, enterRoom);
                     }
                     else
                     {
-                        EventManager.Instance.On(EventId.OnPlayerEnterBossRoom, enterRoom);
+                        EventManager.Instance.Emit(EventId.OnPlayerEnterBossRoom, enterRoom);
                     }
                     CloseDoor(enterRoom.roomInstance);
                 }
@@ -166,7 +166,8 @@ public class RoomController : AbstractController
     }
     private void CreateWhiteTreasureBox(Room room)
     {
-        //todo:获取宝箱，先注释二零
+        //todo:获取宝箱，先注释了
+        LogTool.Log("生成白宝箱");
         //ItemFactory.Instance.GetTreasureBox(TreasureBoxType.White, RandomPointInBounds(GetFloorCollider(room).bounds, 3));
     }
     private void CreateOtherTreasureBox(Room room)

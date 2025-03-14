@@ -2,6 +2,7 @@
 // using StarkSDKSpace;
 using System.Collections;
 using System.Collections.Generic;
+using UIFrameWork;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 //游戏的根管理器
@@ -48,6 +49,12 @@ public class GameRoot : MonoBehaviour
         {
             yield return new WaitForSeconds(3.0f);
         }
+    }
+
+    public void StartBattle()
+    {
+         PanelManager.Instance.OpenPanel(new LoadingPanel());
+         LevelManager.Instance.Init();
     }
 
     private void InitNecessaryComponents()

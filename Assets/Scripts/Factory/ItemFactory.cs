@@ -26,6 +26,8 @@ public class ItemFactory : SingletonBase<ItemFactory>
             case EffectType.EffectBoom:
                 effect = new EffectBoom(obj);
                 break;
+            case EffectType.Pane:
+                effect = new EffectPane(obj); break;
         }
         
         effect?.SetPoolName(GetEffectPoolName(type.ToString()));

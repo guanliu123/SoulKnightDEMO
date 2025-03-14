@@ -6,7 +6,17 @@ public class CharacterBase
 {
     public bool IsBattle { get;protected set; }
     public GameObject gameObject { get; protected set; }
-    public Transform transform => gameObject.transform;
+    public Transform transform 
+    { 
+        get 
+        {
+            // Unity 的特殊 null 检测方式
+            if (gameObject == null || !gameObject)  
+                return null;
+            
+            return gameObject.transform;
+        }
+    }
     public CharacterRoot Root { get; protected set; }
     
     public CharacterAttribute Attribute { get; protected set; }

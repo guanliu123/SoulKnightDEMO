@@ -22,6 +22,7 @@ public class MonoManager : SingletonBase<MonoManager>
             GameObject obj = new("MonoController");
             controller = obj.AddComponent<MonoController>();
         }
+        GameObject.DontDestroyOnLoad(controller);
 
         coroutineDic = new();
     }

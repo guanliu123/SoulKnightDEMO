@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using cfg;
 using EnumCenter;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class ToBattleRoom : MonoBehaviour
         detection = GetComponent<TriggerDetection>();
         detection.AddTriggerListener(TriggerType.TriggerEnter,"Player", (obj) =>
         {
+            //GameRoot.Instance.StartBattle();
             GameRoot.Instance.SwitchScene(new LevelScene());
         });
     }

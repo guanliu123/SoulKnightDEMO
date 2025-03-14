@@ -64,6 +64,8 @@ public class PlayerFactory : SingletonBase<PlayerFactory>
                 break;
         }
         
+        obj.transform.SetParent(null);
+        GameObject.DontDestroyOnLoad(obj);
         return pet;
     }
 }

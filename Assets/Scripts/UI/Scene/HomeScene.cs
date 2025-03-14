@@ -50,9 +50,9 @@ public class HomeScene : SceneBase
         await UniTask.Yield();
         
         // 异步生成敌人
-        var enemyController = AbstractManager.Instance.GetController<EnemyController>();
+        /*var enemyController = AbstractManager.Instance.GetController<EnemyController>();
         enemyController.AddEnemyInScene(EnemyType.Stake); // 假设已实现 UniTask 版本
-        enemyController.TurnOnController();
+        enemyController.TurnOnController();*/
 
         // 后续操作
         Debug.Log("InitNecessary 完成，执行后续操作");
