@@ -19,7 +19,7 @@ public class RoomController : AbstractController
 {
     private List<RoomInstanceGrid2D> RoomInstances;
     private EnemyController enemyController;
-    private Room enterRoom;
+    public Room EnterRoom { get;private set; }
     private PlayerBase player;
 
     private PetBase pet;
@@ -36,10 +36,15 @@ public class RoomController : AbstractController
     {
         base.Init();
         enemyController = AbstractManager.Instance.GetController<EnemyController>();
+        EventManager.Instance.SingOn<Room>(EventId.EnemyDie,CheckRoomRefresh);
     }
-    protected override void OnAfterRunInit()
+
+    private void CheckRoomRefresh(Room room)
     {
-        base.OnAfterRunInit();
+        if (room == EnterRoom)
+        {
+            EnterRoom.CurrentEnemyNum--;
+        }
     }
     protected override void OnAfterRunUpdate()
     {
@@ -77,7 +82,7 @@ public class RoomController : AbstractController
                     RoomType roomType = (roomInstance.Room as CustomRoom).RoomType;
                     if (roomType == RoomType.EnemyRoom ||roomType == RoomType.BossRoom)
                     {
-                        enterRoom = room;
+                        EnterRoom = room;
                         isEnterEnemyFloor = true;
                         isEnterEnemyFloorStart = false;
                         isClearEnemyStart = false;
@@ -99,8 +104,8 @@ public class RoomController : AbstractController
         base.AlwaysUpdate();
         if (isEnterEnemyFloor)
         {
-            RoomType roomType = (enterRoom.roomInstance.Room as CustomRoom).RoomType;
-            if (IsPlayerInFloor(GetFloorCollider(enterRoom).bounds, player.root.GetTriggerDetection().GetComponent<CapsuleCollider2D>().bounds))
+            RoomType roomType = (EnterRoom.roomInstance.Room as CustomRoom).RoomType;
+            if (IsPlayerInFloor(GetFloorCollider(EnterRoom).bounds, player.root.GetTriggerDetection().GetComponent<CapsuleCollider2D>().bounds))
             {
                 if (!isEnterEnemyFloorStart)
                 {
@@ -108,35 +113,35 @@ public class RoomController : AbstractController
 
                     if (roomType != RoomType.BossRoom)
                     {
-                        EventManager.Instance.Emit(EventId.OnPlayerEnterBattleRoom, enterRoom);
+                        EventManager.Instance.Emit(EventId.OnPlayerEnterBattleRoom, EnterRoom);
                     }
                     else
                     {
-                        EventManager.Instance.Emit(EventId.OnPlayerEnterBossRoom, enterRoom);
+                        EventManager.Instance.Emit(EventId.OnPlayerEnterBossRoom, EnterRoom);
                     }
-                    CloseDoor(enterRoom.roomInstance);
+                    CloseDoor(EnterRoom.roomInstance);
                 }
             }
-            if (enterRoom.CurrentEnemyNum == 0 && enterRoom.WaveNum > 0)
+            if (EnterRoom.CurrentEnemyNum == 0 && EnterRoom.WaveNum > 0)
             {
                 //todo：这是个什么房间的判断？先注释了
-                /*if ((enterRoom.roomInstance.Room as CustomRoom).RoomType == RoomType.EliteEnemyRoom)
+                /*if ((EnterRoom.roomInstance.Room as CustomRoom).RoomType == RoomType.EliteEnemyRoom)
                 {
-                    SpawnEnemies(enterRoom, true);
+                    SpawnEnemies(EnterRoom, true);
                 }
                 else
                 {
-                    SpawnEnemies(enterRoom, false);
+                    SpawnEnemies(EnterRoom, false);
                 }*/
-                SpawnEnemies(enterRoom, false);
+                SpawnEnemies(EnterRoom, false);
             }
-            else if (enterRoom.CurrentEnemyNum == 0 && !isClearEnemyStart)
+            else if (EnterRoom.CurrentEnemyNum == 0 && !isClearEnemyStart)
             {
                 isClearEnemyStart = true;
-                CreateWhiteTreasureBox(enterRoom);
+                CreateWhiteTreasureBox(EnterRoom);
                 ShowBattleFinishAnim();
-                OpenDoor(enterRoom.roomInstance);
-                TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter, player.root.GetTriggerDetection().gameObject, GetFloorCollider(enterRoom).gameObject);
+                OpenDoor(EnterRoom.roomInstance);
+                TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter, player.root.GetTriggerDetection().gameObject, GetFloorCollider(EnterRoom).gameObject);
             }
         }
     }

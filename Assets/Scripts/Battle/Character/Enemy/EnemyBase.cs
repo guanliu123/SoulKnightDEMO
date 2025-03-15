@@ -8,6 +8,7 @@ public class EnemyBase : CharacterBase
     public Room room;
     //敌人是否正在运作
     public bool isWork;
+    public Animator animator { get;protected set; }
     public EnemyRoot root { get; protected set; }
     public EnemyBase(GameObject obj) : base(obj)
     {
@@ -18,12 +19,15 @@ public class EnemyBase : CharacterBase
         base.OnInit();
 
         root=(EnemyRoot)Root;
+        root.GetTriggerBox().SetActive(true);
+        animator = root.GetAnimator();
         Attribute = new EnemyAttribute(root.enemyType);
         EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, (r) =>
         {
             if (room == r)
             {
                 isWork = true;
+                AbstractManager.Instance.GetController<EnemyController>().AddInRoom(this);
             }
         });
     }
@@ -42,5 +46,24 @@ public class EnemyBase : CharacterBase
         {
             base.OnCharacterUpdate();
         }
+    }
+
+    protected override void OnCharacterDieStart()
+    {
+        base.OnCharacterDieStart();
+        animator.Play("Die");
+        root.GetTriggerBox().SetActive(false);
+        SetLocked(false);
+        EventManager.Instance.Emit(EventId.EnemyDie,room);
+        TimerManager.Register(30f, () =>
+        {
+            var name = root.enemyType.ToString();
+            ObjectPoolManager.Instance.GetPool(name).DeSpawn(gameObject,name);
+        });
+    }
+
+    public void SetLocked(bool isLocked)
+    {
+        root.GetTargetCircle().SetActive(isLocked);
     }
 }

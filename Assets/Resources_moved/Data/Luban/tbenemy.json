@@ -3,7 +3,14 @@
     "id": 1001,
     "name": "木桩",
     "hp": 4,
-    "speed": 6,
+    "speed": 0,
+    "Initialweapon": ""
+  },
+  {
+    "id": 1002,
+    "name": "野猪",
+    "hp": 20,
+    "speed": 5,
     "Initialweapon": ""
   }
 ]

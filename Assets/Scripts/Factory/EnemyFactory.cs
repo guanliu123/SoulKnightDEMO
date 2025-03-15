@@ -26,6 +26,8 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
         {
             case EnemyType.Stake:
                 enemy = new Stake(obj); break;
+            case EnemyType.Boar:
+                enemy = new Boar(obj); break;
         }
         
         return enemy;

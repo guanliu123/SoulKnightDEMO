@@ -45,7 +45,7 @@ public class CharacterBase
     private bool isInit;
     private bool isStart;
     private bool isShouldRemove;
-    private bool isAlreadyRemove;
+    public bool IsAlreadyRemove { get;protected set; }
 
     public void SetIsBattle(bool isBattle)
     {
@@ -72,11 +72,25 @@ public class CharacterBase
             isInit = true;
             OnInit();
         }
+        
+        if (isShouldRemove && !IsAlreadyRemove)
+        {
+            IsAlreadyRemove = true;
+            OnCharacterDieStart();
+        }
+        
         OnCharacterUpdate();
     }
-    
-    protected virtual void OnInit(){}
-    protected virtual void OnCharacterStart(){}
+
+    protected virtual void OnInit()
+    {
+        isShouldRemove = false;
+        IsAlreadyRemove = false;
+    }
+
+    protected virtual void OnCharacterStart()
+    {
+    }
 
     protected virtual void OnCharacterUpdate()
     {
@@ -93,10 +107,15 @@ public class CharacterBase
     {
         Attribute.CurrentHp-=damage;
         ItemFactory.Instance.GetPopupNum(transform.position).SetText(damage);
+        if (Attribute.CurrentHp <= 0)
+        {
+            Remove();
+        }
     }
 
     public void Remove()
     {
         isShouldRemove = true;
+        IsAlreadyRemove = false;
     }
 }

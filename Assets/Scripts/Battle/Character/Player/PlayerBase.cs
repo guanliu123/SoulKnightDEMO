@@ -17,6 +17,9 @@ public class PlayerBase : CharacterBase
     public PlayerControlInput input { get; protected set; }
     public PlayerWeaponBase NowPlayerWeapon { get; protected set; }
     
+    //玩家目前正在瞄准的目标
+    public Transform NowTarget { get; protected set; }
+    
     protected PlayerStateMachine stateMachine;
     protected List<PlayerWeaponBase> playerWeapons;
     protected int nowWeaponIdx;
@@ -54,12 +57,24 @@ public class PlayerBase : CharacterBase
     {
         base.OnCharacterUpdate();
         stateMachine.GameUpdate();
+
+        NowTarget = AbstractManager.Instance.GetController<EnemyController>().GetNearestEnemy(transform.position);
+        if (NowTarget)
+        {
+            IsLeft=NowTarget.position.x < transform.position.x;
+        }
         
         if (NowPlayerWeapon != null)
         {
             NowPlayerWeapon.OnUpdate();
             NowPlayerWeapon.ControlWeapon(input.isAttack);
-            NowPlayerWeapon.RotateWeapon(input.WeaponAnimPos);
+            var weaponRotate = input.WeaponAnimPos;
+            if (NowTarget != null)
+            {
+                Vector3 toTarget = NowTarget.position - transform.position;
+                weaponRotate =new FixVector2(toTarget.normalized); // 关键修改：将方向改为指向目标
+            }
+            NowPlayerWeapon.RotateWeapon(weaponRotate);
             if (input.isSwitchWeapon)
             {
                 SwitchWeapon();

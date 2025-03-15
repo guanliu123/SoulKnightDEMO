@@ -39,6 +39,7 @@ namespace EnumCenter
     {
         None=0,
         Stake=1001,
+        Boar=1002,
     }
 
     public enum PetType

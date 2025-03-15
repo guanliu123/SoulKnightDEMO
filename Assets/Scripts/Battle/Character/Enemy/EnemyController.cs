@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Edgar.Unity;
 using EnumCenter;
 using UnityEngine;
 
 public class EnemyController : AbstractController
 {
     protected List<EnemyBase> enemys;
+
+    //当前房间跟玩家在一起的敌人
+    protected List<EnemyBase> enemysInRoom;
+    
     public EnemyController(){}
 
     protected override void Init()
     {
         base.Init();
         enemys = new();
+        enemysInRoom = new();
     }
 
 
@@ -19,16 +25,16 @@ public class EnemyController : AbstractController
     {
         for (int i = 0; i < enemys.Count; i++)
         {
-            enemys[i].GameUpdate();
+            //enemys[i].GameUpdate();
 
-            /*if (enemys[i].IsAlreadyRemove == false)
+            if (enemys[i].IsAlreadyRemove == false)
             {
                 enemys[i].GameUpdate();
             }
             else
             {
                 enemys.RemoveAt(i);
-            }*/
+            }
         }
     }
 
@@ -69,10 +75,47 @@ public class EnemyController : AbstractController
             enemy = EnemyFactory.Instance.GetRandomEnemy();
         }*/
 
-        enemy = EnemyFactory.Instance.GetEnemy(EnemyType.Stake);
+        enemy = EnemyFactory.Instance.GetEnemy(EnemyType.Boar);
         enemy.room = room;
         enemy.gameObject.transform.position = pos;
         enemy.isWork = isWork;
         enemys.Add(enemy);
+
+        if (room == AbstractManager.Instance.GetController<RoomController>().EnterRoom)
+        {
+            enemysInRoom.Add(enemy);
+        }
+    }
+
+    public Transform GetNearestEnemy(Vector3 playerPos)
+    {
+        float minDist = float.MaxValue;
+        EnemyBase nearest = null;
+        for (int i = 0; i < enemysInRoom.Count; i++)
+        {
+            enemysInRoom[i].SetLocked(false);
+
+            var dis = Vector3.Distance(playerPos, enemysInRoom[i].transform.position);
+            if (enemysInRoom[i]!=null&&!enemysInRoom[i].IsAlreadyRemove)
+            {
+                if(dis<minDist&&dis<10f)
+                {
+                    minDist=dis;
+                    nearest = enemysInRoom[i];
+                }
+            }
+            else
+            {
+                enemysInRoom.RemoveAt(i);
+            }
+        }
+        
+        nearest?.SetLocked(true);
+        return nearest?.transform;
+    }
+
+    public void AddInRoom(EnemyBase e)
+    {
+        enemysInRoom.Add(e);
     }
 }

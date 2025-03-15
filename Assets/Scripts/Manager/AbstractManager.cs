@@ -19,19 +19,20 @@ public class AbstractManager : SingletonBase<AbstractManager>
     {
         //提前注册所有必要的Abstract类
         RegisterController(new InputController());
+        RegisterController(new EnemyController());
         RegisterController(new PlayerController());
         RegisterController(new ItemController());
-        RegisterController(new EnemyController());
         RegisterController(new RoomController());
         
         RegisterSystem(new CameraSystem());
         //todo:结束战斗时记得注销事件
-        EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED, TurnOnRoomController);
+        EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED, TurnOnBattle);
     }
 
-    private void TurnOnRoomController()
+    private void TurnOnBattle()
     {
         GetController<RoomController>().TurnOnController();
+        GetController<EnemyController>().TurnOnController();
     }
 
     public void TurnOnCameraAbstract()

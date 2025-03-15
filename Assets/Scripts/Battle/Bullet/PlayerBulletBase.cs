@@ -18,7 +18,7 @@ public class PlayerBulletBase : BulletBase
             detection.AddTriggerListener(TriggerType.TriggerEnter,"Enemy", (obj) =>
             {
                 Remove();
-                OnHitEnemy(obj.transform.parent.GetComponent<EnemyRoot>()?.Character as EnemyBase);
+                OnHitEnemy(GetRoot(obj));
             });
         }
     }
@@ -26,5 +26,14 @@ public class PlayerBulletBase : BulletBase
     protected virtual void OnHitEnemy(EnemyBase enemy)
     {
         
+    }
+
+    protected EnemyBase GetRoot(GameObject obj)
+    {
+        if (obj.transform.parent == null)
+        {
+            return obj.GetComponent<EnemyRoot>()?.Character as EnemyBase;
+        }
+        return obj.transform.parent.GetComponent<EnemyRoot>()?.Character as EnemyBase;
     }
 }
