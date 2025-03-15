@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 //using System.Net.WebSockets;
 using BestHTTP.WebSocket;
+using Client;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Events;
 
@@ -134,10 +135,23 @@ public class NetManager : SingletonBase<NetManager>
      */
     private void OnOpen(WebSocket ws)
     {
+        LogTool.Log("(Socket) 连接成功");
         reconnectAttemps = 0;
         RemoveAutoConnectTimeout();
+
+
         StartHeartbeat();
         EventManager.Instance.Emit(EventId.START_LOGIN);
+    //  测试登录
+    //    JObject data = new JObject
+    //         {
+    //             ["username"] = "hexin",
+    //             ["password"] = "password"
+    //         };
+            
+      
+    //     Send(RequestId.LOGIN, data);
+
     }
     
     private void OnMessage(WebSocket ws, string message)

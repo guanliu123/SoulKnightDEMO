@@ -1,0 +1,8 @@
+2025-03-13 20:06:24,553 [INFO] package: mysql.connector.plugins
+2025-03-13 20:06:24,554 [INFO] plugin_name: mysql_native_password
+2025-03-13 20:06:24,555 [INFO] AUTHENTICATION_PLUGIN_CLASS: MySQLNativePasswordAuthPlugin
+2025-03-13 20:06:24,564 [ERROR] 初始化数据库时发生错误: 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+2025-03-13 20:06:24,567 [INFO] 服务器启动成功，监听地址: 0.0.0.0:5555
+2025-03-13 20:06:24,567 [INFO] 服务器已启动，监听地址: 0.0.0.0:5555
+2025-03-13 23:46:06,463 [INFO] 正在关闭服务器...
+2025-03-13 23:46:06,464 [INFO] 服务器已停止
