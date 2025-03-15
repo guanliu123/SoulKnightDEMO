@@ -11,4 +11,5 @@ public static class EventId
     public const string ON_INTERACTING_OBJECT = "ON_INTERACTING_OBJECT";
     public const string OnPlayerEnterBattleRoom = "OnPlayerEnterBattleRoom";
     public const string OnPlayerEnterBossRoom = "OnPlayerEnterBossRoom";
+    public const string OnSceneChangeComplete = "OnSceneChangeComplete";
 }

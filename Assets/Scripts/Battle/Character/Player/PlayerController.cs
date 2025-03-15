@@ -9,7 +9,11 @@ public class PlayerController : AbstractController
 {
     public PlayerBase MainPlayer { get; private set; }
 
-    protected List<PetBase> pets;
+    public List<PetBase> pets
+    {
+        get;
+        protected set;
+    }
     public PlayerController(){}
 
     protected override void Init()

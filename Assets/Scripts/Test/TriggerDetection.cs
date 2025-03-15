@@ -16,6 +16,8 @@ public class TriggerDetection : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
+        TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter, gameObject, other.gameObject);
+
         if (enterDic.ContainsKey(other.gameObject))
         {
             enterDic[other.gameObject]?.Invoke(other.gameObject);
@@ -42,6 +44,8 @@ public class TriggerDetection : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D other)
     {
+        TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerExit, gameObject, other.gameObject);
+
         if (exitDic.ContainsKey(other.gameObject))
         {
             exitDic[other.gameObject]?.Invoke(other.gameObject);

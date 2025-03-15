@@ -28,6 +28,13 @@ public class PlayerBase : CharacterBase
         maxWeaponCnt = 2;
     }
 
+    protected override void OnCharacterStart()
+    {
+        base.OnCharacterStart();
+        rigidBody.bodyType = RigidbodyType2D.Dynamic;
+        rigidBody.gravityScale = 0;
+    }
+
     protected override void OnInit()
     {
         base.OnInit();

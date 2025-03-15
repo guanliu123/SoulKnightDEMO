@@ -64,6 +64,7 @@ public class GameRoot : MonoBehaviour
         TimerManager.Instance.Init();
         TableManager.Instance.Init();
         ConfigData.Init();
+        EventManager.Instance.Init();
     }
     
     public void NetInit()

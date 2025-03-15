@@ -60,8 +60,6 @@ public class LevelManager : SingletonBase<LevelManager>
     }
     private void OnMapGenerateCompleted()
     {
-        //todo:生成第一波敌人
- 
         //经过2s再关闭加载界面
         TimerManager.Register(2f, () =>
         {

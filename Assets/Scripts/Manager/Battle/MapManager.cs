@@ -350,6 +350,7 @@ using cfg;
 using Cysharp.Threading.Tasks;
 using Edgar.Unity;
 using EnumCenter;
+using Pathfinding;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -358,7 +359,8 @@ public class MapManager : MonoSingletonBase<MapManager>
 {
     private DungeonGeneratorGrid2D dungeonGenerator;
     private IRoomConfig roomConfig;
-
+    private AstarPath finder;
+    
     private bool isInit;
     private int level;
     private int stage;
@@ -387,6 +389,8 @@ public class MapManager : MonoSingletonBase<MapManager>
             gungeonCustomInput.roomConfig = roomConfig;
             dungeonGenerator.CustomInputTask = gungeonCustomInput;
             
+            InitAStar();
+            
             EventManager.Instance.Emit(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED);
             isInit = true;
         }
@@ -395,6 +399,13 @@ public class MapManager : MonoSingletonBase<MapManager>
             LogTool.LogError(e);
             throw;
         }
+    }
+
+    private void InitAStar()
+    {
+        finder = gameObject.GetComponent<AstarPath>();
+        
+        finder.Scan();
     }
 
     private async UniTask UpdateRoomConfig()
