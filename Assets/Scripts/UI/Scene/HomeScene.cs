@@ -29,8 +29,8 @@ public class HomeScene : SceneBase
     {
         CharacterDataCenter.Instance.Init();
         ItemDataCenter.Instance.Init();
-        AbstractManager.Instance.RegisterCameraAbstract();
-        AbstractManager.Instance.RegisterPlayerAbstract();
+        AbstractManager.Instance.TurnOnCameraAbstract();
+        AbstractManager.Instance.TurnOnPlayerAbstract();
         
         //todo:测试敌人
         var t=AbstractManager.Instance.GetController<EnemyController>();
@@ -43,8 +43,8 @@ public class HomeScene : SceneBase
         // 同步初始化
         CharacterDataCenter.Instance.Init();
         ItemDataCenter.Instance.Init();
-        AbstractManager.Instance.RegisterCameraAbstract();
-        AbstractManager.Instance.RegisterPlayerAbstract();
+        AbstractManager.Instance.TurnOnCameraAbstract();
+        AbstractManager.Instance.TurnOnPlayerAbstract();
         
         // 等待一帧（模拟异步分割）
         await UniTask.Yield();

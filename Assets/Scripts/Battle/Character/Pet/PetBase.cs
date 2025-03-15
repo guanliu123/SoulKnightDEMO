@@ -24,5 +24,14 @@ public class PetBase : CharacterBase
     {
         base.OnCharacterUpdate();
         stateMachine?.GameUpdate();
+        if (Vector3.Distance(Player.transform.position, root.transform.position) > 9f)
+        {
+            ResetPos();
+        }
+    }
+
+    public void ResetPos()
+    {
+        transform.position = Player.transform.position+Vector3.back;
     }
 }

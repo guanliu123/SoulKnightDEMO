@@ -21,6 +21,8 @@ public class RoomController : AbstractController
     private EnemyController enemyController;
     private Room enterRoom;
     private PlayerBase player;
+
+    private PetBase pet;
     //private Animator m_FinishAnim;
     private bool isStart;
     private bool isEnterEnemyFloor;
@@ -46,6 +48,7 @@ public class RoomController : AbstractController
         {
             isStart = true;
             player = AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
+            pet=AbstractManager.Instance.GetController<PlayerController>().pets[0];
             RoomInstances = MapManager.Instance.gameObject.GetComponent<RoomPostProcessing>().GetRoomInstances();
             foreach (RoomInstanceGrid2D roomInstance in RoomInstances)
             {
@@ -54,6 +57,7 @@ public class RoomController : AbstractController
                 if ((roomInstance.Room as CustomRoom).RoomType == RoomType.BirthRoom)
                 {
                     player.gameObject.transform.position = GameTool.GetComponentFromChild<CompositeCollider2D>(roomInstance.RoomTemplateInstance, "Floor").bounds.center;
+                    pet.ResetPos();
                 }
                 else if ((roomInstance.Room as CustomRoom).RoomType == RoomType.EnemyRoom)
                 {
@@ -68,7 +72,7 @@ public class RoomController : AbstractController
                     room.WaveNum = 0;
                     //enemyController.AddBoss(room, GetFloorCenter(room));
                 }
-                /*TriggerCenter.Instance.RegisterObserver(TriggerType.OnTriggerEnter, player.gameObject, GetFloorCollider(room).gameObject, obj =>
+                TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter, player.root.GetTriggerDetection().gameObject, GetFloorCollider(room).gameObject, obj =>
                 {
                     RoomType roomType = (roomInstance.Room as CustomRoom).RoomType;
                     if (roomType == RoomType.EnemyRoom ||roomType == RoomType.BossRoom)
@@ -79,14 +83,14 @@ public class RoomController : AbstractController
                         isClearEnemyStart = false;
                     }
                 });
-                TriggerCenter.Instance.RegisterObserver(TriggerType.OnTriggerExit, player.gameObject, GetFloorCollider(room).gameObject, obj =>
+                TriggerManager.Instance.RegisterObserver(TriggerType.TriggerExit, player.root.GetTriggerDetection().gameObject, GetFloorCollider(room).gameObject, obj =>
                 {
                     RoomType roomType = (roomInstance.Room as CustomRoom).RoomType;
                     if (roomType == RoomType.EnemyRoom || roomType == RoomType.BossRoom)
                     {
                         isEnterEnemyFloor = false;
                     }
-                });*/
+                });
             }
         }
     }
@@ -132,9 +136,8 @@ public class RoomController : AbstractController
                 CreateWhiteTreasureBox(enterRoom);
                 ShowBattleFinishAnim();
                 OpenDoor(enterRoom.roomInstance);
-                //TriggerCenter.Instance.RemoveObserver(TriggerType.OnTriggerEnter, player.gameObject, GetFloorCollider(enterRoom).gameObject);
+                TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter, player.root.GetTriggerDetection().gameObject, GetFloorCollider(enterRoom).gameObject);
             }
-
         }
     }
     private void CloseDoor(RoomInstanceGrid2D roomInstance)

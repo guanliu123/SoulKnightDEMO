@@ -6,6 +6,7 @@ public class PlayerRoot : CharacterRoot
     public PlayerType playerType;
     public Rigidbody2D rigidBody;
     public Transform weaponOriginPoint;
+    public TriggerDetection triggerDetection;
 
     private void Awake()
     {
@@ -20,6 +21,16 @@ public class PlayerRoot : CharacterRoot
         }
 
         return rigidBody;
+    }
+    
+    public TriggerDetection GetTriggerDetection()
+    {
+        if (triggerDetection == null)
+        {
+            LogTool.LogError($"角色上的triggerDetection组件未赋值！");
+        }
+
+        return triggerDetection;
     }
     
     public Transform GetWeaponOriginPoint()
