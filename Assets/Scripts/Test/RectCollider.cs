@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Generic;
+using EnumCenter;
 using OPH.Collision.QuadTree;
 using UnityEditor;
 using UnityEngine;
@@ -86,14 +87,6 @@ public class RectCollider : MonoBehaviour, IRect
 
     void Update()
     {
-        /*foreach (var other in _allColliders)
-        {
-            if (other != this && CheckCollision(this, other))
-            {
-                // 碰撞事件处理
-                Debug.Log($"{name} collided with {((MonoBehaviour)other).name}");
-            }
-        }*/
         // 检测位置变化
         if (transform.position != _lastPosition || _size != _lastSize)
         {
@@ -120,6 +113,7 @@ public class RectCollider : MonoBehaviour, IRect
             {
                 // 触发碰撞事件
                 Debug.Log($"Collision: {name} & {((MonoBehaviour)other).name}");
+                TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)other).gameObject);
             }
         }
         
