@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Client
 {
-    public class GameplayManager : MonoBehaviour
+    public class GameplayManager : MonoSingletonBase<GameplayManager>
     {
         // 单例实例
         public static GameplayManager Instance { get; private set; }

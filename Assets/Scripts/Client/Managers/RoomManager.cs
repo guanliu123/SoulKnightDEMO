@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Client
 {
-    public class RoomManager : MonoBehaviour
+    public class RoomManager : MonoSingletonBase<RoomManager>
     {
         // 单例实例
         public static RoomManager Instance { get; private set; }
