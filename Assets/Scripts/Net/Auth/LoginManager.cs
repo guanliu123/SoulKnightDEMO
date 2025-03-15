@@ -3,7 +3,7 @@ using System;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-public class LoginManager : MonoBehaviour
+public class LoginManager : MonoSingletonBase<LoginManager>
 {
     // 单例实例
     public static LoginManager Instance { get; private set; }

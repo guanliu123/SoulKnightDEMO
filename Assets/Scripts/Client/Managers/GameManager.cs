@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Client{
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoSingletonBase<GameManager>
     {
         // 单例实例
         public static GameManager Instance { get; private set; }
@@ -46,10 +46,10 @@ namespace Client{
         private void Start()
         {
             // 注册其他管理器的事件
-            if (AuthManager.Instance != null)
+            if (LoginManager.Instance != null)
             {
-                AuthManager.Instance.OnLoginResult += HandleLoginResult;
-                AuthManager.Instance.OnLogout += HandleLogout;
+                LoginManager.Instance.OnLoginResult += HandleLoginResult;
+                LoginManager.Instance.OnLogout += HandleLogout;
             }
             
             if (RoomManager.Instance != null)
@@ -68,10 +68,10 @@ namespace Client{
         private void OnDestroy()
         {
             // 取消事件注册
-            if (AuthManager.Instance != null)
+            if (LoginManager.Instance != null)
             {
-                AuthManager.Instance.OnLoginResult -= HandleLoginResult;
-                AuthManager.Instance.OnLogout -= HandleLogout;
+                LoginManager.Instance.OnLoginResult -= HandleLoginResult;
+                LoginManager.Instance.OnLogout -= HandleLogout;
             }
             
             if (RoomManager.Instance != null)

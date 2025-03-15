@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class MainThreadDispatcher : MonoBehaviour
+public class MainThreadDispatcher : MonoSingletonBase<MainThreadDispatcher>
 {
     private static MainThreadDispatcher _instance;
     public static MainThreadDispatcher Instance
