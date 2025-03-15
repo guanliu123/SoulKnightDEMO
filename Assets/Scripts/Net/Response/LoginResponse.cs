@@ -112,6 +112,7 @@ public class LoginResponse : ResponseBase
     
     protected override void Handler(ISocketPack pack)
     {
+        LogTool.Log("Login Server Response : " + pack.s);
         base.Handler(pack);
         if (!onLoginFail(pack))
         {

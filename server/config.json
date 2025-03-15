@@ -1,0 +1,16 @@
+{
+    "server": {
+        "host": "127.0.0.1",
+        "port": 5555
+    },
+    "database": {
+        "host": "localhost",
+        "user": "root",
+        "password": "123456",
+        "name": "soulknight"
+    },
+    "logging": {
+        "level": "INFO",
+        "prefix": "logs/server"
+    }
+}
