@@ -31,14 +31,35 @@ public class RectCollider : MonoBehaviour, IRect
     
     public float X
     {
-        get => transform.position.x;
-        set => transform.position = new Vector3(value, Y, transform.position.z);
+        get 
+        {
+            // 添加三重安全校验
+            if (this == null || transform == null || !gameObject) 
+                return 0f;
+            return transform.position.x;
+        }
+        set 
+        {
+            if (this == null || transform == null || !gameObject) 
+                return;
+            transform.position = new Vector3(value, Y, transform.position.z);
+        }
     }
 
     public float Y
     {
-        get => transform.position.y;
-        set => transform.position = new Vector3(X, value, transform.position.z);
+        get 
+        {
+            if (this == null || transform == null || !gameObject) 
+                return 0f;
+            return transform.position.y;
+        }
+        set 
+        {
+            if (this == null || transform == null || !gameObject) 
+                return;
+            transform.position = new Vector3(X, value, transform.position.z);
+        }
     }
 
     public float Width
@@ -112,7 +133,6 @@ public class RectCollider : MonoBehaviour, IRect
             if (CheckCollision(this, other))
             {
                 // 触发碰撞事件
-                Debug.Log($"Collision: {name} & {((MonoBehaviour)other).name}");
                 TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)other).gameObject);
             }
         }

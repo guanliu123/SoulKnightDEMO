@@ -255,7 +255,7 @@ namespace OPH.Collision.QuadTree {
         public void Insert(T node) {
             if (!IsRectInBounds(node))
             {
-                Debug.LogWarning($"Object {node} is out of quadtree bounds");
+                LogTool.LogWarning($"Object {node} is out of quadtree bounds");
                 return;
             }
             if (IsLeaf) {
