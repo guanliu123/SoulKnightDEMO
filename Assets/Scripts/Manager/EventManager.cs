@@ -71,7 +71,7 @@ public class EventManager : SingletonBase<EventManager>
         if (eventDic.ContainsKey(name))
             (eventDic[name] as EventInfo<T>).actions?.Invoke(info);
         else if(singEventDic.ContainsKey(name))
-            (eventDic[name] as EventInfo<T>).actions?.Invoke(info);
+            (singEventDic[name] as EventInfo<T>).actions?.Invoke(info);
         else
         {
             Debug.LogWarning("Event named ["+name+"] not found!");

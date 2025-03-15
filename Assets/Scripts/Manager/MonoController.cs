@@ -69,7 +69,7 @@ public class MonoController : MonoBehaviour
                 gap = 0;
             }
             
-            EventManager.Instance.Emit(EventId.ON_APPLICATION_RESUME, gap);
+            EventManager.Instance.Emit<long>(EventId.ON_APPLICATION_RESUME, gap);
         }
     }
     

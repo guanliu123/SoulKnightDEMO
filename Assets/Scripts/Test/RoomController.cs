@@ -100,7 +100,7 @@ public class RoomController : AbstractController
         if (isEnterEnemyFloor)
         {
             RoomType roomType = (enterRoom.roomInstance.Room as CustomRoom).RoomType;
-            if (IsPlayerInFloor(GetFloorCollider(enterRoom).bounds, player.gameObject.transform.Find("BulletCheckBox").GetComponent<CapsuleCollider2D>().bounds))
+            if (IsPlayerInFloor(GetFloorCollider(enterRoom).bounds, player.root.GetTriggerDetection().GetComponent<CapsuleCollider2D>().bounds))
             {
                 if (!isEnterEnemyFloorStart)
                 {
