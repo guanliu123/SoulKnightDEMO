@@ -60,11 +60,13 @@ public class GameRoot : MonoBehaviour
     private void InitNecessaryComponents()
     {
         NetInit();
+        EventManager.Instance.Init();
         LoadManager.Instance.Init();
         TimerManager.Instance.Init();
         TableManager.Instance.Init();
         ConfigData.Init();
-        EventManager.Instance.Init();
+        CharacterDataCenter.Instance.Init();
+        ItemDataCenter.Instance.Init();
     }
     
     public void NetInit()

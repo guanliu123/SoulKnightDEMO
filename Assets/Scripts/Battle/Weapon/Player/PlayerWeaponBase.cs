@@ -92,13 +92,13 @@ public class PlayerWeaponBase:WeaponBase
         gameObject.transform.localRotation = Quaternion.identity;
 
         //放到场景中的武器挂载可互动根
-        var ir = gameObject.GetComponent<InteractiveObjectRoot>();
-        if (ir == null)
+        var ir = gameObject.GetComponent<WeaponRoot>();
+        /*if (ir == null)
         {
             ir = gameObject.AddComponent<InteractiveObjectRoot>();
-            ir.type = InteractiveObjectType.Weapon;
+            ir.Type = InteractiveObjectType.Weapon;
             ir.itemIndicator = GameTool.GetGameObjectFromChildren(gameObject, "ItemIndicator");
-        }
+        }*/
         ir.IsInteractable = true;
     }
 }

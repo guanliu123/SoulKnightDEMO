@@ -27,8 +27,6 @@ public class HomeScene : SceneBase
 
     private void InitNecessary()
     {
-        CharacterDataCenter.Instance.Init();
-        ItemDataCenter.Instance.Init();
         AbstractManager.Instance.TurnOnCameraAbstract();
         AbstractManager.Instance.TurnOnPlayerAbstract();
         
@@ -41,8 +39,6 @@ public class HomeScene : SceneBase
     private async UniTaskVoid InitNecessaryAsync()
     {
         // 同步初始化
-        CharacterDataCenter.Instance.Init();
-        ItemDataCenter.Instance.Init();
         AbstractManager.Instance.TurnOnCameraAbstract();
         AbstractManager.Instance.TurnOnPlayerAbstract();
         

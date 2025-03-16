@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
+using TMPro;
 using UnityEngine;
 
-public class WeaponRoot : ItemRoot
+public class WeaponRoot : InteractiveObjectRoot
 {
     public WeaponType weaponType;
 
@@ -14,7 +15,10 @@ public class WeaponRoot : ItemRoot
 
     private void Awake()
     {
-        Type=ItemRootType.Weapon;
+        Type=InteractiveObjectType.Weapon;
+        objName = ItemDataCenter.Instance.GetWeaponData(weaponType).Name;
+        var t = itemIndicator.GetComponent<UIContainer>().GetXXX("Text") as TMP_Text;
+        t.text = objName;
     }
 
     public Transform GetFirePoint()

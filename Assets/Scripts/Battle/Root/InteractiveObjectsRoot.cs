@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
+using TMPro;
 using UnityEngine;
 
 public class InteractiveObjectRoot : MonoBehaviour
 {
-    public InteractiveObjectType type;
+    [HideInInspector]public InteractiveObjectType Type { get;protected set; }
 
     public GameObject itemIndicator;
 
@@ -33,6 +34,8 @@ public class InteractiveObjectRoot : MonoBehaviour
         }
     }
 
+    protected string objName;
+
     private void Awake()
     {
         IsInteractable=true;
@@ -46,6 +49,7 @@ public class InteractiveObjectRoot : MonoBehaviour
         {
             collider = obj;
             itemIndicator.SetActive(true);
+            
         });
         TriggerManager.Instance.RegisterObserver(TriggerType.TriggerExit,gameObject, (obj) =>
         {
@@ -67,7 +71,7 @@ public class InteractiveObjectRoot : MonoBehaviour
         if (collider!=null&&Input.GetKeyDown(KeyCode.F))
         {
             //发送互动事件
-            EventManager.Instance.Emit(EventId.ON_INTERACTING_OBJECT,new object[]{this.type,this});
+            EventManager.Instance.Emit(EventId.ON_INTERACTING_OBJECT,new object[]{this.Type,this});
         }
     }
 
