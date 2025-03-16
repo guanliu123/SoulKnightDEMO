@@ -1,171 +1,104 @@
-using System.Collections.Generic;
+using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using EnumCenter;
 using OPH.Collision.QuadTree;
-using UnityEditor;
-using UnityEngine;
-
 using UnityEngine.Pool;
-
-static class ListPool<T>
-{
-    private static readonly ObjectPool<List<T>> _pool = new(
-        () => new List<T>(64),
-        list => list.Clear(),
-        list => list.Clear()
-    );
-
-    public static List<T> Get() => _pool.Get();
-    public static void Release(List<T> list) => _pool.Release(list);
-}
 
 [ExecuteInEditMode]
 public class RectCollider : MonoBehaviour, IRect
 {
-    [SerializeField] private Vector2 _size = Vector2.one;
-    
-    private Vector3 _lastPosition;
-    private Vector2 _lastSize;
-    private static QTree<IRect> _quadTree;
-    private bool _isInTree;
-    
+    #region 公共接口
     public float X
     {
-        get 
+        get => _worldPosition.x;
+        set
         {
-            // 添加三重安全校验
-            if (this == null || transform == null || !gameObject) 
-                return 0f;
-            return transform.position.x;
-        }
-        set 
-        {
-            if (this == null || transform == null || !gameObject) 
-                return;
-            transform.position = new Vector3(value, Y, transform.position.z);
+            Vector3 newPos = new Vector3(value, Y, transform.position.z);
+            _offset = transform.InverseTransformPoint(newPos);
+            MarkDirty();
         }
     }
 
     public float Y
     {
-        get 
+        get => _worldPosition.y;
+        set
         {
-            if (this == null || transform == null || !gameObject) 
-                return 0f;
-            return transform.position.y;
-        }
-        set 
-        {
-            if (this == null || transform == null || !gameObject) 
-                return;
-            transform.position = new Vector3(X, value, transform.position.z);
+            Vector3 newPos = new Vector3(X, value, transform.position.z);
+            _offset = transform.InverseTransformPoint(newPos);
+            MarkDirty();
         }
     }
 
     public float Width
     {
         get => _size.x;
-        set => _size.x = value;
+        set
+        {
+            _size.x = Mathf.Max(0.1f, value);
+            MarkDirty();
+        }
     }
 
     public float Height
     {
         get => _size.y;
-        set => _size.y = value;
-    }
-
-    // 碰撞检测管理系统（参考四叉树优化思路）
-    private static HashSet<IRect> _allColliders = new();
-    /*void OnEnable() => _allColliders.Add(this);
-    void OnDisable() => _allColliders.Remove(this);*/
-    
-    void OnEnable()
-    {
-        // 延迟四叉树初始化
-        if (_quadTree == null)
+        set
         {
-            const int worldSize = 150; // 根据场景实际大小设置
-            _quadTree = QTree<IRect>.CreateRoot()
-                .InitRect(0, 0, worldSize * 2, worldSize * 2);
-        }
-    
-        // 延迟插入四叉树
-        if (!_isInTree)
-        {
-            _quadTree.Insert(this);
-            _isInTree = true;
+            _size.y = Mathf.Max(0.1f, value);
+            MarkDirty();
         }
     }
+    #endregion
 
-    void OnDisable()
+    #region 序列化字段
+    [SerializeField]public Vector2 _offset;
+    [SerializeField] Vector2 _size = Vector2.one;
+    [SerializeField] bool _drawGizmos = true;
+    [SerializeField] Color _gizmoColor = Color.green;
+    #endregion
+
+    #region 私有变量
+    private Vector2 _worldPosition;
+    private Vector3 _lastTransformPosition;
+    private Vector2 _lastSize;
+    private Vector2 _lastOffset;
+    private bool _isDirty;
+    private bool _isInTree;
+    private static QTree<IRect> _quadTree;
+    #endregion
+
+    #region 生命周期方法
+    void Awake()
     {
-        if (_isInTree)
-        {
-            _quadTree.Remove(this);
-            _isInTree = false;
-        }
+        InitializeQuadTree();
+        CacheTransformState();
     }
 
     void Update()
     {
-        // 检测位置变化
-        if (transform.position != _lastPosition || _size != _lastSize)
-        {
-            UpdateQuadTreePosition();
-            _lastPosition = transform.position;
-            _lastSize = _size;
-        }
-        // 使用四叉树查询潜在碰撞对象（泛型队列重用优化）
-        var candidates = new List<IRect>();
+        CheckTransformChanges();
+        UpdateWorldPosition();
+        
+        if (_quadTree == null) return;
+
+        // 使用对象池获取临时列表（避免GC分配）
+        var candidates = ListPool<IRect>.Get();
         _quadTree.GetAroundObj(this, candidates);
 
         foreach (var other in candidates)
         {
-            // 防止重复检测（ID比较优化）
-            /*if (GetInstanceID() < ((MonoBehaviour)other).GetInstanceID())
-            {
-                if (CheckCollision(this, other))
-                {
-                    // 触发碰撞事件
-                    Debug.Log($"Collision: {name} & {((MonoBehaviour)other).name}");
-                }
-            }*/
             if (CheckCollision(this, other))
             {
-                // 触发碰撞事件
                 TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)other).gameObject);
             }
         }
-        
-         // 正确释放到对象池
+
+        // 正确释放到对象池（修正语法错误）
         ListPool<IRect>.Release(candidates);
     }
     
-    // 添加动态更新四叉树逻辑（在位置/尺寸变化时触发）
-    void UpdateQuadTreePosition()
-    {
-        if (_isInTree)
-        {
-            _quadTree.Remove(this);
-            _quadTree.Insert(this);
-        }
-    }
-
-// 添加编辑器触发更新（同时处理撤销操作）
-#if UNITY_EDITOR
-    void OnValidate()
-    {
-        if (EditorApplication.isPlayingOrWillChangePlaymode)
-            return;
-
-        if (_isInTree)
-        {
-            _quadTree.Remove(this);
-            _quadTree.Insert(this);
-        }
-    }
-#endif
-
     // 基于轴对齐矩形相交算法 ([cxyzjd.com](https://www.cxyzjd.com/article/zouxin_88/100831313))
     bool CheckCollision(IRect a, IRect b)
     {
@@ -174,11 +107,154 @@ public class RectCollider : MonoBehaviour, IRect
         return dx <= (a.Width + b.Width)/2 && dy <= (a.Height + b.Height)/2;
     }
 
-    // 编辑器绘制 ([testerhome.com](https://testerhome.com/topics/31659))
+    void OnEnable()
+    {
+        StartCoroutine(DelayedRegistration());
+    }
+
+    void OnDisable()
+    {
+        RemoveFromQuadTree();
+    }
+
+    void OnDestroy()
+    {
+        RemoveFromQuadTree();
+    }
+    #endregion
+
+    #region 四叉树管理
+    private void InitializeQuadTree()
+    {
+        if (_quadTree ==null)
+        {
+            var sceneBounds = CalculateSceneBounds();
+            _quadTree=QTree<IRect>.CreateRoot(4,6).InitRect(sceneBounds.center.x,sceneBounds.center.y,sceneBounds.size.x,
+                sceneBounds.size.y);
+            /*_quadTree = new QTree<IRect>(
+                sceneBounds.center.x,
+                sceneBounds.center.y,
+                sceneBounds.size.x,
+                sceneBounds.size.y
+            );*/
+        }
+    }
+
+    private IEnumerator DelayedRegistration()
+    {
+        yield return new WaitForEndOfFrame();
+        AddToQuadTree();
+    }
+
+    private void AddToQuadTree()
+    {
+        if (_quadTree != null && !_isInTree)
+        {
+            _quadTree.Insert(this);
+            _isInTree = true;
+        }
+    }
+
+    private void RemoveFromQuadTree()
+    {
+        if (_quadTree != null && _isInTree)
+        {
+            _quadTree.Remove(this);
+            _isInTree = false;
+        }
+    }
+
+    private void UpdateQuadTree()
+    {
+        if (_quadTree != null && _isInTree)
+        {
+            _quadTree.UpdateNode(this);
+        }
+    }
+    #endregion
+
+    #region 状态管理
+    private void CacheTransformState()
+    {
+        _lastTransformPosition = transform.position;
+        _lastSize = _size;
+        _lastOffset = _offset;
+        UpdateWorldPosition();
+    }
+
+    private void CheckTransformChanges()
+    {
+        bool transformChanged = transform.position != _lastTransformPosition;
+        bool sizeChanged = _size != _lastSize;
+        bool offsetChanged = _offset != _lastOffset;
+
+        if (transformChanged || sizeChanged || offsetChanged)
+        {
+            MarkDirty();
+            CacheTransformState();
+        }
+    }
+
+    private void UpdateWorldPosition()
+    {
+        _worldPosition = transform.TransformPoint(_offset);
+    }
+
+    private void MarkDirty()
+    {
+        if (!_isDirty)
+        {
+            StartCoroutine(DelayedUpdate());
+            _isDirty = true;
+        }
+    }
+
+    private IEnumerator DelayedUpdate()
+    {
+        yield return new WaitForEndOfFrame();
+        UpdateQuadTree();
+        _isDirty = false;
+    }
+    #endregion
+
+    #region 可视化
+    #if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Vector3 size = new Vector3(Width, Height, 0.1f);
-        Gizmos.DrawWireCube(transform.position, size);
+        if (!_drawGizmos) return;
+
+        Gizmos.color = _gizmoColor;
+        DrawColliderFrame();
+        DrawOffsetHandle();
     }
+
+    private void DrawColliderFrame()
+    {
+        Vector3 center = new Vector3(X, Y, 0);
+        Vector3 size = new Vector3(Width, Height, 0.1f);
+        
+        Gizmos.DrawWireCube(center, size);
+        Gizmos.color *= new Color(1,1,1,0.3f);
+        Gizmos.DrawCube(center, size);
+    }
+
+    private void DrawOffsetHandle()
+    {
+        Vector3 handlePos = transform.TransformPoint(_offset);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawSphere(handlePos, 0.1f);
+    }
+    #endif
+    #endregion
+
+    #region 工具方法
+    private Bounds CalculateSceneBounds()
+    {
+        var renderers = FindObjectsOfType<Renderer>();
+        Bounds bounds = new Bounds();
+        foreach (var r in renderers) bounds.Encapsulate(r.bounds);
+        return bounds;
+    }
+    #endregion
 }
+

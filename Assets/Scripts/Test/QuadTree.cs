@@ -16,10 +16,15 @@ namespace OPH.Collision.QuadTree {
         /// 配置是否初始化
         /// </summary>
         private static bool InitConfig = false;
+
         /// <summary>
         /// 最大深度
         /// </summary>
-        private static int MAX_DEPTH = 5;
+        public static int MAX_DEPTH
+        {
+            get;
+            private set;
+        } = 5;
         /// <summary>
         /// 节点孩子数量阈值
         /// </summary>
@@ -45,7 +50,7 @@ namespace OPH.Collision.QuadTree {
         /// <summary>
         /// 是否是叶子节点
         /// </summary>
-        protected bool IsLeaf;
+        public bool IsLeaf { get;protected set; }
         /// <summary>
         /// 对象引用
         /// </summary>
@@ -53,7 +58,10 @@ namespace OPH.Collision.QuadTree {
         /// <summary>
         /// 子节点（4）
         /// </summary>
-        protected QTree<T>[] childNodes;
+        public QTree<T>[] childNodes
+        {
+            get;private set;
+        }
 
         #region Pool
         /// <summary>
@@ -253,11 +261,11 @@ namespace OPH.Collision.QuadTree {
         /// </summary>
         /// <param name="node"></param>
         public void Insert(T node) {
-            if (!IsRectInBounds(node))
+            /*if (!IsRectInBounds(node))
             {
                 LogTool.LogWarning($"Object {node} is out of quadtree bounds");
                 return;
-            }
+            }*/
             if (IsLeaf) {
                 // 大于区域上限 && 当前深度未满足上限 =》 分割+重新插入
                 if (ChildCount + 1 > MAX_Threshold && Depth < MAX_DEPTH) {
@@ -405,6 +413,29 @@ namespace OPH.Collision.QuadTree {
         {
             Remove(node);
             Insert(node);
+        }
+        
+        public void DrawGizmos()
+        {
+#if UNITY_EDITOR
+            // 根据深度设置颜色（HSV色轮算法）
+            float hue = (float)Depth / QTree<T>.MAX_DEPTH;
+            Gizmos.color = Color.HSVToRGB(hue, 0.8f, 1f);
+    
+            // 绘制当前节点边界
+            Vector3 center = new Vector3(X, Y, 0);
+            Vector3 size = new Vector3(Width, Height, 0.1f);
+            Gizmos.DrawWireCube(center, size);
+
+            // 递归绘制子节点
+            if (!IsLeaf)
+            {
+                foreach (var child in childNodes)
+                {
+                    child.DrawGizmos();
+                }
+            }
+#endif
         }
     }
 }
