@@ -68,7 +68,6 @@ public class RectCollider : MonoBehaviour, IRect
     private bool _isDirty;
     private bool _isInTree;
     private QuadTreeSystem _quadTreeSystem;
-    //private static QTree<IRect> _quadTree;
     #endregion
 
     #region 生命周期方法
@@ -80,10 +79,9 @@ public class RectCollider : MonoBehaviour, IRect
 
     void Update()
     {
-        //CheckTransformChanges();
         UpdateWorldPosition();
         
-        if (_quadTreeSystem == null||!canCollide) return;
+        if (_quadTreeSystem == null||!canCollide||gameObject.tag == "Obstacles") return;
 
         // 使用对象池获取临时列表（避免GC分配）
         var candidates = ListPool<IRect>.Get();
@@ -112,44 +110,28 @@ public class RectCollider : MonoBehaviour, IRect
     void OnEnable()
     {
         _quadTreeSystem = AbstractManager.Instance.GetSystem<QuadTreeSystem>();
+        //障碍物自动加入四叉树管理
+        if (gameObject.tag == "Obstacles")
+        {
+            EnableCollision();
+            canCollide = false;
+        }
     }
 
     void OnDisable()
     {
         ForceRemoveFromQuadTree();
-        //RemoveFromQuadTree();
     }
 
     void OnDestroy()
     {
         ForceRemoveFromQuadTree();
-        //RemoveFromQuadTree();
     }
-    #endregion
-    
-    /*private void InitializeQuadTree()
-    {
-        if (_quadTree ==null)
-        {
-            var sceneBounds = CalculateSceneBounds();
-            _quadTree=QTree<IRect>.CreateRoot(4,6).InitRect(sceneBounds.center.x,sceneBounds.center.y,sceneBounds.size.x,
-                sceneBounds.size.y);
-            /*_quadTree = new QTree<IRect>(
-                sceneBounds.center.x,
-                sceneBounds.center.y,
-                sceneBounds.size.x,
-                sceneBounds.size.y
-            );#1#
-        }
-    }*/
-    
-    #region 新增碰撞控制字段
-    private bool _pendingRegistration; // 延迟注册状态标记
     #endregion
 
     #region 碰撞控制API
     /// <summary>
-    /// 激活碰撞检测 （敌人生成时调用）
+    /// 激活碰撞检测
     /// </summary>
     public void EnableCollision()
     {
@@ -162,7 +144,7 @@ public class RectCollider : MonoBehaviour, IRect
     }
 
     /// <summary>
-    /// 禁用碰撞检测 （敌人死亡时调用）
+    /// 禁用碰撞检测
     /// </summary>
     public void DisableCollision()
     {
@@ -170,62 +152,13 @@ public class RectCollider : MonoBehaviour, IRect
         ForceRemoveFromQuadTree();
     }
     #endregion
-
-    #region 改造后的四叉树管理
-    /*private IEnumerator DelayedRegistration()
-    {
-        if (_pendingRegistration) yield break;
-        
-        _pendingRegistration = true;
-        yield return new WaitForEndOfFrame();
-
-        if (_collisionEnabled)
-        {
-            _quadTree.Insert(this);
-            _isInTree = true;
-        }
-        _pendingRegistration = false;
-    }*/
+    
 
     private void ForceRemoveFromQuadTree()
     {
         if(!_isInTree) return;
         _quadTreeSystem.RemoveFromTree(this);
     }
-
-
-    /*private IEnumerator DelayedRegistration()
-    {
-        yield return new WaitForEndOfFrame();
-        AddToQuadTree();
-    }*/
-
-    /*private void AddToQuadTree()
-    {
-        if (_quadTree != null && !_isInTree)
-        {
-            _quadTree.Insert(this);
-            _isInTree = true;
-        }
-    }*/
-
-    /*private void RemoveFromQuadTree()
-    {
-        if (_quadTree != null && _isInTree)
-        {
-            _quadTree.Remove(this);
-            _isInTree = false;
-        }
-    }*/
-
-    /*private void UpdateQuadTree()
-    {
-        if (_quadTree != null && _isInTree)
-        {
-            _quadTree.UpdateNode(this);
-        }
-    }*/
-    #endregion
 
     #region 状态管理
     private void CacheTransformState()
@@ -270,6 +203,49 @@ public class RectCollider : MonoBehaviour, IRect
         _isDirty = false;
     }
     #endregion
+    
+    // 尺寸设置方法
+    public void SetWorldSize(Vector2 worldSize)
+    {
+        if (transform.parent != null)
+        {
+            Vector3 parentScale = transform.parent.lossyScale;
+            if (Mathf.Approximately(parentScale.x, 0) || 
+                Mathf.Approximately(parentScale.y, 0))
+            {
+                Debug.LogError($"父级缩放值异常：{parentScale}");
+                return;
+            }
+
+            // 精确计算本地缩放
+            transform.localScale = new Vector3(
+                worldSize.x / parentScale.x,
+                worldSize.y / parentScale.y,
+                1
+            );
+        }
+        else
+        {
+            transform.localScale = new Vector3(worldSize.x, worldSize.y, 1);
+        }
+
+        _size = worldSize;
+    }
+
+    // 缩放补偿逻辑
+    private void AdjustLocalScale()
+    {
+        if (transform.parent != null)
+        {
+            Vector3 parentLossyScale = transform.parent.lossyScale;
+            transform.localScale = new Vector3(
+                _size.x / parentLossyScale.x,
+                _size.y / parentLossyScale.y,
+                1
+            );
+            _size = Vector2.Scale(transform.localScale, parentLossyScale);
+        }
+    }
     
     #region 可视化
 #if UNITY_EDITOR

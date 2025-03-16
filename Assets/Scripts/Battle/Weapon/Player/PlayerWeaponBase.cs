@@ -49,8 +49,7 @@ public class PlayerWeaponBase:WeaponBase
         base.OnUpdate();
         fireTimer+=Time.deltaTime;
     }
-
-    //射击按钮按下松开发射一次
+    
     public void ControlWeapon(bool isAttack)
     {
         if (isAttack && fireTimer > fireCoolTime && (maxRapidCnt >10||rapidNum<maxRapidCnt))
@@ -62,8 +61,7 @@ public class PlayerWeaponBase:WeaponBase
             }
             OnFire();
         }
-
-        if (!isAttack)
+        else if (!isAttack)
         {
             rapidNum=0;
         }

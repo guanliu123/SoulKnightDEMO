@@ -530,8 +530,12 @@ public class MapManager : MonoSingletonBase<MapManager>
         Collideable.GetComponent<CompositeCollider2D>().vertexDistance = 0.01f;
         Collideable.gameObject.layer = LayerMask.NameToLayer("Obstacle");
         Collideable.gameObject.tag = "Obstacles";
+        
+        //todo:目前无法正常生成竖直墙面的，好像原本房间地图的collider就没有数值墙面
+        //GenerateRectColliders(Wall);
+        //GenerateRectColliders(Collideable.gameObject);
     }
-
+    
     private LevelGraph LoadGraph(string path)
     {
         LevelGraph res = null;
@@ -543,5 +547,87 @@ public class MapManager : MonoSingletonBase<MapManager>
         }
 
         return res;
+    }
+    
+    private void GenerateRectColliders(GameObject tilemapObj)
+    {
+        CompositeCollider2D composite = tilemapObj.GetComponent<CompositeCollider2D>();
+        if (composite == null) return;
+    
+        composite.GenerateGeometry(); // 确保生成最新数据
+        //composite.enabled = false; // 禁用原生碰撞
+        
+        if (composite.pathCount == 0)
+        {
+            Debug.LogError($"瓦片地图 {tilemapObj.name} 无有效碰撞路径");
+            return;
+        }
+
+        for (int i = 0; i < composite.pathCount; i++)
+        {
+            List<Vector2> path = new List<Vector2>();
+            composite.GetPath(i, path);
+            
+            // 过滤无效路径
+            if (path.Count < 3) // 至少需要3个点构成闭合区域
+            {
+                Debug.LogWarning($"跳过无效路径 {i}，点数：{path.Count}");
+                continue;
+            }
+
+            // 计算物体空间包围框
+            Bounds worldBounds = CalculateWorldSpaceBounds(path, composite.transform);
+            
+            // 新增尺寸验证
+            if (worldBounds.size.magnitude > 50)
+            {
+                Debug.LogError($"异常尺寸路径 {i}，尺寸：{worldBounds.size}");
+                continue;
+            }
+
+            CreateRectCollider(worldBounds, tilemapObj.transform);
+        }
+    }
+
+    // 计算世界空间包围框
+    private Bounds CalculateWorldSpaceBounds(List<Vector2> localPoints, Transform sourceTransform)
+    {
+        Vector2 min = new Vector2(float.MaxValue, float.MaxValue);
+        Vector2 max = new Vector2(float.MinValue, float.MinValue);
+        int validPointCount = 0;
+
+        foreach (var localPoint in localPoints)
+        {
+            // 跳过无效坐标点
+            if (float.IsInfinity(localPoint.x) || float.IsNaN(localPoint.y))
+                continue;
+
+            Vector2 worldPoint = sourceTransform.TransformPoint(localPoint);
+            min = Vector2.Min(min, worldPoint);
+            max = Vector2.Max(max, worldPoint);
+            validPointCount++;
+        }
+
+        if (validPointCount == 0)
+            throw new System.ArgumentException("路径中无有效顶点");
+
+        Vector2 center = (min + max) * 0.5f;
+        Vector2 size = max - min;
+        return new Bounds(center, size);
+    }
+
+// 创建精确的矩形碰撞体
+    private void CreateRectCollider(Bounds worldBounds, Transform parent)
+    {
+        GameObject colliderObj = new GameObject("RectCollider");
+        colliderObj.tag = "Obstacles";
+        colliderObj.transform.SetParent(parent, true);
+    
+        // 直接设置世界坐标
+        colliderObj.transform.position = worldBounds.center;
+        colliderObj.transform.rotation = Quaternion.identity;
+    
+        RectCollider rc = colliderObj.AddComponent<RectCollider>();
+        rc.SetWorldSize(worldBounds.size);
     }
 }
