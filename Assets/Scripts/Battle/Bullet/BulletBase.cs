@@ -6,6 +6,7 @@ using UnityEngine;
 public class BulletBase : Item
 {
     protected TriggerDetection detection;
+    protected RectCollider rectCollider;
     public BulletBase(GameObject obj) : base(obj)
     {
         
@@ -14,15 +15,24 @@ public class BulletBase : Item
     protected override void OnInit()
     {
         base.OnInit();
+        rectCollider=gameObject.GetComponent<RectCollider>();
+        rectCollider.EnableCollision();
         detection = gameObject.GetComponent<TriggerDetection>();
-        if (detection)
+        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter,gameObject,"Obstacles",ColliderObstacleEvent);
+        /*if (detection)
         {
             detection.AddTriggerListener(TriggerType.TriggerEnter,"Obstacles", (obj) =>
             {
                 Remove();
                 OnHitObstacle();
             });
-        }
+        }*/
+    }
+
+    private void ColliderObstacleEvent(GameObject obj)
+    {
+        Remove();
+        OnHitObstacle();
     }
 
     protected override void OnUpdate()
@@ -34,7 +44,9 @@ public class BulletBase : Item
     protected override void OnExit()
     {
         base.OnExit();
-        detection.OnExit();
+        //detection.OnExit();
+        rectCollider.DisableCollision();
+        TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter,gameObject);
         ObjectPoolManager.Instance.GetPool(PoolName).DeSpawn(gameObject,PoolName);
     }
 

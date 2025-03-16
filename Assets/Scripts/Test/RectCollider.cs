@@ -16,7 +16,7 @@ public class RectCollider : MonoBehaviour, IRect
         {
             Vector3 newPos = new Vector3(value, Y, transform.position.z);
             _offset = transform.InverseTransformPoint(newPos);
-            MarkDirty();
+            //MarkDirty();
         }
     }
 
@@ -27,7 +27,7 @@ public class RectCollider : MonoBehaviour, IRect
         {
             Vector3 newPos = new Vector3(X, value, transform.position.z);
             _offset = transform.InverseTransformPoint(newPos);
-            MarkDirty();
+            //MarkDirty();
         }
     }
 
@@ -37,7 +37,7 @@ public class RectCollider : MonoBehaviour, IRect
         set
         {
             _size.x = Mathf.Max(0.1f, value);
-            MarkDirty();
+            //MarkDirty();
         }
     }
 
@@ -47,7 +47,7 @@ public class RectCollider : MonoBehaviour, IRect
         set
         {
             _size.y = Mathf.Max(0.1f, value);
-            MarkDirty();
+            //MarkDirty();
         }
     }
     #endregion
@@ -60,36 +60,38 @@ public class RectCollider : MonoBehaviour, IRect
     #endregion
 
     #region 私有变量
+    private bool canCollide = false;
     private Vector2 _worldPosition;
     private Vector3 _lastTransformPosition;
     private Vector2 _lastSize;
     private Vector2 _lastOffset;
     private bool _isDirty;
     private bool _isInTree;
-    private static QTree<IRect> _quadTree;
+    private QuadTreeSystem _quadTreeSystem;
+    //private static QTree<IRect> _quadTree;
     #endregion
 
     #region 生命周期方法
     void Awake()
     {
-        InitializeQuadTree();
+        //InitializeQuadTree();
         CacheTransformState();
     }
 
     void Update()
     {
-        CheckTransformChanges();
+        //CheckTransformChanges();
         UpdateWorldPosition();
         
-        if (_quadTree == null) return;
+        if (_quadTreeSystem == null||!canCollide) return;
 
         // 使用对象池获取临时列表（避免GC分配）
         var candidates = ListPool<IRect>.Get();
-        _quadTree.GetAroundObj(this, candidates);
+        _quadTreeSystem.GetAroundObj(this, candidates);
 
         foreach (var other in candidates)
         {
-            if (CheckCollision(this, other))
+            if ( CheckCollision(this, other))
             {
                 TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)other).gameObject);
             }
@@ -109,22 +111,23 @@ public class RectCollider : MonoBehaviour, IRect
 
     void OnEnable()
     {
-        StartCoroutine(DelayedRegistration());
+        _quadTreeSystem = AbstractManager.Instance.GetSystem<QuadTreeSystem>();
     }
 
     void OnDisable()
     {
-        RemoveFromQuadTree();
+        ForceRemoveFromQuadTree();
+        //RemoveFromQuadTree();
     }
 
     void OnDestroy()
     {
-        RemoveFromQuadTree();
+        ForceRemoveFromQuadTree();
+        //RemoveFromQuadTree();
     }
     #endregion
-
-    #region 四叉树管理
-    private void InitializeQuadTree()
+    
+    /*private void InitializeQuadTree()
     {
         if (_quadTree ==null)
         {
@@ -136,41 +139,92 @@ public class RectCollider : MonoBehaviour, IRect
                 sceneBounds.center.y,
                 sceneBounds.size.x,
                 sceneBounds.size.y
-            );*/
+            );#1#
+        }
+    }*/
+    
+    #region 新增碰撞控制字段
+    private bool _pendingRegistration; // 延迟注册状态标记
+    #endregion
+
+    #region 碰撞控制API
+    /// <summary>
+    /// 激活碰撞检测 （敌人生成时调用）
+    /// </summary>
+    public void EnableCollision()
+    {
+        canCollide = true;
+        if (!_isInTree)
+        {
+            _isInTree = true;
+            _quadTreeSystem.AddToTree(this);
         }
     }
 
-    private IEnumerator DelayedRegistration()
+    /// <summary>
+    /// 禁用碰撞检测 （敌人死亡时调用）
+    /// </summary>
+    public void DisableCollision()
+    {
+        canCollide = false;
+        ForceRemoveFromQuadTree();
+    }
+    #endregion
+
+    #region 改造后的四叉树管理
+    /*private IEnumerator DelayedRegistration()
+    {
+        if (_pendingRegistration) yield break;
+        
+        _pendingRegistration = true;
+        yield return new WaitForEndOfFrame();
+
+        if (_collisionEnabled)
+        {
+            _quadTree.Insert(this);
+            _isInTree = true;
+        }
+        _pendingRegistration = false;
+    }*/
+
+    private void ForceRemoveFromQuadTree()
+    {
+        if(!_isInTree) return;
+        _quadTreeSystem.RemoveFromTree(this);
+    }
+
+
+    /*private IEnumerator DelayedRegistration()
     {
         yield return new WaitForEndOfFrame();
         AddToQuadTree();
-    }
+    }*/
 
-    private void AddToQuadTree()
+    /*private void AddToQuadTree()
     {
         if (_quadTree != null && !_isInTree)
         {
             _quadTree.Insert(this);
             _isInTree = true;
         }
-    }
+    }*/
 
-    private void RemoveFromQuadTree()
+    /*private void RemoveFromQuadTree()
     {
         if (_quadTree != null && _isInTree)
         {
             _quadTree.Remove(this);
             _isInTree = false;
         }
-    }
+    }*/
 
-    private void UpdateQuadTree()
+    /*private void UpdateQuadTree()
     {
         if (_quadTree != null && _isInTree)
         {
             _quadTree.UpdateNode(this);
         }
-    }
+    }*/
     #endregion
 
     #region 状态管理
@@ -212,13 +266,13 @@ public class RectCollider : MonoBehaviour, IRect
     private IEnumerator DelayedUpdate()
     {
         yield return new WaitForEndOfFrame();
-        UpdateQuadTree();
+        //UpdateQuadTree();
         _isDirty = false;
     }
     #endregion
-
+    
     #region 可视化
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
         if (!_drawGizmos) return;
@@ -244,17 +298,7 @@ public class RectCollider : MonoBehaviour, IRect
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(handlePos, 0.1f);
     }
-    #endif
-    #endregion
-
-    #region 工具方法
-    private Bounds CalculateSceneBounds()
-    {
-        var renderers = FindObjectsOfType<Renderer>();
-        Bounds bounds = new Bounds();
-        foreach (var r in renderers) bounds.Encapsulate(r.bounds);
-        return bounds;
-    }
+#endif
     #endregion
 }
 

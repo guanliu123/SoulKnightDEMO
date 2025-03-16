@@ -22,7 +22,7 @@ public class CharacterBase
     public CharacterAttribute Attribute { get; protected set; }
     
     //检测子弹的物体
-    public GameObject TriggerBox { get;protected set; }
+    public RectCollider rectCollider { get;protected set; }
 
     private bool isLeft;
     public bool IsLeft
@@ -62,7 +62,7 @@ public class CharacterBase
         }
         Root.SetCharacter(this);
 
-        TriggerBox = Root.GetTriggerBox();
+        rectCollider = Root.GetRectCollider();
     }
 
     public void GameUpdate()

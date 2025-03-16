@@ -25,6 +25,7 @@ public class AbstractManager : SingletonBase<AbstractManager>
         RegisterController(new RoomController());
         
         RegisterSystem(new CameraSystem());
+        RegisterSystem(new QuadTreeSystem());
         //todo:结束战斗时记得注销事件
         EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED, TurnOnBattle);
     }

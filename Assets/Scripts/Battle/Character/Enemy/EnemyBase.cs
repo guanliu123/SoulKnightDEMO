@@ -19,7 +19,7 @@ public class EnemyBase : CharacterBase
         base.OnInit();
 
         root=(EnemyRoot)Root;
-        root.GetTriggerBox().SetActive(true);
+        rectCollider.EnableCollision();
         animator = root.GetAnimator();
         Attribute = new EnemyAttribute(root.enemyType);
         EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, (r) =>
@@ -52,7 +52,8 @@ public class EnemyBase : CharacterBase
     {
         base.OnCharacterDieStart();
         animator.Play("Die");
-        root.GetTriggerBox().SetActive(false);
+        //关闭碰撞器
+        rectCollider.DisableCollision();
         SetLocked(false);
         EventManager.Instance.Emit(EventId.EnemyDie,room);
         TimerManager.Register(30f, () =>

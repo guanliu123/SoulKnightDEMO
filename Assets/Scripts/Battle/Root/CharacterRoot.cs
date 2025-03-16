@@ -10,7 +10,7 @@ public class CharacterRoot : MonoBehaviour
 
     public Animator animator;
 
-    public GameObject triggerBox;
+    public RectCollider rectCollider;
 
     public void SetCharacter(CharacterBase character)
     {
@@ -27,13 +27,13 @@ public class CharacterRoot : MonoBehaviour
         return animator;
     }
 
-    public GameObject GetTriggerBox()
+    public RectCollider GetRectCollider()
     {
-        if (triggerBox == null)
+        if (rectCollider == null)
         {
-            LogTool.LogError("角色上的TriggerBox组件未赋值！");
+            LogTool.LogError("角色上的RectCollider组件未赋值！");
         }
         
-        return triggerBox;
+        return rectCollider;
     }
 }

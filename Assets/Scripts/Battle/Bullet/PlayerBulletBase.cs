@@ -13,14 +13,28 @@ public class PlayerBulletBase : BulletBase
     protected override void OnInit()
     {
         base.OnInit();
-        if (detection)
+        /*if (detection)
         {
             detection.AddTriggerListener(TriggerType.TriggerEnter,"Enemy", (obj) =>
             {
                 Remove();
                 OnHitEnemy(GetRoot(obj));
             });
-        }
+        }*/
+        
+        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter,gameObject,"Enemy",ColliderEnemyEvent);
+    }
+
+    protected override void OnExit()
+    {
+        base.OnExit();
+        TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter,gameObject);
+    }
+
+    private void ColliderEnemyEvent(GameObject obj)
+    {
+        Remove();
+        OnHitEnemy(GetRoot(obj));
     }
 
     protected virtual void OnHitEnemy(EnemyBase enemy)
