@@ -27,6 +27,7 @@ public class BulletBase : Item
                 OnHitObstacle();
             });
         }*/
+        TimerManager.Register(10f, Remove);
     }
 
     private void ColliderObstacleEvent(GameObject obj)
