@@ -23,6 +23,7 @@ public sealed partial class Weapon : Luban.BeanBase
         { if(!_buf["mc"].IsNumber) { throw new SerializationException(); }  Mc = _buf["mc"]; }
         { if(!_buf["firerate"].IsNumber) { throw new SerializationException(); }  Firerate = _buf["firerate"]; }
         { if(!_buf["probability"].IsNumber) { throw new SerializationException(); }  Probability = _buf["probability"]; }
+        { if(!_buf["rapidCnt"].IsNumber) { throw new SerializationException(); }  RapidCnt = _buf["rapidCnt"]; }
         { if(!_buf["price"].IsNumber) { throw new SerializationException(); }  Price = _buf["price"]; }
     }
 
@@ -56,6 +57,10 @@ public sealed partial class Weapon : Luban.BeanBase
     /// </summary>
     public readonly int Probability;
     /// <summary>
+    /// 连发数（&gt;9为一直连发）
+    /// </summary>
+    public readonly int RapidCnt;
+    /// <summary>
     /// 出现在商店时的底价（还要经过计算）
     /// </summary>
     public readonly int Price;
@@ -76,6 +81,7 @@ public sealed partial class Weapon : Luban.BeanBase
         + "mc:" + Mc + ","
         + "firerate:" + Firerate + ","
         + "probability:" + Probability + ","
+        + "rapidCnt:" + RapidCnt + ","
         + "price:" + Price + ","
         + "}";
     }

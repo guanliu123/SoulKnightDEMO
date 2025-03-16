@@ -58,7 +58,7 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
                 weapon = new DoubleBladeSword(weaponObj, character);
                 break;
             case WeaponType.BlueFireGatling:
-                weapon = new DoubleBladeSword(weaponObj, character);
+                weapon = new BlueFireGatling(weaponObj, character);
                 break;
         }
 

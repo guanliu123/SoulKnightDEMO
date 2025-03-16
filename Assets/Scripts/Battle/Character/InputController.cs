@@ -30,7 +30,7 @@ public class InputController : AbstractController
         input.hor = (Fix64)Input.GetAxis("Horizontal");
         input.ver = (Fix64)Input.GetAxis("Vertical");
         //todo:改成虚拟按键输入
-        input.isAttack = Input.GetMouseButtonDown(0);
+        input.isAttack = Input.GetMouseButton(0);
         input.isSwitchWeapon = Input.GetKeyDown(KeyCode.R);
         
         var moveDir = new FixVector2(input.hor, input.ver);

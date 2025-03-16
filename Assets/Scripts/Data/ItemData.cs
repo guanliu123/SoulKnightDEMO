@@ -15,6 +15,7 @@ public class WeaponData:ItemDataBase
     public float FireRate;
     public int Probability;
     public int Price;
+    public int MaxRapidCnt;
 
     public void UpdateData(Weapon data)
     {
@@ -25,6 +26,7 @@ public class WeaponData:ItemDataBase
         FireRate=data.Firerate;
         Probability=data.Probability;
         Price=data.Price;
+        MaxRapidCnt = data.RapidCnt;
     }
 }
 

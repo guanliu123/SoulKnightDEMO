@@ -12,9 +12,12 @@ public class PlayerWeaponBase:WeaponBase
 
     public Transform RotOrigin { get; protected set; }
 
-    private bool isAttackKeyDown;
+    //private bool isAttackKeyDown;
     private float fireCoolTime;
     private float fireTimer;
+    //连发次数（单发=1，n连发=n，>9=持续连发）
+    protected int maxRapidCnt;
+    protected int rapidNum;
     
     public PlayerWeaponBase(GameObject obj, CharacterBase character) : base(obj, character)
     {
@@ -38,6 +41,7 @@ public class PlayerWeaponBase:WeaponBase
         base.OnEnter();
         //保证第一发子弹可以发射
         fireTimer = fireCoolTime;
+        rapidNum = 0;
     }
 
     public override void OnUpdate()
@@ -49,10 +53,19 @@ public class PlayerWeaponBase:WeaponBase
     //射击按钮按下松开发射一次
     public void ControlWeapon(bool isAttack)
     {
-        if (isAttack && fireTimer > fireCoolTime)
+        if (isAttack && fireTimer > fireCoolTime && (maxRapidCnt >10||rapidNum<maxRapidCnt))
         {
             fireTimer = 0;
+            if (maxRapidCnt < 10)
+            {
+                rapidNum++;
+            }
             OnFire();
+        }
+
+        if (!isAttack)
+        {
+            rapidNum=0;
         }
     }
 

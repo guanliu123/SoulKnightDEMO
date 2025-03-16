@@ -17,7 +17,7 @@ public class BulletBase : Item
         base.OnInit();
         rectCollider=gameObject.GetComponent<RectCollider>();
         rectCollider.EnableCollision();
-        detection = gameObject.GetComponent<TriggerDetection>();
+        //detection = gameObject.GetComponent<TriggerDetection>();
         TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter,gameObject,"Obstacles",ColliderObstacleEvent);
         /*if (detection)
         {

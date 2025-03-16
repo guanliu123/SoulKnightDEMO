@@ -10,6 +10,7 @@ public class BadPistol:PlayerWeaponBase
     protected override void OnInit()
     {
         data = ItemDataCenter.Instance.GetWeaponData(WeaponType.BadPistol);
+        maxRapidCnt = data.MaxRapidCnt;
         base.OnInit();
     }
 

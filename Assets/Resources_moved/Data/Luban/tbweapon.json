@@ -6,6 +6,7 @@
     "mc": 0,
     "firerate": 2,
     "probability": 2,
+    "rapidCnt": 1,
     "price": 15
   },
   {
@@ -15,6 +16,27 @@
     "mc": 1,
     "firerate": 3,
     "probability": 2,
+    "rapidCnt": 10,
     "price": 15
+  },
+  {
+    "id": 1003,
+    "name": "双刃剑",
+    "damage": 4,
+    "mc": 2,
+    "firerate": 4,
+    "probability": 3,
+    "rapidCnt": 10,
+    "price": 16
+  },
+  {
+    "id": 1004,
+    "name": "蓝火加特林",
+    "damage": 2,
+    "mc": 3,
+    "firerate": 8,
+    "probability": 4,
+    "rapidCnt": 10,
+    "price": 17
   }
 ]

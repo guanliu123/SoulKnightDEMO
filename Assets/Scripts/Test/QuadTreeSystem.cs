@@ -37,7 +37,7 @@ public class QuadTreeSystem : AbstractSystem
     {
         _quadTree.Clear();
 
-        float t1 = Time.realtimeSinceStartup;
+        //float t1 = Time.realtimeSinceStartup;
         for (int i = 0; i < rects.Count; ++i)
         {
             {
@@ -45,8 +45,8 @@ public class QuadTreeSystem : AbstractSystem
             }
         }
 
-        float t2 = Time.realtimeSinceStartup;
-        LogTool.Log("重构四叉树耗时:"+(t2 - t1));
+        //float t2 = Time.realtimeSinceStartup;
+        //LogTool.Log("重构四叉树耗时:"+(t2 - t1));
     }
 
     public void RemoveFromTree(IRect rect)
