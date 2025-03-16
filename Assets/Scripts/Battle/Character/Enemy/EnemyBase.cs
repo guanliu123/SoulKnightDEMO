@@ -8,8 +8,14 @@ public class EnemyBase : CharacterBase
     public Room room;
     //敌人是否正在运作
     public bool isWork;
+
+    //敌人当前的运动速度
+    public FixVector2 Velocity;
+    private PlayerBase player;
     public Animator animator { get;protected set; }
     public EnemyRoot root { get; protected set; }
+    
+    protected EnemyStateMachine stateMachine;
     public EnemyBase(GameObject obj) : base(obj)
     {
     }
@@ -30,6 +36,10 @@ public class EnemyBase : CharacterBase
                 AbstractManager.Instance.GetController<EnemyController>().AddInRoom(this);
             }
         });
+        
+        stateMachine = new NormalEnemyStateMachine(this);
+        
+        player=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
     }
 
     public override void UnderAttack(int damage)
@@ -45,6 +55,8 @@ public class EnemyBase : CharacterBase
         if (isWork)
         {
             base.OnCharacterUpdate();
+            Velocity=new FixVector2(player.transform.position - this.transform.position).GetNormalized();
+            stateMachine.GameUpdate();
         }
     }
 

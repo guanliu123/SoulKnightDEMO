@@ -9,7 +9,7 @@ public class EnemyController : AbstractController
     protected List<EnemyBase> enemys;
 
     //当前房间跟玩家在一起的敌人
-    protected List<EnemyBase> enemysInRoom;
+    public List<EnemyBase> enemysInRoom { get;protected set; }
     
     public EnemyController(){}
 

@@ -671,6 +671,13 @@ public struct FixVector2
         this.y = (Fix64)vec2.y;
     }
     
+    public FixVector2(Vector3 vec3)
+    {
+        
+        this.x = (Fix64)vec3.x;
+        this.y = (Fix64)vec3.y;
+    }
+    
     public FixVector2(FixVector2 v)
     {
         this.x = v.x;
