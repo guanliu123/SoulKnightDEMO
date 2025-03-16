@@ -66,7 +66,8 @@ namespace EnumCenter
     public enum TriggerType
     {
         TriggerEnter=0,
-        TriggerExit=1,
+        TriggerStay=1,
+        TriggerExit=2,
     }
     
     public enum InteractiveObjectType

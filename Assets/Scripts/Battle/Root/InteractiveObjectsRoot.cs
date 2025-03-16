@@ -10,7 +10,7 @@ public class InteractiveObjectRoot : MonoBehaviour
 
     public GameObject itemIndicator;
 
-    private Collider2D collider;
+    private GameObject collider;
 
     private bool isInteractable;
 
@@ -25,6 +25,7 @@ public class InteractiveObjectRoot : MonoBehaviour
             if (!value)
             {
                 collider = null;
+                gameObject.GetComponent<RectCollider>()?.DisableCollision();
             }
 
             this.enabled = value;
@@ -35,16 +36,28 @@ public class InteractiveObjectRoot : MonoBehaviour
     private void Awake()
     {
         IsInteractable=true;
+        gameObject.GetComponent<RectCollider>()?.EnableCollision();
     }
 
     private void OnEnable()
     {
         itemIndicator.SetActive(false);
+        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter,gameObject, (obj)=>
+        {
+            collider = obj;
+            itemIndicator.SetActive(true);
+        });
+        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerExit,gameObject, (obj) =>
+        {
+            collider = null;
+            itemIndicator.SetActive(false);
+        });
     }
 
     private void OnDisable()
     {
         itemIndicator.SetActive(false);
+        TriggerManager.Instance.RemoveObserver(TriggerType.TriggerEnter,gameObject);
     }
 
     private void Update()
@@ -60,23 +73,23 @@ public class InteractiveObjectRoot : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isInteractable) return;
+        /*if (!isInteractable) return;
 
         if (other.CompareTag("Player"))
         {
             collider = other;
             itemIndicator.SetActive(true);
-        }
+        }*/
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!isInteractable) return;
+        /*if (!isInteractable) return;
 
         if (other.CompareTag("Player"))
         {
             collider = null;
             itemIndicator.SetActive(false);
-        }
+        }*/
     }
 }

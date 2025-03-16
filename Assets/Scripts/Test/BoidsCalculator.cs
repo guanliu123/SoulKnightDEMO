@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoidsCalculator
 {
-    // 配置参数（可抽离为ScriptableObject，参考[kevinwei00的方案](https://github.com/kevinwei00/boids-flocking-simulation)）
+    // 配置参数，参考[kevinwei00的方案](https://github.com/kevinwei00/boids-flocking-simulation)
     public float separationWeight = 1.6f;
     public float alignmentWeight = 1.0f;
     public float cohesionWeight = 1.0f;
@@ -34,13 +34,11 @@ public class BoidsCalculator
     Vector2 CalculateSeparation(EnemyBase current, List<EnemyBase> neighbors)
     {
         if (!neighbors.Any()) return Vector2.zero;
-    
-        // 获取所有邻近 FixVector2 的相对位置
+        
         var relativePositions = neighbors.Select(e => 
             (new FixVector2(e.transform.position) - new FixVector2(current.transform.position))
         );
-    
-        // 使用自定义的Average方法
+        
         FixVector2 averagePos = relativePositions.Average();
     
         // 反转方向（Separation需远离）
@@ -51,27 +49,22 @@ public class BoidsCalculator
     {
         
         if (!neighbors.Any()) return current.Velocity.ToVector2();
-    
-        // 获取所有邻近 FixVector2 的速度
+        
         var relativePositions = neighbors.Select(e => e.Velocity);
-    
-        // 使用自定义的Average方法
+        
         FixVector2 averagePos = relativePositions.Average();
-    
-        // 反转方向（Separation需远离）
+        
         return averagePos.ToVector2();
     }
 
     Vector2 CalculateCohesion(EnemyBase current, List<EnemyBase> neighbors)
     {
         if (!neighbors.Any()) return Vector2.zero;
-    
-        // 获取所有邻近 FixVector2 的相对位置
+        
         var relativePositions = neighbors.Select(e => 
             (new FixVector2(e.transform.position) - new FixVector2(current.transform.position))
         );
-    
-        // 使用自定义的Average方法
+        
         FixVector2 averagePos = relativePositions.Average();
         
         return averagePos.ToVector2();

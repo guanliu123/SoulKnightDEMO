@@ -7,9 +7,10 @@ public class BulletBase : Item
 {
     protected TriggerDetection detection;
     protected RectCollider rectCollider;
-    public BulletBase(GameObject obj) : base(obj)
+    protected int damage;
+    public BulletBase(GameObject obj,int _damage) : base(obj)
     {
-        
+        damage = _damage;
     }
 
     protected override void OnInit()

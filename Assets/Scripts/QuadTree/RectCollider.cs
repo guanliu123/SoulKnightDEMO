@@ -5,6 +5,12 @@ using EnumCenter;
 using OPH.Collision.QuadTree;
 using UnityEngine.Pool;
 
+public class RectInfo
+{
+    public IRect rect;
+    public bool isExist;
+}
+
 [ExecuteInEditMode]
 public class RectCollider : MonoBehaviour, IRect
 {
@@ -68,6 +74,9 @@ public class RectCollider : MonoBehaviour, IRect
     private bool _isDirty;
     private bool _isInTree;
     private QuadTreeSystem _quadTreeSystem;
+    
+    //与其碰撞中的物品列表，每次检查时从这个列表中查找，没有的加入，OnTriggerEnter，有的保持，OnTriggerStay，有但是检查时没有去除，OnTriggerExit
+    private List<RectInfo> colliders = new List<RectInfo>();
     #endregion
 
     #region 生命周期方法
@@ -75,6 +84,7 @@ public class RectCollider : MonoBehaviour, IRect
     {
         //InitializeQuadTree();
         CacheTransformState();
+        colliders = new();
     }
 
     void Update()
@@ -91,8 +101,21 @@ public class RectCollider : MonoBehaviour, IRect
         {
             if ( CheckCollision(this, other))
             {
-                TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)other).gameObject);
+                CheckCollidType(other);
+                //TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerStay,gameObject,((MonoBehaviour)other).gameObject);
             }
+        }
+
+        for (int i = 0; i < colliders.Count;)
+        {
+            if (colliders[i].isExist)
+            {
+                colliders[i++].isExist = false;
+                continue;
+            }
+            TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerExit,gameObject, ((MonoBehaviour)colliders[i].rect).gameObject);
+
+            colliders.RemoveAt(i);
         }
 
         // 正确释放到对象池（修正语法错误）
@@ -105,6 +128,23 @@ public class RectCollider : MonoBehaviour, IRect
         float dx = Mathf.Abs(a.X - b.X);
         float dy = Mathf.Abs(a.Y - b.Y);
         return dx <= (a.Width + b.Width)/2 && dy <= (a.Height + b.Height)/2;
+    }
+
+    void CheckCollidType(IRect rect)
+    {
+        int idx=0;
+        for (int i = 0; i < colliders.Count; i++)
+        {
+            if (colliders[i].rect == rect)
+            {
+                colliders[idx].isExist = true;
+                TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerStay,gameObject,((MonoBehaviour)colliders[i].rect).gameObject);
+                return;
+            }
+        }
+        
+        colliders.Add(new RectInfo() { rect = rect, isExist = true });
+        TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerEnter,gameObject,((MonoBehaviour)rect).gameObject);
     }
 
     void OnEnable()
@@ -156,6 +196,7 @@ public class RectCollider : MonoBehaviour, IRect
 
     private void ForceRemoveFromQuadTree()
     {
+        colliders.Clear();
         if(!_isInTree) return;
         _quadTreeSystem.RemoveFromTree(this);
     }

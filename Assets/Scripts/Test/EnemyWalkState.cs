@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyWalkState : EnemyStateBase
 {
-    private PlayerBase player;
     private BoidsCalculator boids = new BoidsCalculator();
     private List<EnemyBase> allEnemies; // 需从管理器获取
 
@@ -15,7 +14,6 @@ public class EnemyWalkState : EnemyStateBase
     public override void OnEnter()
     {
         base.OnEnter();
-        player = AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
         allEnemies = AbstractManager.Instance.GetController<EnemyController>().enemysInRoom;
     }
 

@@ -19,6 +19,6 @@ public class Bullet_1 : PlayerBulletBase
     {
         base.OnHitEnemy(enemy);
         ItemFactory.Instance.GetEffect(EffectType.EffectBoom,transform.position);
-        enemy.UnderAttack(5);
+        enemy.UnderAttack(damage);
     }
 }

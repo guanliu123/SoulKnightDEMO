@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerBulletBase : BulletBase
 {
-    public PlayerBulletBase(GameObject obj,PlayerWeaponBase holdWeapon) : base(obj)
+    public PlayerBulletBase(GameObject obj,PlayerWeaponBase holdWeapon) : base(obj,holdWeapon.data.Damage)
     {
         
     }

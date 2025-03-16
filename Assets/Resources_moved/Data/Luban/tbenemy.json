@@ -10,7 +10,7 @@
     "id": 1002,
     "name": "野猪",
     "hp": 20,
-    "speed": 5,
+    "speed": 3,
     "Initialweapon": ""
   }
 ]

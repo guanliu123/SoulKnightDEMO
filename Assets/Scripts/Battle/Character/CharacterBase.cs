@@ -86,6 +86,7 @@ public class CharacterBase
     {
         isShouldRemove = false;
         IsAlreadyRemove = false;
+        rectCollider.EnableCollision();
     }
 
     protected virtual void OnCharacterStart()
@@ -100,7 +101,11 @@ public class CharacterBase
             OnCharacterStart();
         }
     }
-    protected virtual void OnCharacterDieStart(){}
+
+    protected virtual void OnCharacterDieStart()
+    {
+        rectCollider.DisableCollision();
+    }
     protected virtual void OnCharacterDieUpdate(){}
 
     public virtual void UnderAttack(int damage)

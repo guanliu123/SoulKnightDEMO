@@ -9,7 +9,7 @@ public class TestMono : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerEnter,obj, (obj) =>
+        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerStay,obj, (obj) =>
         {
             LogTool.Log(obj.name+"碰撞到了！！！");
         });
