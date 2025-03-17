@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using EnumCenter;
 using UnityEngine;
 
 public class EnemyBase : CharacterBase
@@ -18,19 +19,26 @@ public class EnemyBase : CharacterBase
     protected EnemyStateMachine stateMachine;
     
     private PlayerBase targetPlayer;
+    
+    public EnemyWeaponBase weapon { get;protected set; }
 
     public EnemyBase(GameObject obj) : base(obj)
     {
+        root=(EnemyRoot)Root;
+        int wd = CharacterDataCenter.Instance.GetEnemyData(root.enemyType).WeaponID;
+        if (wd != 0)
+        {
+            weapon = WeaponFactory.Instance.GetEnemyWeapon((WeaponType)wd,this);
+        }
     }
 
     protected override void OnInit()
     {
         base.OnInit();
-
-        root=(EnemyRoot)Root;
         //rectCollider.EnableCollision();
         animator = root.GetAnimator();
         Attribute = new EnemyAttribute(root.enemyType);
+        
         EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, (r) =>
         {
             if (room == r)

@@ -40,6 +40,7 @@ namespace EnumCenter
         None=0,
         Stake=1001,
         Boar=1002,
+        EliteGoblinGuard=1003,
     }
 
     public enum PetType
@@ -61,6 +62,8 @@ namespace EnumCenter
         AK47=1002,
         DoubleBladeSword=1003,
         BlueFireGatling=1004,
+        Blowpipe=2001,
+        None=0,
     }
 
     public enum TriggerType

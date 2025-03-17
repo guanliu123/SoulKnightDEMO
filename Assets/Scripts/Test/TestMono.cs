@@ -5,19 +5,23 @@ using UnityEngine;
 
 public class TestMono : MonoBehaviour
 {
-    public GameObject obj;
     // Start is called before the first frame update
     void Start()
     {
-        TriggerManager.Instance.RegisterObserver(TriggerType.TriggerStay,obj, (obj) =>
-        {
-            LogTool.Log(obj.name+"碰撞到了！！！");
-        });
+        LoadManager.Instance.Init();
+        TimerManager.Instance.Init();
+        TableManager.Instance.Init();
+        ConfigData.Init();
+        CharacterDataCenter.Instance.Init();
+        AbstractManager.Instance.GetController<EnemyController>().TurnOnController();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            EnemyFactory.Instance.GetEnemy(EnemyType.EliteGoblinGuard);
+        }
     }
 }

@@ -38,5 +38,15 @@
     "probability": 4,
     "rapidCnt": 10,
     "price": 17
+  },
+  {
+    "id": 2001,
+    "name": "哥布林法杖",
+    "damage": 2,
+    "mc": 0,
+    "firerate": 2,
+    "probability": 0,
+    "rapidCnt": 0,
+    "price": 0
   }
 ]

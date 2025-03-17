@@ -4,13 +4,20 @@
     "name": "木桩",
     "hp": 4,
     "speed": 0,
-    "Initialweapon": ""
+    "Initialweapon": 0
   },
   {
     "id": 1002,
     "name": "野猪",
     "hp": 50,
     "speed": 5,
-    "Initialweapon": ""
+    "Initialweapon": 0
+  },
+  {
+    "id": 1003,
+    "name": "哥布林吹箭手",
+    "hp": 40,
+    "speed": 4,
+    "Initialweapon": 2001
   }
 ]

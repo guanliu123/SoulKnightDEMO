@@ -69,4 +69,33 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
     {
         return LoadManager.Instance.Load<GameObject>(ResourcePath.Weapon + name + ".prefab");
     }
+    
+    /// <summary>
+    /// 通过Type生成WeaponBase
+    /// </summary>
+    /// <param name="type">枪支类型</param>
+    /// <param name="character">持有角色</param>
+    /// <returns></returns>
+    public EnemyWeaponBase GetEnemyWeapon(WeaponType type, EnemyBase enemy)
+    {
+        Transform origin = enemy.root.GetWeaponOriginPoint();
+        GameObject weaponObj = GameObject.Instantiate(GetWeaponObj(type.ToString()),origin);
+        weaponObj.name = type.ToString();
+        weaponObj.transform.localPosition=Vector3.zero;
+
+        return CreateWeapon(type,enemy,weaponObj);
+    }
+    
+    private EnemyWeaponBase CreateWeapon(WeaponType type, EnemyBase enemy,GameObject weaponObj)
+    {
+        EnemyWeaponBase weapon=null;
+        switch (type)
+        {
+            case WeaponType.Blowpipe:
+                weapon=new Blowpipe(weaponObj,enemy);
+                break;
+        }
+
+        return weapon;
+    }
 }

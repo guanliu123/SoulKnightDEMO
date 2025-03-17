@@ -21,7 +21,7 @@ public sealed partial class Enemy : Luban.BeanBase
         { if(!_buf["name"].IsString) { throw new SerializationException(); }  Name = _buf["name"]; }
         { if(!_buf["hp"].IsNumber) { throw new SerializationException(); }  Hp = _buf["hp"]; }
         { if(!_buf["speed"].IsNumber) { throw new SerializationException(); }  Speed = _buf["speed"]; }
-        { if(!_buf["Initialweapon"].IsString) { throw new SerializationException(); }  Initialweapon = _buf["Initialweapon"]; }
+        { if(!_buf["Initialweapon"].IsNumber) { throw new SerializationException(); }  Initialweapon = _buf["Initialweapon"]; }
     }
 
     public static Enemy DeserializeEnemy(JSONNode _buf)
@@ -48,7 +48,7 @@ public sealed partial class Enemy : Luban.BeanBase
     /// <summary>
     /// 初始武器对应id
     /// </summary>
-    public readonly string Initialweapon;
+    public readonly int Initialweapon;
    
     public const int __ID__ = 67100520;
     public override int GetTypeId() => __ID__;

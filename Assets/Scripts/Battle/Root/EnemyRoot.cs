@@ -7,6 +7,7 @@ using UnityEngine;
 public class EnemyRoot : CharacterRoot
 {
     public EnemyType enemyType;
+    public Transform weaponOriginPoint;
 
     //敌人被瞄准时脚下的红圈
     public GameObject targetCircle;
@@ -24,5 +25,15 @@ public class EnemyRoot : CharacterRoot
         }
 
         return targetCircle;
+    }
+    
+    public Transform GetWeaponOriginPoint()
+    {
+        if (weaponOriginPoint == null)
+        {
+            LogTool.LogError($"角色上的WeaponOriginPoint组件未赋值！");
+        }
+
+        return weaponOriginPoint;
     }
 }

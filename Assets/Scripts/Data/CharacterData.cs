@@ -36,12 +36,14 @@ public class PlayerData : CharacterDataBase
 
 public class EnemyData : CharacterDataBase
 {
+    public int WeaponID;
     public void UpdateData(Enemy config)
     {
         ID = config.Id;
         Name = config.Name;
         HP = config.Hp;
         Speed = config.Speed;
+        WeaponID = config.Initialweapon;
     }
 }
 

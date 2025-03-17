@@ -28,6 +28,8 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
                 enemy = new Stake(obj); break;
             case EnemyType.Boar:
                 enemy = new Boar(obj); break;
+            case EnemyType.EliteGoblinGuard:
+                enemy = new EliteGoblinGuard(obj); break;
         }
         
         return enemy;
