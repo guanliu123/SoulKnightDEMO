@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyWalkState : EnemyStateBase
+public class EnemyTrackState : EnemyStateBase
 {
     private BoidsCalculator boids = new BoidsCalculator();
     private List<EnemyBase> allEnemies; // 需从管理器获取
     private QuadTreeSystem quadTreeSystem;
      private AvoidanceCalculator avoidanceCalculator;
 
-    public EnemyWalkState(EnemyStateMachine machine) : base(machine)
+    public EnemyTrackState(EnemyStateMachine machine) : base(machine)
     {
         
     }

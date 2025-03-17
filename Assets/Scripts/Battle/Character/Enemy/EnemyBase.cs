@@ -11,12 +11,14 @@ public class EnemyBase : CharacterBase
 
     //敌人当前的运动速度
     public FixVector2 Velocity;
-    private PlayerBase player;
     public RectCollider Collider { get; protected set; }
     public Animator animator { get;protected set; }
     public EnemyRoot root { get; protected set; }
     
     protected EnemyStateMachine stateMachine;
+    
+    private PlayerBase targetPlayer;
+
     public EnemyBase(GameObject obj) : base(obj)
     {
     }
@@ -40,7 +42,7 @@ public class EnemyBase : CharacterBase
         
         stateMachine = new NormalEnemyStateMachine(this);
         Collider = root.GetRectCollider();
-        player=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
+        targetPlayer=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
     }
 
     public override void UnderAttack(int damage)
@@ -56,7 +58,7 @@ public class EnemyBase : CharacterBase
         if (isWork)
         {
             base.OnCharacterUpdate();
-            Velocity=new FixVector2(player.transform.position - this.transform.position).GetNormalized();
+            Velocity=new FixVector2(targetPlayer.transform.position - this.transform.position).GetNormalized();
             stateMachine.GameUpdate();
         }
     }

@@ -23,9 +23,4 @@ public class EnemyStateBase : StateBase
         enemy = Machine.Enemy;
         animator = enemy.animator;
     }
-
-    public override void OnEnter()
-    {
-        base.OnEnter();
-    }
 }
