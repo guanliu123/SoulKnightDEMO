@@ -40,7 +40,7 @@ public class EnemyBase : CharacterBase
             }
         });
         
-        stateMachine = new NormalEnemyStateMachine(this);
+        //stateMachine = new NormalEnemyStateMachine(this);
         Collider = root.GetRectCollider();
         targetPlayer=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
     }
@@ -59,7 +59,7 @@ public class EnemyBase : CharacterBase
         {
             base.OnCharacterUpdate();
             Velocity=new FixVector2(targetPlayer.transform.position - this.transform.position).GetNormalized();
-            stateMachine.GameUpdate();
+            stateMachine?.GameUpdate();
         }
     }
 

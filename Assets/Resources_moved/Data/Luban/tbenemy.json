@@ -9,8 +9,8 @@
   {
     "id": 1002,
     "name": "野猪",
-    "hp": 20,
-    "speed": 3,
+    "hp": 50,
+    "speed": 5,
     "Initialweapon": ""
   }
 ]

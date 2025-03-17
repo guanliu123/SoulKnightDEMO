@@ -11,11 +11,4 @@ public class EnemyStateMachine : StateMachineBase
     {
         Enemy = enemy;
     }
-
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-        /*hor = Player.input.hor;
-        ver = Player.input.ver;*/
-    }
 }
