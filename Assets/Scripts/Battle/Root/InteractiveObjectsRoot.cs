@@ -13,7 +13,7 @@ public class InteractiveObjectRoot : MonoBehaviour
 
     private GameObject collider;
 
-    private bool isInteractable;
+    private bool isInteractable=true;
 
     public bool IsInteractable
     {
@@ -37,6 +37,11 @@ public class InteractiveObjectRoot : MonoBehaviour
     protected string objName;
 
     private void Awake()
+    {
+        OnInit();
+    }
+
+    protected virtual void OnInit()
     {
         IsInteractable=true;
         gameObject.GetComponent<RectCollider>()?.EnableCollision();

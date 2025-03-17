@@ -1,62 +1,51 @@
-/*
-// 参考[ORCA论文](http://gamma.cs.unc.edu/ORCA/)实现
-
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class ORCASolver
+public static class ORCASolver
 {
-    public List<Line> constraints = new List<Line>();
+    private const int MAX_ITERATIONS = 10; // 迭代次数限制
+    private const float EPSILON = 0.0001f;
 
-    public Vector2 Solve(Vector2 prefVelocity, float radius, float timeHorizon)
+    public static Vector2 Solve(Vector2 currentVel, List<Line> constraints)
     {
-        // 1. 生成速度障碍区域
-        foreach(var neighbor in neighbors)
+        // 步骤1：初始化可行速度区域
+        Vector2 optimizedVel = currentVel;
+        float stepSize = 0.5f; // 学习率
+
+        // 步骤2：迭代优化过程
+        for (int i = 0; i < MAX_ITERATIONS; i++)
         {
-            Vector2 relativeVel = prefVelocity - neighbor.velocity;
-            Vector2 center = relativeVel * 0.5f;
-            float combinedRadius = radius + neighbor.radius;
+            Vector2 gradient = Vector2.zero;
+            bool isValid = true;
+
+            // 遍历所有约束线计算梯度
+            foreach (var line in constraints)
+            {
+                Vector2 lineDir = (line.End - line.Start).normalized;
+                float distance = SignedDistanceToLine(optimizedVel, line);
+                
+                if (distance < -EPSILON) // 违反约束
+                {
+                    gradient += lineDir * distance;
+                    isValid = false;
+                }
+            }
+
+            if (isValid) break; // 找到可行解
             
-            // 生成约束线（关键几何计算）
-            Vector2 edgeDir = Vector2.Perpendicular(relativeVel).normalized;
-            Line constraint = new Line(
-                    point: center + edgeDir * combinedRadius,
-                    direction: -edgeDir
-                );
-            constraints.Add(constraint);
+            // 梯度方向优化
+            optimizedVel -= stepSize * gradient.normalized;
+            stepSize *= 0.8f; // 衰减学习率
         }
+        
+        return optimizedVel;
+    }
 
-        // 2. 线性规划求解最优速度
-        return LinearProgramming.Solve(prefVelocity, constraints);
+    private static float SignedDistanceToLine(Vector2 point, Line line)
+    {
+        Vector2 lineDir = line.End - line.Start;
+        Vector2 pointDir = point - line.Start;
+        return Vector2.Dot(pointDir, line.Normal) - 
+               Vector2.Dot(lineDir, line.Normal) * 0.5f;
     }
 }
-
-// 参考自ORCA论文附录A：https://gamma.cs.unc.edu/ORCA/ 第3章
-public struct Line
-{
-    /// <summary>
-    /// 约束线上的点（速度空间坐标系中的点）
-    /// </summary>
-    public Vector2 point;
-
-    /// <summary>
-    /// 约束线的法线方向（指向可行区域）
-    /// </summary>
-    public Vector2 direction;
-
-    public Line(Vector2 p, Vector2 dir)
-    {
-        point = p;
-        direction = dir.normalized;
-    }
-
-    /// <summary>
-    /// 判断速度点是否在可行区域
-    /// </summary>
-    public bool IsValid(Vector2 velocity)
-    {
-        // 点积判断法线方向投影
-        return Vector2.Dot(velocity - point, direction) >= 0;
-    }
-}
-*/

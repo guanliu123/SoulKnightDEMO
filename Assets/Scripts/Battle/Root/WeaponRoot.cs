@@ -13,8 +13,9 @@ public class WeaponRoot : InteractiveObjectRoot
     public Transform rotOrigin;
     public Transform firePoint;
 
-    private void Awake()
+    protected override void OnInit()
     {
+        base.OnInit();
         Type=InteractiveObjectType.Weapon;
         objName = ItemDataCenter.Instance.GetWeaponData(weaponType).Name;
         var t = itemIndicator.GetComponent<UIContainer>().GetXXX("Text") as TMP_Text;

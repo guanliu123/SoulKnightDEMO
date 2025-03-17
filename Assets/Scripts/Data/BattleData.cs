@@ -2,6 +2,7 @@
 
 using System.Globalization;
 using EnumCenter;
+using UnityEngine;
 
 public class CharacterAttribute
 {
@@ -36,6 +37,8 @@ public class PetAttribute : CharacterAttribute
 
 public class EnemyAttribute : CharacterAttribute
 {
+    [Tooltip("避障时的速度补偿")]
+    public float AvoidanceSpeedMultiplier = 1.5f; 
     public EnemyAttribute(EnemyType type)
     {
         var data=CharacterDataCenter.Instance.GetEnemyData(type);

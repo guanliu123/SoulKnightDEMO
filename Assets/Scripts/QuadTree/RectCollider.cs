@@ -56,6 +56,8 @@ public class RectCollider : MonoBehaviour, IRect
             //MarkDirty();
         }
     }
+
+    public bool IsObstacle;
     #endregion
 
     #region 序列化字段
@@ -154,6 +156,7 @@ public class RectCollider : MonoBehaviour, IRect
         if (gameObject.tag == "Obstacles")
         {
             EnableCollision();
+            IsObstacle = true;
             canCollide = false;
         }
     }

@@ -12,6 +12,7 @@ public class EnemyBase : CharacterBase
     //敌人当前的运动速度
     public FixVector2 Velocity;
     private PlayerBase player;
+    public RectCollider Collider { get; protected set; }
     public Animator animator { get;protected set; }
     public EnemyRoot root { get; protected set; }
     
@@ -38,7 +39,7 @@ public class EnemyBase : CharacterBase
         });
         
         stateMachine = new NormalEnemyStateMachine(this);
-        
+        Collider = root.GetRectCollider();
         player=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
     }
 

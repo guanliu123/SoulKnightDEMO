@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using OPH.Collision.QuadTree;
 using UnityEngine;
 
 public class QuadTreeSystem : AbstractSystem
 {
     private List<IRect> rects;
-    private QTree<IRect> _quadTree;
+    public QTree<IRect> QuadTree { get;private set; }
 
     protected override void OnInit()
     {
@@ -18,10 +19,10 @@ public class QuadTreeSystem : AbstractSystem
 
     private void InitializeQuadTree()
     {
-        if (_quadTree == null)
+        if (QuadTree == null)
         {
             //var sceneBounds = CalculateSceneBounds();
-            _quadTree = QTree<IRect>.CreateRoot(4, 6).InitRect(0, 0, 150,
+            QuadTree = QTree<IRect>.CreateRoot(4, 6).InitRect(0, 0, 150,
                 150);
         }
     }
@@ -35,13 +36,13 @@ public class QuadTreeSystem : AbstractSystem
     //每帧重构四叉树（效率比每帧更新每个物体高）
     private void TreeUpdate()
     {
-        _quadTree.Clear();
+        QuadTree.Clear();
 
         //float t1 = Time.realtimeSinceStartup;
         for (int i = 0; i < rects.Count; ++i)
         {
             {
-                _quadTree.Insert(rects[i]);
+                QuadTree.Insert(rects[i]);
             }
         }
 
@@ -61,6 +62,59 @@ public class QuadTreeSystem : AbstractSystem
 
     public void GetAroundObj(IRect target,List<IRect> list)
     {
-        _quadTree.GetAroundObj(target, list);
+        QuadTree.GetAroundObj(target, list);
+    }
+    
+    //=============================ORCA相关
+    public List<IRect> QueryCircle(Vector2 center, float radius)
+    {
+        List<IRect> results = new List<IRect>();
+        QueryCircleRecursive(QuadTree, center, radius, results);
+        return results;
+    }
+
+    private void QueryCircleRecursive(QTree<IRect> node, Vector2 center, float radius, List<IRect> results)
+    {
+        // 创建临时矩形用于快速碰撞检测
+        Rect nodeRect = new Rect(
+            node.X - node.Width/2, 
+            node.Y - node.Height/2,
+            node.Width, 
+            node.Height
+        );
+
+        if (!CircleRectOverlap(center, radius, nodeRect)) return;
+
+        if (!node.IsLeaf)
+        {
+            foreach (var child in node.childNodes)
+            {
+                QueryCircleRecursive(child, center, radius, results);
+            }
+        }
+        else
+        {
+            foreach (var item in node.childList)
+            {
+                Rect itemRect = new Rect(
+                    item.X - item.Width/2,
+                    item.Y - item.Height/2,
+                    item.Width,
+                    item.Height
+                );
+        
+                if (CircleRectOverlap(center, radius, itemRect))
+                {
+                    results.Add(item);
+                }
+            }
+        }
+    }
+
+    private bool CircleRectOverlap(Vector2 circleCenter, float radius, Rect rect)
+    {
+        float dx = Mathf.Max(rect.xMin - circleCenter.x, 0, circleCenter.x - rect.xMax);
+        float dy = Mathf.Max(rect.yMin - circleCenter.y, 0, circleCenter.y - rect.yMax);
+        return (dx*dx + dy*dy) < (radius*radius);
     }
 }
