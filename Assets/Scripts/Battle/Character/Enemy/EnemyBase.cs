@@ -94,6 +94,7 @@ public class EnemyBase : CharacterBase
     {
         base.OnCharacterDieStart();
         animator.Play("Die");
+        gameObject.GetComponent<SpriteRenderer>().sortingLayerName="Floor";
         //关闭碰撞器
         //rectCollider.DisableCollision();
         SetLocked(false);
