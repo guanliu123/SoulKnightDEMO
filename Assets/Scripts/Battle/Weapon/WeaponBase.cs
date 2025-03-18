@@ -37,7 +37,7 @@ public class WeaponBase
         }
     }
 
-    protected virtual void OnFire()//发射时执行一次
+    public virtual void OnFire()//发射时执行一次
     {
     }
 

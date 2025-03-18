@@ -21,6 +21,8 @@ public sealed partial class Level : Luban.BeanBase
         { if(!_buf["levelnumber"].IsNumber) { throw new SerializationException(); }  Levelnumber = _buf["levelnumber"]; }
         { if(!_buf["levelGraphPath"].IsString) { throw new SerializationException(); }  LevelGraphPath = _buf["levelGraphPath"]; }
         { if(!_buf["levelBossGraphPath"].IsString) { throw new SerializationException(); }  LevelBossGraphPath = _buf["levelBossGraphPath"]; }
+        { if(!_buf["enemys"].IsString) { throw new SerializationException(); }  Enemys = _buf["enemys"]; }
+        { if(!_buf["boss"].IsString) { throw new SerializationException(); }  Boss = _buf["boss"]; }
     }
 
     public static Level DeserializeLevel(JSONNode _buf)
@@ -44,6 +46,14 @@ public sealed partial class Level : Luban.BeanBase
     /// 关卡boss关布局路径
     /// </summary>
     public readonly string LevelBossGraphPath;
+    /// <summary>
+    /// 关卡可能刷出的敌人|权重
+    /// </summary>
+    public readonly string Enemys;
+    /// <summary>
+    /// 关卡可能刷出的boss
+    /// </summary>
+    public readonly string Boss;
    
     public const int __ID__ = 73313124;
     public override int GetTypeId() => __ID__;
@@ -59,6 +69,8 @@ public sealed partial class Level : Luban.BeanBase
         + "levelnumber:" + Levelnumber + ","
         + "levelGraphPath:" + LevelGraphPath + ","
         + "levelBossGraphPath:" + LevelBossGraphPath + ","
+        + "enemys:" + Enemys + ","
+        + "boss:" + Boss + ","
         + "}";
     }
 }

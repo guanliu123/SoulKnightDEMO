@@ -10,12 +10,9 @@ public class EnemyController : AbstractController
 
     //当前房间跟玩家在一起的敌人
     public List<EnemyBase> enemysInRoom { get;protected set; }
-    
-    public EnemyController(){}
 
-    protected override void Init()
+    public EnemyController()
     {
-        base.Init();
         enemys = new();
         enemysInRoom = new();
     }
@@ -40,7 +37,9 @@ public class EnemyController : AbstractController
 
     public void AddEnemy(EnemyType type)
     {
-        enemys.Add(EnemyFactory.Instance.GetEnemy(type));
+        var t = EnemyFactory.Instance.GetEnemy(type);
+        enemys.Add(t);
+        t.isWork = true;
     }
 
     public void AddEnemyInScene(EnemyType type)

@@ -19,5 +19,19 @@
     "hp": 40,
     "speed": 4,
     "Initialweapon": 2001
+  },
+  {
+    "id": 1004,
+    "name": "哥布林长矛手",
+    "hp": 70,
+    "speed": 6,
+    "Initialweapon": 2002
+  },
+  {
+    "id": 1005,
+    "name": "哥布林魔王",
+    "hp": 80,
+    "speed": 3,
+    "Initialweapon": 2003
   }
 ]

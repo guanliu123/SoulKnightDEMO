@@ -129,4 +129,11 @@ public class PlayerBase : CharacterBase
             root.IsInteractable=false;
         }
     }
+
+    protected override void OnCharacterDieStart()
+    {
+        base.OnCharacterDieStart();
+        animator.Play("Die");
+        EventManager.Instance.Emit(EventId.PlayerDie);
+    }
 }

@@ -30,6 +30,10 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
                 enemy = new Boar(obj); break;
             case EnemyType.EliteGoblinGuard:
                 enemy = new EliteGoblinGuard(obj); break;
+            case EnemyType.GoblinGuard:
+                enemy=new GoblinGuard(obj); break;
+            case EnemyType.GoblinGiant:
+                enemy=new GoblinGiant(obj); break;
         }
         
         return enemy;

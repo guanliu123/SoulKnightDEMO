@@ -94,6 +94,12 @@ public class WeaponFactory:SingletonBase<WeaponFactory>
             case WeaponType.Blowpipe:
                 weapon=new Blowpipe(weaponObj,enemy);
                 break;
+            case WeaponType.Pike:
+                weapon = new Pike(weaponObj,enemy); 
+                break;
+            case WeaponType.GoblinMagicStaff:
+                weapon = new GoblinMagicStaff(weaponObj, enemy); 
+                break;
         }
 
         return weapon;

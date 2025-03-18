@@ -14,4 +14,10 @@ public class Blowpipe : EnemyWeaponBase
         data = ItemDataCenter.Instance.GetWeaponData(WeaponType.Blowpipe);
         base.OnInit();
     }
+
+    public override void OnFire()
+    {
+        base.OnFire();
+        BulletFactory.Instance.GetEnemyBullet(BulletType.EnemyBullet3, this);
+    }
 }

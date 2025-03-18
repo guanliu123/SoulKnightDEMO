@@ -48,5 +48,25 @@
     "probability": 0,
     "rapidCnt": 0,
     "price": 0
+  },
+  {
+    "id": 2002,
+    "name": "哥布林长矛",
+    "damage": 3,
+    "mc": 0,
+    "firerate": 1,
+    "probability": 0,
+    "rapidCnt": 0,
+    "price": 0
+  },
+  {
+    "id": 2003,
+    "name": "哥布林魔杖",
+    "damage": 2,
+    "mc": 0,
+    "firerate": 1,
+    "probability": 0,
+    "rapidCnt": 0,
+    "price": 0
   }
 ]

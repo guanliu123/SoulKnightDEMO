@@ -29,6 +29,7 @@ public class EnemyBase : CharacterBase
         if (wd != 0)
         {
             weapon = WeaponFactory.Instance.GetEnemyWeapon((WeaponType)wd,this);
+            weapon.OnEnter();
         }
     }
 
@@ -39,18 +40,29 @@ public class EnemyBase : CharacterBase
         animator = root.GetAnimator();
         Attribute = new EnemyAttribute(root.enemyType);
         
-        EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, (r) =>
-        {
-            if (room == r)
-            {
-                isWork = true;
-                AbstractManager.Instance.GetController<EnemyController>().AddInRoom(this);
-            }
-        });
+        EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, OnEnterBattleRoom);
+        EventManager.Instance.On(EventId.ToNextLevel, Recover);
         
-        //stateMachine = new NormalEnemyStateMachine(this);
         Collider = root.GetRectCollider();
         targetPlayer=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
+    }
+
+    private void OnEnterBattleRoom(Room r)
+    {
+        if (room == r)
+        {
+            isWork = true;
+            AbstractManager.Instance.GetController<EnemyController>().AddInRoom(this);
+        }
+    }
+
+    private void Recover()
+    {
+        var name = root.enemyType.ToString();
+        ObjectPoolManager.Instance.GetPool(name).DeSpawn(gameObject,name);
+        
+        EventManager.Instance.Off<Room>(EventId.OnPlayerEnterBattleRoom,OnEnterBattleRoom);
+        EventManager.Instance.Off(EventId.ToNextLevel,Recover);
     }
 
     public override void UnderAttack(int damage)
@@ -66,7 +78,14 @@ public class EnemyBase : CharacterBase
         if (isWork)
         {
             base.OnCharacterUpdate();
-            Velocity=new FixVector2(targetPlayer.transform.position - this.transform.position).GetNormalized();
+            if (targetPlayer != null)
+            {
+                Velocity=new FixVector2(targetPlayer.transform.position - this.transform.position).GetNormalized();
+            }
+            else
+            {
+                Velocity=FixVector2.Zero;
+            }
             stateMachine?.GameUpdate();
         }
     }
@@ -79,11 +98,6 @@ public class EnemyBase : CharacterBase
         //rectCollider.DisableCollision();
         SetLocked(false);
         EventManager.Instance.Emit(EventId.EnemyDie,room);
-        TimerManager.Register(30f, () =>
-        {
-            var name = root.enemyType.ToString();
-            ObjectPoolManager.Instance.GetPool(name).DeSpawn(gameObject,name);
-        });
     }
 
     public void SetLocked(bool isLocked)

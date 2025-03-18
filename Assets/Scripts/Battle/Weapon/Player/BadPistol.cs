@@ -14,7 +14,7 @@ public class BadPistol:PlayerWeaponBase
         base.OnInit();
     }
 
-    protected override void OnFire()
+    public override void OnFire()
     {
         base.OnFire();
         //Bullet_1 bullet=new Bullet_1(LoadManager.Instance.)

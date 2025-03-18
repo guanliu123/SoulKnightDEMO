@@ -8,6 +8,8 @@ public class BulletBase : Item
     protected TriggerDetection detection;
     protected RectCollider rectCollider;
     protected int damage;
+    protected float speed=30f;
+    
     public BulletBase(GameObject obj,int _damage) : base(obj)
     {
         damage = _damage;
@@ -40,7 +42,12 @@ public class BulletBase : Item
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        transform.position += transform.right * 30 * Time.deltaTime;
+        DoMove();
+    }
+
+    protected virtual void DoMove()
+    {
+        transform.position += transform.right * speed * Time.deltaTime;
     }
 
     protected override void OnExit()

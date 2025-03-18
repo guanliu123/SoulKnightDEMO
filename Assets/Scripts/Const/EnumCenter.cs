@@ -41,6 +41,8 @@ namespace EnumCenter
         Stake=1001,
         Boar=1002,
         EliteGoblinGuard=1003,
+        GoblinGuard=1004,
+        GoblinGiant=1005,
     }
 
     public enum PetType
@@ -54,6 +56,7 @@ namespace EnumCenter
     {
         None=0,
         Weapon=1,
+        Portal=2,
     }
 
     public enum WeaponType
@@ -64,6 +67,8 @@ namespace EnumCenter
         BlueFireGatling=1004,
         Blowpipe=2001,
         None=0,
+        Pike=2002,
+        GoblinMagicStaff=2003,
     }
 
     public enum TriggerType
@@ -93,6 +98,9 @@ namespace EnumCenter
     public enum BulletType
     {
         Bullet_1=1,
+        EnemyBullet1=2,
+        EnemyBullet3=3,
+        EnemyBullet5=4,
     }
     
     public enum BuffType
