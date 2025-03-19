@@ -42,6 +42,7 @@ public class EnemyBase : CharacterBase
         
         EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, OnEnterBattleRoom);
         EventManager.Instance.On(EventId.ToNextLevel, Recover);
+        EventManager.Instance.On(EventId.BackToHome, Recover);
         
         Collider = root.GetRectCollider();
         targetPlayer=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
@@ -93,6 +94,7 @@ public class EnemyBase : CharacterBase
     protected override void OnCharacterDieStart()
     {
         base.OnCharacterDieStart();
+        AudioManager.Instance.PlaySound("enermy_die1");
         animator.Play("Die");
         weapon?.gameObject.SetActive(false);
         gameObject.GetComponent<SpriteRenderer>().sortingLayerName="Floor";

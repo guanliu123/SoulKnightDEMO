@@ -20,5 +20,6 @@ public class LevelScene : SceneBase
         EventManager.Instance.Clear();
         PanelManager.Instance.OpenPanel(basePanel);
         LevelManager.Instance.Init();
+        AudioManager.Instance.PlayBKMusic("bgm_1High");
     }
 }

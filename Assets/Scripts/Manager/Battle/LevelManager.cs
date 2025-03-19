@@ -43,12 +43,14 @@ public class LevelManager : SingletonBase<LevelManager>
     {
         EventManager.Instance.SingOn(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
         EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
+        EventManager.Instance.SingOn(EventId.PlayerDie,Settlement);
     }
 
     protected override void UnregisterEvent()
     {
         EventManager.Instance.SingOff(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
         EventManager.Instance.SingOff(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
+        EventManager.Instance.SingOff(EventId.PlayerDie,Settlement);
     }
 
     #region 事件函数
@@ -64,9 +66,14 @@ public class LevelManager : SingletonBase<LevelManager>
         TimerManager.Register(2f, () =>
         {
             PanelManager.Instance.ClosePanel(UIInfo.LoadingPanel);
+            PanelManager.Instance.OpenPanel(new BattleInfoPanel());
         });
     }
 
     #endregion
-    
+
+    public void Settlement()
+    {
+        EventManager.Instance.Emit(EventId.BackToHome);
+    }
 }

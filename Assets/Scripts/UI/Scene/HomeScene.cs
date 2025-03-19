@@ -23,6 +23,7 @@ public class HomeScene : SceneBase
 
         //GameManager.Instance.TestPlayer();
         InitNecessaryAsync().Forget();
+        AudioManager.Instance.PlayBKMusic("bgm_room");
     }
 
     private void InitNecessary()

@@ -19,6 +19,7 @@
         {
             base.OnFire();
             //Bullet_1 bullet=new Bullet_1(LoadManager.Instance.)
+            AudioManager.Instance.PlaySound("fx_gun_3");
             for (int i = 0; i < 5; i++)
             {
                 var b = BulletFactory.Instance.GetPlayerBullet(BulletType.Bullet_1, this);

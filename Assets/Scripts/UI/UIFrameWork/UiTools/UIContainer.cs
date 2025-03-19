@@ -28,6 +28,7 @@ public class UIContainer:MonoBehaviour
         Toggle,
         Image,
         InputField,
+        Slider,
     }
     
     [HideInInspector]
@@ -95,8 +96,11 @@ public class UIContainer:MonoBehaviour
                 case COMPONENT_TYPE.InputField:
                 {
                     components.Add(t.name,t.tf.GetComponent<TMP_InputField>());
-                }
-                    break;
+                } break;
+                case COMPONENT_TYPE.Slider:
+                {
+                    components.Add(t.name,t.tf.GetComponent<Slider>());
+                } break;
                 default:
                 {
                     components.Add(t.name,t.tf);

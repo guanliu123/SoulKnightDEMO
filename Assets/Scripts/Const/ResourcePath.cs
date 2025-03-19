@@ -1,5 +1,7 @@
 ﻿public static  class ResourcePath
 {
+    public const string Audio = "Audios/";
+    
     public const string Bullet = "Prefabs/Bullets/";
     public const string Enemy = "Prefabs/Enemys/";
     public const string Pet = "Prefabs/Pets/";
@@ -7,7 +9,6 @@
     public const string Panel = "Prefabs/Panels/";
     public const string Effect = "Prefabs/Effects/";
     public const string Item = "Prefabs/Items/";
-    
 
     public const string Scene="Prefabs/Scene/";
     public const string Weapon = "Prefabs/Weapons/";

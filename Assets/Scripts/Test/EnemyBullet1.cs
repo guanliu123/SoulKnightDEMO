@@ -13,7 +13,7 @@ public class EnemyBullet1 : EnemyBulletBase
     protected override void OnInit()
     {
         base.OnInit();
-        speed = 10f;
+        speed = 5f;
         damage = 2;
     }
 

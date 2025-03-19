@@ -12,6 +12,7 @@ public class InitScene : SceneBase
         scenePath = SceneInfo.InitScene;
         sceneName = "InitScene";
         basePanel = new InitialPanel();
+        AudioManager.Instance.PlayBKMusic("bgm_1Low");
     }
 
     

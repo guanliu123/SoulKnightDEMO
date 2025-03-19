@@ -14,6 +14,9 @@ public static class EventId
     public const string OnPlayerEnterBossRoom = "OnPlayerEnterBossRoom";
     public const string OnSceneChangeComplete = "OnSceneChangeComplete";
     
+    public const string BackToHome = "BackToHome";
+
+    
     public const string EnemyDie = "EnemyDie";
     public const string PlayerDie = "PlayerDie";
 }

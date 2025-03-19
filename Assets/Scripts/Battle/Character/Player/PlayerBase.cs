@@ -13,6 +13,8 @@ public class PlayerBase : CharacterBase
     private FixVector2 moveDir;
     public Animator animator { get; protected set; }
     
+    protected bool isDead = false;
+    
     public Rigidbody2D rigidBody{ get; protected set; }
     public PlayerControlInput input { get; protected set; }
     public PlayerWeaponBase NowPlayerWeapon { get; protected set; }
@@ -56,6 +58,7 @@ public class PlayerBase : CharacterBase
     protected override void OnCharacterUpdate()
     {
         base.OnCharacterUpdate();
+        if (isDead) return;
         stateMachine.GameUpdate();
 
         NowTarget = AbstractManager.Instance.GetController<EnemyController>().GetNearestEnemy(transform.position);
@@ -133,6 +136,9 @@ public class PlayerBase : CharacterBase
     protected override void OnCharacterDieStart()
     {
         base.OnCharacterDieStart();
+        isDead=true;
+        Remove();
+        NowPlayerWeapon.gameObject.SetActive(false);
         animator.Play("Die");
         EventManager.Instance.Emit(EventId.PlayerDie);
     }

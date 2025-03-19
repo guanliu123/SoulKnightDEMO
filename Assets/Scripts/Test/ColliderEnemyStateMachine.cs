@@ -41,6 +41,6 @@ public class ColliderEnemyStateMachine : EnemyStateMachine
     private void ResetChange()
     {
         changeTimer = (Fix64)0;
-        changeCool = (Fix64)Random.Range(2,8);
+        changeCool = (Fix64)Random.Range(1,5);
     }
 }

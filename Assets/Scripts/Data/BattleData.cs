@@ -15,12 +15,15 @@ public class PlayerAttribute : CharacterAttribute
 {
     public int MaxMp;
     public int CurrentMp;
+    public int MaxShield;
+    public int CurrentShield;
 
     public PlayerAttribute(PlayerType type)
     {
        var data = CharacterDataCenter.Instance.GetPlayerData(type);
        CurrentHp = MaxHp = data.HP;
-       this.CurrentMp = MaxMp = data.MP;
+       CurrentMp = MaxMp = data.MP;
+       CurrentShield=MaxShield = data.Shield;
        Speed=data.Speed;
     }
 }

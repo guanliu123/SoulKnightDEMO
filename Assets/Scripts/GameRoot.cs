@@ -62,6 +62,7 @@ public class GameRoot : MonoBehaviour
         NetInit();
         EventManager.Instance.Init();
         LoadManager.Instance.Init();
+        AudioManager.Instance.Init();
         TimerManager.Instance.Init();
         TableManager.Instance.Init();
         ConfigData.Init();
