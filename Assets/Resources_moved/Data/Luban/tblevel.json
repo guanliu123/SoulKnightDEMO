@@ -4,7 +4,7 @@
     "levelnumber": 1,
     "levelGraphPath": "LevelGraph1_1|LevelGraph1_2",
     "levelBossGraphPath": "LevelGraphBoss1",
-    "enemys": "1002|3,1005|1",
+    "enemys": "1002|3,1005|1,1003|1",
     "boss": ""
   }
 ]

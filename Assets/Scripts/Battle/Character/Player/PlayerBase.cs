@@ -72,7 +72,7 @@ public class PlayerBase : CharacterBase
             if (NowTarget != null)
             {
                 Vector3 toTarget = NowTarget.position - transform.position;
-                weaponRotate =new FixVector2(toTarget.normalized); // 关键修改：将方向改为指向目标
+                weaponRotate =new FixVector2(toTarget.normalized);
             }
             NowPlayerWeapon.RotateWeapon(weaponRotate);
             if (input.isSwitchWeapon)

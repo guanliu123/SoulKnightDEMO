@@ -10,6 +10,12 @@ public class EnemyBullet3 : EnemyBulletBase
         
     }
 
+    protected override void OnInit()
+    {
+        base.OnInit();
+        speed = 15f;
+    }
+
     protected override void OnHitObstacle()
     {
         base.OnHitObstacle();

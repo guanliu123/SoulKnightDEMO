@@ -18,7 +18,7 @@ public class EnemyBase : CharacterBase
     
     protected EnemyStateMachine stateMachine;
     
-    private PlayerBase targetPlayer;
+    protected PlayerBase targetPlayer;
     
     public EnemyWeaponBase weapon { get;protected set; }
 
@@ -94,6 +94,7 @@ public class EnemyBase : CharacterBase
     {
         base.OnCharacterDieStart();
         animator.Play("Die");
+        weapon?.gameObject.SetActive(false);
         gameObject.GetComponent<SpriteRenderer>().sortingLayerName="Floor";
         //关闭碰撞器
         //rectCollider.DisableCollision();

@@ -13,4 +13,10 @@ public class EliteGoblinGuard : EnemyBase
             base.OnInit();
             stateMachine = new NormalEnemyStateMachine(this);
         }
+
+        protected override void OnCharacterUpdate()
+        {
+            base.OnCharacterUpdate();
+            weapon.RotateWeapon(Velocity);
+        }
 }
