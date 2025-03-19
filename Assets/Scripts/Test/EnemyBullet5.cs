@@ -14,8 +14,8 @@ public class EnemyBullet5 : EnemyBulletBase
     {
         base.OnInit();
         damage = 5;
-        speed = 10f;
-        TimerManager.Register(1f, () =>
+        speed = 5f;
+        TimerManager.Register(0.2f, () =>
         {
             float angle=-10f;
             for (int i = 0; i < 5; i++)
