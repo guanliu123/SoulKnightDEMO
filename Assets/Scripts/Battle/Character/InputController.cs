@@ -24,6 +24,13 @@ public class InputController : AbstractController
 
     protected override void AlwaysUpdate()
     {
+        //todo:测试，点击T后立刻进入下一关
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log("直接进入下一关");
+            EventManager.Instance.Emit(EventId.ToNextLevel);
+        }
+        
         base.AlwaysUpdate();
         /*input.hor = (Fix64)ETCInput.GetAxis("Horizontal");
         input.ver = (Fix64)ETCInput.GetAxis("Vertical");*/

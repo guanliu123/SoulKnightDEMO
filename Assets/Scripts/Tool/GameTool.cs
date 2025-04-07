@@ -743,6 +743,16 @@ public static class GameTool
         }
     }
     
+    public static void DestoryAllChildren(GameObject parent)
+    {
+        Transform transform;
+        for(int i = 0;i < parent.transform.childCount; i++)
+        {
+            transform = parent.transform.GetChild(i);
+            GameObject.Destroy(transform.gameObject);
+        }
+    }
+    
     // 将对象 B 的本地坐标转换为相对于对象 A 的本地坐标
     public static Vector3 ConvertLocalToLocal(Transform targetTransform, Transform referenceTransform)
     {

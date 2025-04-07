@@ -38,9 +38,21 @@
     public void TurnOnController()
     {
         isControllerRun = true;
+        RegisterEvents();
     }
     public void TurnOffController()
     {
         isControllerRun = false;
+        UnregisterEvents();
+    }
+
+    public virtual void RegisterEvents()
+    {
+        
+    }
+
+    public virtual void UnregisterEvents()
+    {
+        
     }
 }

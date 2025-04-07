@@ -39,6 +39,18 @@ public class RoomController : AbstractController
         EventManager.Instance.SingOn<Room>(EventId.EnemyDie,CheckRoomRefresh);
     }
 
+    public override void RegisterEvents()
+    {
+        base.RegisterEvents();
+        EventManager.Instance.On(EventId.ToNextLevel,ResetData);
+    }
+
+    private void ResetData()
+    {
+        isStart = false;
+        isEnterEnemyFloor = false;
+    }
+
     private void CheckRoomRefresh(Room room)
     {
         if (room == EnterRoom)
@@ -124,7 +136,7 @@ public class RoomController : AbstractController
             }
             if (EnterRoom.CurrentEnemyNum == 0 && EnterRoom.WaveNum > 0)
             {
-                //todo：这是个什么房间的判断？先注释了
+                //todo：精英怪房先注释了
                 /*if ((EnterRoom.roomInstance.Room as CustomRoom).RoomType == RoomType.EliteEnemyRoom)
                 {
                     SpawnEnemies(EnterRoom, true);

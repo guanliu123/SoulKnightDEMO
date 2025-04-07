@@ -368,7 +368,13 @@ public class MapManager : MonoSingletonBase<MapManager>
     public override void Init()
     {
         base.Init();
-         InitGenerator().Forget();
+         //InitGenerator().Forget();
+        //StartGenerateMap();
+    }
+
+    public void StartGenerateMap()
+    {
+        InitGenerator().Forget();
     }
 
     private async UniTask InitGenerator()
@@ -379,20 +385,25 @@ public class MapManager : MonoSingletonBase<MapManager>
             {
                 await UpdateRoomConfig();
             }
-            dungeonGenerator = gameObject.AddComponent<DungeonGeneratorGrid2D>();
-            dungeonGenerator.GeneratorConfig = new();
-            dungeonGenerator.PostProcessConfig = new();
-            gameObject.AddComponent<RoomPostProcessing>();
+
+            if (!dungeonGenerator)
+            {
+                dungeonGenerator = gameObject.AddComponent<DungeonGeneratorGrid2D>();
+                dungeonGenerator.GeneratorConfig = new();
+                dungeonGenerator.PostProcessConfig = new();
+                gameObject.AddComponent<RoomPostProcessing>();
+                dungeonGenerator.InputType=DungeonGeneratorInputTypeGrid2D.CustomInput;
+
+            }
         
-            dungeonGenerator.InputType=DungeonGeneratorInputTypeGrid2D.CustomInput;
             var gungeonCustomInput = ScriptableObject.CreateInstance<GungeonCustomInput>();
             gungeonCustomInput.roomConfig = roomConfig;
             dungeonGenerator.CustomInputTask = gungeonCustomInput;
             
             InitAStar();
             
-            EventManager.Instance.Emit(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED);
             isInit = true;
+            EventManager.Instance.Emit(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED);
         }
         catch (Exception e)
         {
@@ -498,7 +509,7 @@ public class MapManager : MonoSingletonBase<MapManager>
         if(isInit) EventManager.Instance.Emit(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED);
     }
 
-    public IEnumerator GenerateMap()
+    public void GenerateMap()
     {
         if (dungeonGenerator == null)
         {
@@ -506,7 +517,8 @@ public class MapManager : MonoSingletonBase<MapManager>
         }
         else
         {
-            yield return dungeonGenerator.GenerateCoroutine();
+            //yield return dungeonGenerator.GenerateCoroutine();
+            dungeonGenerator.Generate();
         }
         SetTilemaps();
         EventManager.Instance.Emit(EventId.MAP_GENERATION_COMPLETED);

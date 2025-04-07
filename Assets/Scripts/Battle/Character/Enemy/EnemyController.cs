@@ -22,11 +22,12 @@ public class EnemyController : AbstractController
     protected override void Init()
     {
         base.Init();
-        EventManager.Instance.SingOn(EventId.ToNextLevel,UpdateEnemyData);
+        EventManager.Instance.SingOn(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,UpdateEnemyData);
     }
 
     private void UpdateEnemyData()
     {
+        if (LevelManager.Instance.NowLevelID <= 0) return;
         var t = TableManager.Instance.Tables.TBLevel[LevelManager.Instance.NowLevelID].Enemys;
         var list = t.Split(",");
         enemyData=new int[list.Length][];

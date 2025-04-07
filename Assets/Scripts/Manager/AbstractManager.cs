@@ -28,12 +28,19 @@ public class AbstractManager : SingletonBase<AbstractManager>
         RegisterSystem(new QuadTreeSystem());
         //todo:结束战斗时记得注销事件
         EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED, TurnOnBattle);
+        EventManager.Instance.SingOn(EventId.ToNextLevel,TurnOffBattle);
     }
 
     private void TurnOnBattle()
     {
         GetController<RoomController>().TurnOnController();
         GetController<EnemyController>().TurnOnController();
+    }
+
+    private void TurnOffBattle()
+    {
+        GetController<RoomController>().TurnOffController();
+        //GetController<EnemyController>().TurnOffController();
     }
 
     public void TurnOnCameraAbstract()

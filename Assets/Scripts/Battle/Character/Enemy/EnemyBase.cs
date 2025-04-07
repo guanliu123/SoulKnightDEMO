@@ -41,7 +41,7 @@ public class EnemyBase : CharacterBase
         Attribute = new EnemyAttribute(root.enemyType);
         
         EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, OnEnterBattleRoom);
-        EventManager.Instance.On(EventId.ToNextLevel, Recover);
+        EventManager.Instance.On(EventId.ToNextLevel, ForceRecover);
         EventManager.Instance.On(EventId.BackToHome, Recover);
         
         Collider = root.GetRectCollider();
@@ -63,7 +63,13 @@ public class EnemyBase : CharacterBase
         ObjectPoolManager.Instance.GetPool(name).DeSpawn(gameObject,name);
         
         EventManager.Instance.Off<Room>(EventId.OnPlayerEnterBattleRoom,OnEnterBattleRoom);
-        EventManager.Instance.Off(EventId.ToNextLevel,Recover);
+        EventManager.Instance.Off(EventId.ToNextLevel,ForceRecover);
+    }
+
+    private void ForceRecover()
+    {
+        rectCollider.DisableCollision();
+        Recover();
     }
 
     public override void UnderAttack(int damage)

@@ -55,7 +55,7 @@ public class EventManager : SingletonBase<EventManager>
         {
             (eventDic[name] as EventInfo).actions?.Invoke();
         }
-        else if (singEventDic.ContainsKey(name))
+        if (singEventDic.ContainsKey(name))
         {
             (singEventDic[name] as EventInfo).actions?.Invoke();
         }

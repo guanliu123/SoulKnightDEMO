@@ -17,9 +17,9 @@ public class LevelManager : SingletonBase<LevelManager>
         base.Init();
         NowLevelNumber = 1;
         
-        PanelManager.Instance.OpenPanel(new LoadingPanel());
-        RandomLevel();
         MapManager.Instance.Init();
+
+        GenerateLevel();
     }
     
     private void RandomLevel()
@@ -39,11 +39,22 @@ public class LevelManager : SingletonBase<LevelManager>
         NowLevelID = randomIdList[index];
         NowStage++;
     }
+
+    private void GenerateLevel()
+    {
+        PanelManager.Instance.OpenPanel(new LoadingPanel());
+
+        RandomLevel();
+        MapManager.Instance.StartGenerateMap();
+    }
+    
     protected override void RegisterEvent()
     {
         EventManager.Instance.SingOn(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
         EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
         EventManager.Instance.SingOn(EventId.PlayerDie,Settlement);
+        
+        EventManager.Instance.SingOn(EventId.ToNextLevel,GenerateLevel);
     }
 
     protected override void UnregisterEvent()
@@ -51,6 +62,8 @@ public class LevelManager : SingletonBase<LevelManager>
         EventManager.Instance.SingOff(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,OnMapManagerInitCompleted);
         EventManager.Instance.SingOff(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
         EventManager.Instance.SingOff(EventId.PlayerDie,Settlement);
+        
+        EventManager.Instance.SingOff(EventId.ToNextLevel,GenerateLevel);
     }
 
     #region 事件函数
@@ -58,7 +71,8 @@ public class LevelManager : SingletonBase<LevelManager>
     private void OnMapManagerInitCompleted()
     {
         LogTool.Log("开始生成地图");
-        MonoManager.Instance.StartCoroutine(MapManager.Instance.GenerateMap());
+        //MonoManager.Instance.StartCoroutine(MapManager.Instance.GenerateMap());
+        MapManager.Instance.GenerateMap();
     }
     private void OnMapGenerateCompleted()
     {
