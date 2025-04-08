@@ -115,7 +115,11 @@ public class RectCollider : MonoBehaviour, IRect
                 colliders[i++].isExist = false;
                 continue;
             }
-            TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerExit,gameObject, ((MonoBehaviour)colliders[i].rect).gameObject);
+
+            if (colliders[i]!=null&&colliders[i].rect != null&&!colliders[i].rect.Equals(null))
+            {
+                TriggerManager.Instance.NotisfyObserver(TriggerType.TriggerExit,gameObject, ((MonoBehaviour)colliders[i].rect).gameObject);
+            }
 
             colliders.RemoveAt(i);
         }

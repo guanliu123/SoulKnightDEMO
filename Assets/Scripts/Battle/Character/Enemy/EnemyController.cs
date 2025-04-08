@@ -12,7 +12,9 @@ public class EnemyController : AbstractController
     public List<EnemyBase> enemysInRoom { get;protected set; }
 
     private int[][] enemyData;
-
+    private int enemyAmount;
+    private bool needToNextLevel;
+    
     public EnemyController()
     {
         enemys = new();
@@ -22,7 +24,19 @@ public class EnemyController : AbstractController
     protected override void Init()
     {
         base.Init();
+        enemyAmount = 0;
+        needToNextLevel = false;
+        
         EventManager.Instance.SingOn(EventId.MAPMANAGER_CONFIG_UPDATE_COMPLETED,UpdateEnemyData);
+        EventManager.Instance.SingOn(EventId.ToNextLevel, () =>
+        {
+            needToNextLevel = true;
+        });
+    }
+
+    private void CheckEnemyCount()
+    {
+        
     }
 
     private void UpdateEnemyData()
@@ -55,6 +69,12 @@ public class EnemyController : AbstractController
             {
                 enemys.RemoveAt(i);
             }
+        }
+
+        if (enemyAmount <= 0 && needToNextLevel)
+        {
+            needToNextLevel = false;
+            EventManager.Instance.Emit(EventId.GenerateLevel);
         }
     }
 
@@ -102,6 +122,7 @@ public class EnemyController : AbstractController
             enemy.gameObject.transform.position = pos;
             enemy.isWork = isWork;
             enemys.Add(enemy);
+            enemyAmount++;
 
             if (room == AbstractManager.Instance.GetController<RoomController>().EnterRoom)
             {
@@ -169,5 +190,14 @@ public class EnemyController : AbstractController
     public void AddInRoom(EnemyBase e)
     {
         enemysInRoom.Add(e);
+    }
+
+    public void DeSpawnEnemy(EnemyBase enemy)
+    {
+        enemyAmount--;
+        enemy.Reset();
+        enemy.Remove();
+        var name = enemy.root.enemyType.ToString();
+        ObjectPoolManager.Instance.GetPool(name).DeSpawn(enemy.gameObject,name);
     }
 }

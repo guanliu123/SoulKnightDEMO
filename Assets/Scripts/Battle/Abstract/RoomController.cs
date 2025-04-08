@@ -36,13 +36,20 @@ public class RoomController : AbstractController
     {
         base.Init();
         enemyController = AbstractManager.Instance.GetController<EnemyController>();
-        EventManager.Instance.SingOn<Room>(EventId.EnemyDie,CheckRoomRefresh);
     }
 
     public override void RegisterEvents()
     {
         base.RegisterEvents();
+        EventManager.Instance.On<Room>(EventId.EnemyDie,CheckRoomRefresh);
         EventManager.Instance.On(EventId.ToNextLevel,ResetData);
+    }
+
+    public override void UnregisterEvents()
+    {
+        base.UnregisterEvents();
+        EventManager.Instance.Off<Room>(EventId.EnemyDie,CheckRoomRefresh);
+        EventManager.Instance.Off(EventId.ToNextLevel,ResetData);
     }
 
     private void ResetData()

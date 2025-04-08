@@ -124,7 +124,7 @@ public class ObjectPool
     
     public void Spawn(string ResourceName, Action<GameObject> action)
     {
-        if (this.m_PoolObjName == string.Empty)
+        if (this.m_PoolObjName=="" || this.m_PoolObjName == string.Empty)
         {
             this.m_PoolObjName = ResourceName;
         }
@@ -135,7 +135,7 @@ public class ObjectPool
     //同步加载生成
     public GameObject SynSpawn(string ResourceName)
     {
-        if (this.m_PoolObjName == string.Empty)
+        if (this.m_PoolObjName==""|| m_PoolObjName== string.Empty)
         {
             this.m_PoolObjName = ResourceName;
         }
@@ -201,10 +201,10 @@ public class ObjectPool
             return;
         }
         
-        if (this.m_PoolObjName != ResourceName)
+        /*if (this.m_PoolObjName != ResourceName)
         {
             return;
-        }
+        }*/
         
         obj.transform.SetParent(ObjectPoolManager.Instance.m_handler.transform);
         //obj.GetComponent<ObjectPoolItem>().OnObjectDespawn();

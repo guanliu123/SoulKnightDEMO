@@ -41,12 +41,12 @@ public class EnemyFactory:SingletonBase<EnemyFactory>
     
     public GameObject GetEnemyObj(string name)
     {
-        var completeName = GetPoolName(name);
-        var objPool = ObjectPoolManager.Instance.GetPool(completeName);
+        var completeName = GetFullName(name);
+        var objPool = ObjectPoolManager.Instance.GetPool(name);
         return objPool.SynSpawn(completeName);
     }
 
-    public string GetPoolName(string name)
+    public string GetFullName(string name)
     {
         return ResourcePath.Enemy + name + ".prefab";
     }

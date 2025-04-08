@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using BestHTTP.SecureProtocol.Org.BouncyCastle.Crypto.Tls;
 using EnumCenter;
 using UnityEngine;
 
@@ -40,12 +41,23 @@ public class EnemyBase : CharacterBase
         animator = root.GetAnimator();
         Attribute = new EnemyAttribute(root.enemyType);
         
-        EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, OnEnterBattleRoom);
-        EventManager.Instance.On(EventId.ToNextLevel, ForceRecover);
-        EventManager.Instance.On(EventId.BackToHome, Recover);
-        
         Collider = root.GetRectCollider();
         targetPlayer=AbstractManager.Instance.GetController<PlayerController>().MainPlayer;
+    }
+
+    protected override void OnCharacterStart()
+    {
+        base.OnCharacterStart();
+        EventManager.Instance.On<Room>(EventId.OnPlayerEnterBattleRoom, OnEnterBattleRoom);
+        EventManager.Instance.On(EventId.ToNextLevel, Recover);
+        EventManager.Instance.On(EventId.BackToHome, Recover);
+    }
+
+    public void Reset()
+    {
+        isWork=false;
+        Velocity=default;
+        targetPlayer=null;
     }
 
     private void OnEnterBattleRoom(Room r)
@@ -59,17 +71,13 @@ public class EnemyBase : CharacterBase
 
     private void Recover()
     {
-        var name = root.enemyType.ToString();
-        ObjectPoolManager.Instance.GetPool(name).DeSpawn(gameObject,name);
+        rectCollider.DisableCollision();
+        Reset();
+        AbstractManager.Instance.GetController<EnemyController>().DeSpawnEnemy(this);
         
         EventManager.Instance.Off<Room>(EventId.OnPlayerEnterBattleRoom,OnEnterBattleRoom);
-        EventManager.Instance.Off(EventId.ToNextLevel,ForceRecover);
-    }
-
-    private void ForceRecover()
-    {
-        rectCollider.DisableCollision();
-        Recover();
+        EventManager.Instance.Off(EventId.ToNextLevel,Recover);
+        EventManager.Instance.Off(EventId.BackToHome, Recover);
     }
 
     public override void UnderAttack(int damage)
@@ -82,9 +90,9 @@ public class EnemyBase : CharacterBase
 
     protected override void OnCharacterUpdate()
     {
+        base.OnCharacterUpdate();
         if (isWork)
         {
-            base.OnCharacterUpdate();
             if (targetPlayer != null)
             {
                 Velocity=new FixVector2(targetPlayer.transform.position - this.transform.position).GetNormalized();

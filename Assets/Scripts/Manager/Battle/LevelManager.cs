@@ -54,7 +54,7 @@ public class LevelManager : SingletonBase<LevelManager>
         EventManager.Instance.SingOn(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
         EventManager.Instance.SingOn(EventId.PlayerDie,Settlement);
         
-        EventManager.Instance.SingOn(EventId.ToNextLevel,GenerateLevel);
+        EventManager.Instance.SingOn(EventId.GenerateLevel,GenerateLevel);
     }
 
     protected override void UnregisterEvent()
@@ -63,7 +63,7 @@ public class LevelManager : SingletonBase<LevelManager>
         EventManager.Instance.SingOff(EventId.MAP_GENERATION_COMPLETED,OnMapGenerateCompleted);
         EventManager.Instance.SingOff(EventId.PlayerDie,Settlement);
         
-        EventManager.Instance.SingOff(EventId.ToNextLevel,GenerateLevel);
+        EventManager.Instance.SingOff(EventId.GenerateLevel,GenerateLevel);
     }
 
     #region 事件函数

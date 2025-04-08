@@ -20,7 +20,7 @@ public class Boar : EnemyBase
 
     public void SwitchAttack(bool isAttack)
     {
-        attackBox.SetActive(isAttack);
+        attackBox?.SetActive(isAttack);
     }
 
     protected override void OnCharacterDieStart()

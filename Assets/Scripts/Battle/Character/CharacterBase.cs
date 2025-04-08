@@ -76,7 +76,6 @@ public class CharacterBase
         if (isShouldRemove && !IsAlreadyRemove)
         {
             IsAlreadyRemove = true;
-            OnCharacterDieStart();
         }
         
         OnCharacterUpdate();
@@ -104,7 +103,7 @@ public class CharacterBase
 
     protected virtual void OnCharacterDieStart()
     {
-        rectCollider.DisableCollision();
+        Remove();
     }
     protected virtual void OnCharacterDieUpdate(){}
 
@@ -114,12 +113,15 @@ public class CharacterBase
         ItemFactory.Instance.GetPopupNum(transform.position).SetText(damage);
         if (Attribute.CurrentHp <= 0)
         {
-            Remove();
+            OnCharacterDieStart();
         }
     }
 
     public void Remove()
     {
+        rectCollider.DisableCollision();
+
+        isStart=false;
         isShouldRemove = true;
         IsAlreadyRemove = false;
     }

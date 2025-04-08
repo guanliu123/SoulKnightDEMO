@@ -10,12 +10,12 @@ public static class EventId
 
     public const string ON_INTERACTING_OBJECT = "ON_INTERACTING_OBJECT";
     public const string OnPlayerEnterBattleRoom = "OnPlayerEnterBattleRoom";
-    public const string ToNextLevel = "ToNextLevel";
     public const string OnPlayerEnterBossRoom = "OnPlayerEnterBossRoom";
     public const string OnSceneChangeComplete = "OnSceneChangeComplete";
     
     public const string BackToHome = "BackToHome";
-
+    public const string ToNextLevel = "ToNextLevel";
+    public const string GenerateLevel = "GenerateLevel";
     
     public const string EnemyDie = "EnemyDie";
     public const string PlayerDie = "PlayerDie";
